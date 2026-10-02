@@ -1,0 +1,23 @@
+name: CI
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with: { go-version: "1.26" }
+      - name: Build
+        run: go build ./...
+      - name: Vet
+        run: go vet ./...
+      - name: Test
+        run: go test ./...
+      - name: Dep guard(contracts 零项目内依赖)
+        run: |
+          BAD=$(go list -deps ./... | grep -E '^github.com/filescodebox/' | grep -v '^github.com/filescodebox/contracts$' || true)
+          if [ -n "$BAD" ]; then echo "✗ contracts 违规依赖:"; echo "$BAD"; exit 1; fi
+          echo "✓ 依赖方向合规"
