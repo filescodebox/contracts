@@ -18,6 +18,6 @@ jobs:
         run: go test ./...
       - name: Dep guard(contracts 零项目内依赖)
         run: |
-          BAD=$(go list -deps ./... | grep -E '^github.com/filescodebox/' | grep -v '^github.com/filescodebox/contracts$' || true)
+          BAD=$(go list -deps ./... | grep -E '^github.com/filescodebox/' | grep -Ev '^github.com/filescodebox/contracts(/|$)' || true)
           if [ -n "$BAD" ]; then echo "✗ contracts 违规依赖:"; echo "$BAD"; exit 1; fi
           echo "✓ 依赖方向合规"
