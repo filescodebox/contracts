@@ -27,6 +27,7 @@ const (
 	CodeInternal         = 10008 // 内部错误
 	CodeMethodNotAllowed = 10009 // 方法不允许
 	CodeTooLarge         = 10010 // 请求体过大
+	CodeTooManyAttempts  = 10011 // 尝试过频已临时锁定（防爆破锁定）
 )
 
 // 2xxxx 分享/取件
@@ -40,6 +41,8 @@ const (
 	CodePickupCodeExhausted = 20007 // 取件码已用完
 	CodeFileNotFound        = 20008 // 文件不存在
 	CodeChunkInvalid        = 20009 // 分片无效
+	CodeUploadSessionGone   = 20010 // 上传会话不存在或已失效
+	CodeDownloadToken       = 20011 // 下载令牌无效或已过期
 )
 
 // 3xxxx 存储
@@ -54,6 +57,8 @@ const (
 	CodePresignFailed   = 30008 // 预签名生成失败
 	CodePresignToken    = 30009 // 预签名 token 无效
 	CodePresignExpired  = 30010 // 预签名已过期
+	CodeFileTypeDenied  = 30011 // 文件类型不允许（黑名单/白名单/魔数）
+	CodeEndpointDenied  = 30012 // 存储端点地址不合法（scheme/SSRF）
 )
 
 // 4xxxx 用户/认证
@@ -104,6 +109,7 @@ var messages = map[int]string{
 	CodeInternal:         "internal server error",
 	CodeMethodNotAllowed: "method not allowed",
 	CodeTooLarge:         "request too large",
+	CodeTooManyAttempts:  "too many attempts, temporarily locked",
 
 	// 2xxxx
 	CodeShareNotFound:       "share not found",
@@ -115,6 +121,8 @@ var messages = map[int]string{
 	CodePickupCodeExhausted: "pickup code exhausted",
 	CodeFileNotFound:        "file not found",
 	CodeChunkInvalid:        "invalid chunk",
+	CodeUploadSessionGone:   "upload session not found",
+	CodeDownloadToken:       "download token invalid or expired",
 
 	// 3xxxx
 	CodeStorageInit:     "storage init failed",
@@ -127,6 +135,8 @@ var messages = map[int]string{
 	CodePresignFailed:   "presign failed",
 	CodePresignToken:    "presign token invalid",
 	CodePresignExpired:  "presign expired",
+	CodeFileTypeDenied:  "file type not allowed",
+	CodeEndpointDenied:  "storage endpoint not allowed",
 
 	// 4xxxx
 	CodeUserNotFound:   "user not found",
