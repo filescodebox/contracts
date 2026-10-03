@@ -28,6 +28,9 @@ const (
 	CodeMethodNotAllowed = 10009 // 方法不允许
 	CodeTooLarge         = 10010 // 请求体过大
 	CodeTooManyAttempts  = 10011 // 尝试过频已临时锁定（防爆破锁定）
+	CodeUploadDisabled   = 10012 // 上传已关闭（upload.open_upload=false 或未满足登录要求）
+	CodeIPBlocked        = 10013 // 预留：来源 IP 已被封禁
+	CodeAnonymousQuota   = 10014 // 匿名上传日配额已用尽
 )
 
 // 2xxxx 分享/取件
@@ -43,6 +46,8 @@ const (
 	CodeChunkInvalid        = 20009 // 分片无效
 	CodeUploadSessionGone   = 20010 // 上传会话不存在或已失效
 	CodeDownloadToken       = 20011 // 下载令牌无效或已过期
+	CodeShareBlocked        = 20012 // 分享已被管理员禁用
+	CodeSharePendingReview  = 20013 // 分享待审核，暂不可取
 )
 
 // 3xxxx 存储
@@ -59,6 +64,7 @@ const (
 	CodePresignExpired  = 30010 // 预签名已过期
 	CodeFileTypeDenied  = 30011 // 文件类型不允许（黑名单/白名单/魔数）
 	CodeEndpointDenied  = 30012 // 存储端点地址不合法（scheme/SSRF）
+	CodeContentRejected = 30013 // 内容未通过审核（敏感词等）
 )
 
 // 4xxxx 用户/认证
@@ -110,6 +116,9 @@ var messages = map[int]string{
 	CodeMethodNotAllowed: "method not allowed",
 	CodeTooLarge:         "request too large",
 	CodeTooManyAttempts:  "too many attempts, temporarily locked",
+	CodeUploadDisabled:   "upload is disabled",
+	CodeIPBlocked:        "ip blocked",
+	CodeAnonymousQuota:   "anonymous upload daily quota exceeded",
 
 	// 2xxxx
 	CodeShareNotFound:       "share not found",
@@ -123,6 +132,8 @@ var messages = map[int]string{
 	CodeChunkInvalid:        "invalid chunk",
 	CodeUploadSessionGone:   "upload session not found",
 	CodeDownloadToken:       "download token invalid or expired",
+	CodeShareBlocked:        "share blocked by admin",
+	CodeSharePendingReview:  "share pending review",
 
 	// 3xxxx
 	CodeStorageInit:     "storage init failed",
@@ -137,6 +148,7 @@ var messages = map[int]string{
 	CodePresignExpired:  "presign expired",
 	CodeFileTypeDenied:  "file type not allowed",
 	CodeEndpointDenied:  "storage endpoint not allowed",
+	CodeContentRejected: "content rejected by moderation",
 
 	// 4xxxx
 	CodeUserNotFound:   "user not found",
