@@ -1,6 +1,6 @@
 # contracts
 
-FileCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、filecodebox-fnos 等)的单一真相源。
+FileCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、fnos 等)的单一真相源。
 
 ## 内容
 
