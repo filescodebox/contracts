@@ -1,6 +1,12 @@
-# contracts
+# contracts · 契约层
 
-FileCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、fnos 等)的单一真相源。
+[![CI](https://github.com/filescodebox/contracts/actions/workflows/ci.yml/badge.svg)](https://github.com/filescodebox/contracts/actions/workflows/ci.yml)
+[![Tag](https://img.shields.io/github/v/tag/filescodebox/contracts)](https://github.com/filescodebox/contracts/tags)
+[![License](https://img.shields.io/github/license/filescodebox/contracts)](LICENSE)
+
+FilesCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、fnos 等)的单一真相源。
+
+> 🗂️ [FilesCodeBox 生态](https://github.com/orgs/filescodebox)成员仓 · 总览见 [装配仓 filescodebox](https://github.com/filescodebox/filescodebox) · [架构图集](https://github.com/filescodebox/filescodebox/blob/main/docs/architecture.md)
 
 ## 内容
 
@@ -38,3 +44,7 @@ import (
 ```
 
 下游 `go.mod` 无需任何 `replace`:thrift 版本约束以 `require` 形式从本模块传递。
+
+## License
+
+[Apache-2.0](LICENSE)
