@@ -16,6 +16,8 @@ jobs:
         run: CHECK=1 ./scripts/gen-model.sh
       - name: Gen check (openapi ↔ idl 同步)
         run: go run ./cmd/gen-openapi --check
+      - name: Gen check (ts ↔ idl 同步)
+        run: go run ./cmd/gen-ts --check
       - name: Build
         run: go build ./...
       - name: Vet

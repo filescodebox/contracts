@@ -14,7 +14,10 @@ FilesCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零
 |------|------|
 | `errcode/` | 全站统一业务码(码段规划见文件头注释) |
 | `gen/` | 由 `idl/*.thrift` 生成的纯模型类型(Thrift v0.13 工具链) |
+| `gen/ts/` | 由 IDL 生成的 **TypeScript** 类型声明(`cmd/gen-ts`,供前端 npm 依赖) |
+| `openapi/` | 由 IDL 生成的 OpenAPI 3.0 规范(`cmd/gen-openapi`,core go:embed 服务于 `/openapi.json`) |
 | `idl/` | Thrift IDL 源(单一真相源,与 gen/ 同仓演进) |
+| `cmd/` | 自包含生成器:`gen-openapi` / `gen-ts`(纯 Go,零外部工具链) |
 
 ## 依赖规则(强制)
 
@@ -31,6 +34,13 @@ IDL 源(`idl/`)与生成产物(`gen/`)都在本仓内,自包含再生成:
 CHECK=1 ./scripts/gen-model.sh   # 只校验 gen/ 与 idl/ 是否同步(CI 可用)
 ```
 
+OpenAPI 规范与 TS 类型是纯 Go 生成器,无需安装工具链:
+
+```bash
+go run ./cmd/gen-openapi            # 再生成 openapi/openapi.json(--check 只校验)
+go run ./cmd/gen-ts                 # 再生成 gen/ts/*.d.ts(--check 只校验)
+```
+
 > 历史说明: 生成曾依赖旧单体仓库 FileCodeBox/backend 的 `make gen` + 手工拷贝,
 > 现已内聚到本仓(idl/ 与生成脚本于 2026-10 自单体迁入)。
 
@@ -44,6 +54,34 @@ import (
 ```
 
 下游 `go.mod` 无需任何 `replace`:thrift 版本约束以 `require` 形式从本模块传递。
+
+## 前端(TypeScript)消费
+
+`gen/ts/` 是从同一份 IDL 生成的纯类型声明(零 runtime),经根目录 `package.json`
+以 npm git 依赖形式发布,**无需 npm registry**:
+
+```bash
+npm i github:filescodebox/contracts#vX.Y.Z   # 推荐钉 tag;package-lock 会锁解析的 commit
+```
+
+```ts
+import type { share, admin } from '@filescodebox/contracts';
+
+type Detail = share.ShareDetail;
+const req: admin.AdminListFilesReq = { /* ... */ };
+```
+
+约定:
+
+- 域 = `namespace go` 名,每域一个 `gen/ts/<domain>.d.ts`;顶层入口 `index.d.ts`
+  以 `export type * as <domain>` 命名空间导出——跨域同名类型
+  (如 `BaseConfig`/`EmptyReq`)由命名空间隔离,勿改为顶层 `export *`。
+- 字段名与线上 JSON 序列化名一致(优先 `api.*` 注解值);`optional` → `?:`;
+  `map<K,V>` → `Record<string, V>`(JSON object 键恒为字符串);`i64` → `number`
+  (现网值域远低于 2^53)。
+- 改 IDL 后:`go run ./cmd/gen-ts` 再生成并提交,CI `--check` 守卫同步;
+  `cmd/gen-ts` 的测试会与 `openapi.json` 做类型名单对账,防两侧漂移。
+- 发 tag 时请同步更新 `package.json` 的 `version` 字段(仅信息用途,git ref 才是钉定依据)。
 
 ## License
 

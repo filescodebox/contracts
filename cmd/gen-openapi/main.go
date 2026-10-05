@@ -303,12 +303,14 @@ func typeSchema(scope map[string]typeDef, t *parser.Type) map[string]any {
 		return map[string]any{"type": "string"}
 	}
 	name := t.GetName()
-	if strings.HasPrefix(name, "list<") || strings.HasPrefix(name, "set<") ||
-		t.Category == parser.Category_List || t.Category == parser.Category_Set {
-		return map[string]any{"type": "array", "items": typeSchema(scope, t.ValueType)}
-	}
-	if strings.HasPrefix(name, "map<") || t.Category == parser.Category_Map {
+	// 容器判据用结构化字段(KeyType/ValueType):原始 AST 的 Category 未分类
+	// (恒为 Constant),GetName 对容器只返回裸名("list"/"map",无泛型后缀),
+	// 按名字形态匹配会漏判并产出空 schema
+	if t.KeyType != nil { // map
 		return map[string]any{"type": "object", "additionalProperties": typeSchema(scope, t.ValueType)}
+	}
+	if t.ValueType != nil { // list/set
+		return map[string]any{"type": "array", "items": typeSchema(scope, t.ValueType)}
 	}
 	// 命名类型（struct/enum 引用）：scope 查得到 → $ref；查不到 → 空 schema 容错
 	if _, ok := scope[name]; ok {

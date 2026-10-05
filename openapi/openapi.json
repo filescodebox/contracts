@@ -30,7 +30,12 @@
       },
       "admin.AdminFileList": {
         "properties": {
-          "items": {},
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/admin.FileItem"
+            },
+            "type": "array"
+          },
           "page": {
             "type": "integer"
           },
@@ -321,7 +326,12 @@
       },
       "admin.AdminUserList": {
         "properties": {
-          "items": {},
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/admin.UserItem"
+            },
+            "type": "array"
+          },
           "page": {
             "type": "integer"
           },
@@ -725,7 +735,12 @@
           "uploaded_chunks": {
             "type": "integer"
           },
-          "uploaded_indexes": {}
+          "uploaded_indexes": {
+            "items": {
+              "type": "integer"
+            },
+            "type": "array"
+          }
         },
         "required": [
           "upload_id",
@@ -1187,7 +1202,12 @@
       },
       "maintenance.SystemLogsData": {
         "properties": {
-          "logs": {},
+          "logs": {
+            "items": {
+              "$ref": "#/components/schemas/maintenance.LogEntry"
+            },
+            "type": "array"
+          },
           "page": {
             "type": "integer"
           },
@@ -1209,7 +1229,12 @@
       },
       "notify.ActiveData": {
         "properties": {
-          "items": {}
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/notify.NotifyItem"
+            },
+            "type": "array"
+          }
         },
         "required": [
           "items"
@@ -1354,7 +1379,12 @@
       },
       "notify.ListData": {
         "properties": {
-          "items": {},
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/notify.NotifyItem"
+            },
+            "type": "array"
+          },
           "page": {
             "type": "integer"
           },
@@ -1632,7 +1662,12 @@
           "expire_seconds": {
             "type": "integer"
           },
-          "headers": {},
+          "headers": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object"
+          },
           "method": {
             "type": "string"
           },
@@ -2751,14 +2786,24 @@
       },
       "storage.StorageInfoData": {
         "properties": {
-          "available": {},
+          "available": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "current": {
             "type": "string"
           },
           "storage_config": {
             "$ref": "#/components/schemas/storage.StorageConfig"
           },
-          "storage_details": {}
+          "storage_details": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/storage.StorageDetail"
+            },
+            "type": "object"
+          }
         },
         "required": [
           "current",
@@ -2983,7 +3028,12 @@
           "code": {
             "type": "integer"
           },
-          "keys": {},
+          "keys": {
+            "items": {
+              "$ref": "#/components/schemas/user.APIKeyData"
+            },
+            "type": "array"
+          },
           "message": {
             "type": "string"
           }
@@ -3328,7 +3378,12 @@
       },
       "user.UserFileList": {
         "properties": {
-          "files": {},
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/user.UserFileItem"
+            },
+            "type": "array"
+          },
           "pagination": {
             "$ref": "#/components/schemas/user.UserFilePagination"
           }

@@ -1,0 +1,20 @@
+{
+  "name": "@filescodebox/contracts",
+  "version": "0.3.0",
+  "description": "FilesCodeBox API contract — TypeScript API types generated from thrift IDL (gen/ts). This repo is primarily a Go module; npm consumers get generated types only.",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filescodebox/contracts.git"
+  },
+  "types": "./gen/ts/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./gen/ts/index.d.ts",
+      "default": "./gen/ts/index.d.ts"
+    }
+  },
+  "files": [
+    "gen/ts"
+  ]
+}
