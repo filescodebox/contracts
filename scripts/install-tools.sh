@@ -30,7 +30,7 @@ install_hz() {
 
 install_thriftgo() {
   log "安装 thriftgo ${THRIFTGO_VERSION} (thrift IDL 编译器)..."
-  go install "github.com/cloudwego/thriftgo/cmd/thriftgo@${THRIFTGO_VERSION}"
+  go install "github.com/cloudwego/thriftgo@${THRIFTGO_VERSION}"
   log "thriftgo 安装完成: $(command -v thriftgo || echo '~/go/bin/thriftgo')"
 }
 
