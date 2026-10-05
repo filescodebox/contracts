@@ -1,0 +1,5905 @@
+{
+  "components": {
+    "schemas": {
+      "admin.AdminDeleteFileReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "admin.AdminDeleteFileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileList": {
+        "properties": {
+          "items": {},
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminGetConfigReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminGetConfigResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.ConfigData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListFilesReq": {
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "sort_by": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminFileList"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListUsersReq": {
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListUsersResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminUserList"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminLoginData": {
+        "properties": {
+          "expires_in": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "token": {
+            "type": "string"
+          },
+          "token_type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "token",
+          "token_type",
+          "expires_in"
+        ],
+        "type": "object"
+      },
+      "admin.AdminLoginReq": {
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object"
+      },
+      "admin.AdminLoginResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminLoginData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminStatsData": {
+        "properties": {
+          "today_downloads": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "today_uploads": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_files": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_users": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_files",
+          "total_users",
+          "total_size",
+          "today_uploads",
+          "today_downloads"
+        ],
+        "type": "object"
+      },
+      "admin.AdminStatsReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminStatsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminStatsData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateConfigReq": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/admin.ConfigData"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateConfigResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateUserStatusReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateUserStatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUserList": {
+        "properties": {
+          "items": {},
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.BaseConfig": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "port"
+        ],
+        "type": "object"
+      },
+      "admin.ConfigData": {
+        "properties": {
+          "base": {
+            "$ref": "#/components/schemas/admin.BaseConfig"
+          },
+          "storage": {
+            "$ref": "#/components/schemas/admin.StorageConfig"
+          },
+          "transfer": {
+            "$ref": "#/components/schemas/admin.TransferConfig"
+          }
+        },
+        "required": [
+          "base",
+          "storage",
+          "transfer"
+        ],
+        "type": "object"
+      },
+      "admin.FileItem": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "download_count": {
+            "type": "integer"
+          },
+          "expire_time": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "view_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "file_name",
+          "file_size",
+          "expire_time",
+          "view_count",
+          "download_count",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "admin.StorageConfig": {
+        "properties": {
+          "max_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "max_size"
+        ],
+        "type": "object"
+      },
+      "admin.TransferConfig": {
+        "properties": {
+          "expire_default": {
+            "type": "integer"
+          },
+          "max_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "max_count",
+          "expire_default"
+        ],
+        "type": "object"
+      },
+      "admin.UserItem": {
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "quota_limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "quota_used": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "email",
+          "nickname",
+          "status",
+          "quota_used",
+          "quota_limit",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadCancelReq": {
+        "properties": {
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadCancelResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadCompleteData": {
+        "properties": {
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "share_code": {
+            "type": "string"
+          },
+          "share_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "share_code",
+          "share_url",
+          "file_name",
+          "file_size"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadCompleteReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "require_auth": {
+            "type": "boolean"
+          },
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "expire_value",
+          "expire_style",
+          "require_auth"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadCompleteResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/chunk.ChunkUploadCompleteData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadData": {
+        "properties": {
+          "chunk_hash": {
+            "type": "string"
+          },
+          "chunk_index": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "chunk_index",
+          "chunk_hash"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadInitData": {
+        "properties": {
+          "chunk_size": {
+            "type": "string"
+          },
+          "is_quick_upload": {
+            "type": "boolean"
+          },
+          "share_code": {
+            "type": "string"
+          },
+          "total_chunks": {
+            "type": "string"
+          },
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "chunk_size",
+          "total_chunks",
+          "is_quick_upload",
+          "share_code"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadInitReq": {
+        "properties": {
+          "chunk_size": {
+            "type": "integer"
+          },
+          "file_hash": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_chunks": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "file_name",
+          "file_size",
+          "file_hash",
+          "chunk_size",
+          "total_chunks"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadInitResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/chunk.ChunkUploadInitData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadReq": {
+        "properties": {
+          "chunk_index": {
+            "type": "integer"
+          },
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "chunk_index"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/chunk.ChunkUploadData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadStatusData": {
+        "properties": {
+          "progress": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "total_chunks": {
+            "type": "integer"
+          },
+          "upload_id": {
+            "type": "string"
+          },
+          "uploaded_chunks": {
+            "type": "integer"
+          },
+          "uploaded_indexes": {}
+        },
+        "required": [
+          "upload_id",
+          "total_chunks",
+          "uploaded_chunks",
+          "uploaded_indexes",
+          "progress",
+          "status"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadStatusReq": {
+        "properties": {
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id"
+        ],
+        "type": "object"
+      },
+      "chunk.ChunkUploadStatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/chunk.ChunkUploadStatusData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "common.EmptyReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "common.HealthResp": {
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "common.IndexResp": {
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "status"
+        ],
+        "type": "object"
+      },
+      "common.PingResp": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "type": "object"
+      },
+      "health.HealthCheckReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "health.HealthCheckResp": {
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "timestamp"
+        ],
+        "type": "object"
+      },
+      "health.LivenessReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "health.LivenessResp": {
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status"
+        ],
+        "type": "object"
+      },
+      "health.PingReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "health.PingResp": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message"
+        ],
+        "type": "object"
+      },
+      "health.ReadinessReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "health.ReadinessResp": {
+        "properties": {
+          "database": {
+            "type": "boolean"
+          },
+          "redis": {
+            "type": "boolean"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "database",
+          "redis"
+        ],
+        "type": "object"
+      },
+      "health.VersionReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "health.VersionResp": {
+        "properties": {
+          "build_time": {
+            "type": "string"
+          },
+          "git_commit": {
+            "type": "string"
+          },
+          "go_version": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "build_time",
+          "git_commit",
+          "go_version"
+        ],
+        "type": "object"
+      },
+      "maintenance.CleanExpiredFilesData": {
+        "properties": {
+          "deleted_count": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "freed_space": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted_count",
+          "freed_space"
+        ],
+        "type": "object"
+      },
+      "maintenance.CleanExpiredFilesReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "maintenance.CleanExpiredFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/maintenance.CleanExpiredFilesData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "maintenance.CleanTempFilesData": {
+        "properties": {
+          "deleted_count": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "freed_space": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted_count",
+          "freed_space"
+        ],
+        "type": "object"
+      },
+      "maintenance.CleanTempFilesReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "maintenance.CleanTempFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/maintenance.CleanTempFilesData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "maintenance.GetStorageStatusReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "maintenance.GetStorageStatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/maintenance.StorageStatusData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "maintenance.GetSystemInfoReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "maintenance.GetSystemInfoResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/maintenance.SystemInfoData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "maintenance.GetSystemLogsReq": {
+        "properties": {
+          "level": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "maintenance.GetSystemLogsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/maintenance.SystemLogsData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "maintenance.LogEntry": {
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "level": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "module": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "level",
+          "message",
+          "created_at",
+          "module",
+          "user_id"
+        ],
+        "type": "object"
+      },
+      "maintenance.StorageStatusData": {
+        "properties": {
+          "file_count": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "free_space": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "storage_type": {
+            "type": "string"
+          },
+          "total_space": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "usage_percent": {
+            "format": "double",
+            "type": "number"
+          },
+          "used_space": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "storage_type",
+          "total_space",
+          "used_space",
+          "free_space",
+          "file_count",
+          "usage_percent"
+        ],
+        "type": "object"
+      },
+      "maintenance.SystemInfoData": {
+        "properties": {
+          "arch": {
+            "type": "string"
+          },
+          "goroutines": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "memory_alloc": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "memory_sys": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "memory_total": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "os": {
+            "type": "string"
+          },
+          "uptime": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "version",
+          "os",
+          "arch",
+          "uptime",
+          "goroutines",
+          "memory_alloc",
+          "memory_total",
+          "memory_sys"
+        ],
+        "type": "object"
+      },
+      "maintenance.SystemLogsData": {
+        "properties": {
+          "logs": {},
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "logs",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "notify.ActiveData": {
+        "properties": {
+          "items": {}
+        },
+        "required": [
+          "items"
+        ],
+        "type": "object"
+      },
+      "notify.ActiveReq": {
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "notify.ActiveResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/notify.ActiveData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "notify.CreateReq": {
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "end_at": {
+            "type": "string"
+          },
+          "level": {
+            "type": "string"
+          },
+          "start_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "content",
+          "type",
+          "level"
+        ],
+        "type": "object"
+      },
+      "notify.CreateResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/notify.NotifyItem"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "notify.DeleteReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "notify.DeleteResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "notify.GetReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "notify.GetResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/notify.NotifyItem"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "notify.ListData": {
+        "properties": {
+          "items": {},
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "notify.ListReq": {
+        "properties": {
+          "level": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "notify.ListResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/notify.ListData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "notify.NotifyItem": {
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "end_at": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "level": {
+            "type": "string"
+          },
+          "start_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "content",
+          "type",
+          "level",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "notify.NotifyLevel": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "notify.NotifyType": {
+        "properties": {
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "value"
+        ],
+        "type": "object"
+      },
+      "notify.UpdateReq": {
+        "properties": {
+          "content": {
+            "type": "string"
+          },
+          "end_at": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "level": {
+            "type": "string"
+          },
+          "start_at": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "notify.UpdateResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "presign.AbortReq": {
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "token"
+        ],
+        "type": "object"
+      },
+      "presign.AbortResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "presign.CompleteData": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "download_url": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "url",
+          "file_name",
+          "file_size",
+          "download_url"
+        ],
+        "type": "object"
+      },
+      "presign.CompleteReq": {
+        "properties": {
+          "file_hash": {
+            "type": "string"
+          },
+          "object_key": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "upload_id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "token"
+        ],
+        "type": "object"
+      },
+      "presign.CompleteResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/presign.CompleteData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "presign.InitData": {
+        "properties": {
+          "expire_seconds": {
+            "type": "integer"
+          },
+          "headers": {},
+          "method": {
+            "type": "string"
+          },
+          "object_key": {
+            "type": "string"
+          },
+          "scheme": {
+            "type": "string"
+          },
+          "token": {
+            "type": "string"
+          },
+          "upload_id": {
+            "type": "string"
+          },
+          "upload_url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "upload_id",
+          "upload_url",
+          "method",
+          "headers",
+          "expire_seconds",
+          "object_key",
+          "scheme",
+          "token"
+        ],
+        "type": "object"
+      },
+      "presign.InitReq": {
+        "properties": {
+          "content_type": {
+            "type": "string"
+          },
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "require_auth": {
+            "type": "boolean"
+          },
+          "scheme": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "file_name",
+          "file_size",
+          "content_type"
+        ],
+        "type": "object"
+      },
+      "presign.InitResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/presign.InitData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "preview.GetPreviewReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "preview.GetPreviewResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/preview.PreviewData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "preview.PreviewData": {
+        "properties": {
+          "duration": {
+            "type": "integer"
+          },
+          "file_code_id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "height": {
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "mime_type": {
+            "type": "string"
+          },
+          "page_count": {
+            "type": "integer"
+          },
+          "preview_type": {
+            "type": "string"
+          },
+          "preview_url": {
+            "type": "string"
+          },
+          "text_content": {
+            "type": "string"
+          },
+          "thumbnail": {
+            "type": "string"
+          },
+          "width": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "file_code_id",
+          "preview_type"
+        ],
+        "type": "object"
+      },
+      "qrcode.GenerateQRCodeReq": {
+        "properties": {
+          "data": {
+            "type": "string"
+          },
+          "return_base64": {
+            "type": "boolean"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "data",
+          "size",
+          "return_base64"
+        ],
+        "type": "object"
+      },
+      "qrcode.GenerateQRCodeResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/qrcode.QRCodeData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "qrcode.GetQRCodeReq": {
+        "properties": {
+          "id": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "qrcode.QRCodeData": {
+        "properties": {
+          "base64_data": {
+            "type": "string"
+          },
+          "data": {
+            "type": "string"
+          },
+          "id": {
+            "type": "string"
+          },
+          "image_url": {
+            "type": "string"
+          },
+          "size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "data",
+          "size",
+          "image_url",
+          "base64_data"
+        ],
+        "type": "object"
+      },
+      "ratelimit.GetConfigReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "ratelimit.GetConfigResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ratelimit.RateLimitConfig"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "ratelimit.RateLimitConfig": {
+        "properties": {
+          "block_on_limit": {
+            "type": "boolean"
+          },
+          "block_seconds": {
+            "type": "integer"
+          },
+          "burst": {
+            "type": "integer"
+          },
+          "download_qps": {
+            "type": "integer"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "global_qps": {
+            "type": "integer"
+          },
+          "login_qps": {
+            "type": "integer"
+          },
+          "upload_qps": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "global_qps",
+          "upload_qps",
+          "download_qps",
+          "login_qps",
+          "burst",
+          "enabled",
+          "block_on_limit",
+          "block_seconds"
+        ],
+        "type": "object"
+      },
+      "ratelimit.StatusData": {
+        "properties": {
+          "active_clients": {
+            "type": "integer"
+          },
+          "blocked_ips": {
+            "type": "integer"
+          },
+          "config": {
+            "$ref": "#/components/schemas/ratelimit.RateLimitConfig"
+          },
+          "current_qps": {
+            "format": "double",
+            "type": "number"
+          }
+        },
+        "required": [
+          "active_clients",
+          "current_qps",
+          "blocked_ips",
+          "config"
+        ],
+        "type": "object"
+      },
+      "ratelimit.StatusReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "ratelimit.StatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ratelimit.StatusData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "ratelimit.TestData": {
+        "properties": {
+          "actual_qps": {
+            "format": "double",
+            "type": "number"
+          },
+          "blocked_count": {
+            "type": "integer"
+          },
+          "limit_triggered_at": {
+            "type": "integer"
+          },
+          "p50_latency_ms": {
+            "format": "double",
+            "type": "number"
+          },
+          "p99_latency_ms": {
+            "format": "double",
+            "type": "number"
+          },
+          "success_count": {
+            "type": "integer"
+          },
+          "total_requests": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_requests",
+          "success_count",
+          "blocked_count",
+          "actual_qps",
+          "p50_latency_ms",
+          "p99_latency_ms",
+          "limit_triggered_at"
+        ],
+        "type": "object"
+      },
+      "ratelimit.TestReq": {
+        "properties": {
+          "client_ip": {
+            "type": "string"
+          },
+          "duration": {
+            "type": "integer"
+          },
+          "qps": {
+            "type": "integer"
+          },
+          "scope": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "scope",
+          "qps",
+          "duration"
+        ],
+        "type": "object"
+      },
+      "ratelimit.TestResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/ratelimit.TestData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "ratelimit.UpdateConfigReq": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/ratelimit.RateLimitConfig"
+          }
+        },
+        "required": [
+          "config"
+        ],
+        "type": "object"
+      },
+      "ratelimit.UpdateConfigResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "setup.BaseConfig": {
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "host": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "port": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "port",
+          "host"
+        ],
+        "type": "object"
+      },
+      "setup.CheckInitializationReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "setup.CheckInitializationResp": {
+        "properties": {
+          "initialized": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "initialized",
+          "message"
+        ],
+        "type": "object"
+      },
+      "setup.InitializeReq": {
+        "properties": {
+          "admin_email": {
+            "type": "string"
+          },
+          "admin_password": {
+            "type": "string"
+          },
+          "admin_username": {
+            "type": "string"
+          },
+          "base_config": {
+            "$ref": "#/components/schemas/setup.BaseConfig"
+          }
+        },
+        "required": [
+          "admin_username",
+          "admin_password",
+          "admin_email"
+        ],
+        "type": "object"
+      },
+      "setup.InitializeResp": {
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "message",
+          "username"
+        ],
+        "type": "object"
+      },
+      "share.DownloadFileReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "share.DownloadFileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "share.GetShareReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "share.GetShareResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share.ShareDetail"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "share.ShareData": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "url"
+        ],
+        "type": "object"
+      },
+      "share.ShareDetail": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "expire_time": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "type": "string"
+          },
+          "has_password": {
+            "type": "boolean"
+          },
+          "text": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "text",
+          "file_name",
+          "file_size",
+          "url",
+          "has_password",
+          "expire_time"
+        ],
+        "type": "object"
+      },
+      "share.ShareFileReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "require_auth": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "expire_value",
+          "expire_style",
+          "require_auth"
+        ],
+        "type": "object"
+      },
+      "share.ShareFileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share.ShareData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "share.ShareTextReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "require_auth": {
+            "type": "boolean"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "text",
+          "expire_value",
+          "expire_style",
+          "require_auth"
+        ],
+        "type": "object"
+      },
+      "share.ShareTextResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share.ShareData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.DownloadReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.DownloadResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.GenerateCodeData": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "expire_seconds": {
+            "type": "integer"
+          },
+          "file_key": {
+            "type": "string"
+          },
+          "max_pickup_count": {
+            "type": "integer"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "file_key",
+          "url",
+          "expire_seconds",
+          "max_pickup_count"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.GenerateCodeReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "max_pickup_count": {
+            "type": "integer"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "file_name",
+          "file_size"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.GenerateCodeResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share_anonymous.GenerateCodeData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.RetrieveData": {
+        "properties": {
+          "content_type": {
+            "type": "string"
+          },
+          "download_url": {
+            "type": "string"
+          },
+          "expire_at": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "remaining_count": {
+            "type": "integer"
+          },
+          "require_password": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_name",
+          "file_size",
+          "content_type",
+          "download_url",
+          "remaining_count",
+          "expire_at",
+          "require_password"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.RetrieveReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.RetrieveResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share_anonymous.RetrieveData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.SearchByCodeData": {
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "expire_at": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "max_pickup_count": {
+            "type": "integer"
+          },
+          "pickup_count": {
+            "type": "integer"
+          },
+          "require_password": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "file_name",
+          "file_size",
+          "created_at",
+          "expire_at",
+          "pickup_count",
+          "max_pickup_count",
+          "require_password"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.SearchByCodeReq": {
+        "properties": {
+          "code": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code"
+        ],
+        "type": "object"
+      },
+      "share_anonymous.SearchByCodeResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/share_anonymous.SearchByCodeData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "storage.GetStorageInfoReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "storage.GetStorageInfoResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/storage.StorageInfoData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "storage.NFSConfig": {
+        "properties": {
+          "auto_mount": {
+            "type": "integer"
+          },
+          "mount_point": {
+            "type": "string"
+          },
+          "options": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "retry_count": {
+            "type": "integer"
+          },
+          "server": {
+            "type": "string"
+          },
+          "sub_path": {
+            "type": "string"
+          },
+          "timeout": {
+            "type": "integer"
+          },
+          "version": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "server",
+          "path",
+          "mount_point",
+          "version",
+          "options",
+          "timeout",
+          "auto_mount",
+          "retry_count",
+          "sub_path"
+        ],
+        "type": "object"
+      },
+      "storage.S3Config": {
+        "properties": {
+          "access_key_id": {
+            "type": "string"
+          },
+          "bucket_name": {
+            "type": "string"
+          },
+          "endpoint_url": {
+            "type": "string"
+          },
+          "hostname": {
+            "type": "string"
+          },
+          "proxy": {
+            "type": "string"
+          },
+          "region_name": {
+            "type": "string"
+          },
+          "secret_access_key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "access_key_id",
+          "secret_access_key",
+          "bucket_name",
+          "endpoint_url",
+          "region_name",
+          "hostname",
+          "proxy"
+        ],
+        "type": "object"
+      },
+      "storage.StorageConfig": {
+        "properties": {
+          "nfs": {
+            "$ref": "#/components/schemas/storage.NFSConfig"
+          },
+          "s3": {
+            "$ref": "#/components/schemas/storage.S3Config"
+          },
+          "storage_path": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "webdav": {
+            "$ref": "#/components/schemas/storage.WebDAVConfig"
+          }
+        },
+        "required": [
+          "type",
+          "storage_path",
+          "webdav",
+          "s3",
+          "nfs"
+        ],
+        "type": "object"
+      },
+      "storage.StorageDetail": {
+        "properties": {
+          "available": {
+            "type": "boolean"
+          },
+          "error": {
+            "type": "string"
+          },
+          "storage_path": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "usage_percent": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "type",
+          "available",
+          "storage_path",
+          "usage_percent",
+          "error"
+        ],
+        "type": "object"
+      },
+      "storage.StorageInfoData": {
+        "properties": {
+          "available": {},
+          "current": {
+            "type": "string"
+          },
+          "storage_config": {
+            "$ref": "#/components/schemas/storage.StorageConfig"
+          },
+          "storage_details": {}
+        },
+        "required": [
+          "current",
+          "available",
+          "storage_details",
+          "storage_config"
+        ],
+        "type": "object"
+      },
+      "storage.SwitchStorageData": {
+        "properties": {
+          "current_type": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "success",
+          "message",
+          "current_type"
+        ],
+        "type": "object"
+      },
+      "storage.SwitchStorageReq": {
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "storage.SwitchStorageResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/storage.SwitchStorageData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "storage.TestStorageConnectionReq": {
+        "properties": {
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type"
+        ],
+        "type": "object"
+      },
+      "storage.TestStorageConnectionResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/storage.TestStorageData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "storage.TestStorageData": {
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "status"
+        ],
+        "type": "object"
+      },
+      "storage.UpdateConfig": {
+        "properties": {
+          "nfs": {
+            "$ref": "#/components/schemas/storage.NFSConfig"
+          },
+          "s3": {
+            "$ref": "#/components/schemas/storage.S3Config"
+          },
+          "storage_path": {
+            "type": "string"
+          },
+          "webdav": {
+            "$ref": "#/components/schemas/storage.WebDAVConfig"
+          }
+        },
+        "required": [
+          "storage_path",
+          "webdav",
+          "s3",
+          "nfs"
+        ],
+        "type": "object"
+      },
+      "storage.UpdateStorageConfigReq": {
+        "properties": {
+          "config": {
+            "$ref": "#/components/schemas/storage.UpdateConfig"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "type",
+          "config"
+        ],
+        "type": "object"
+      },
+      "storage.UpdateStorageConfigResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "storage.WebDAVConfig": {
+        "properties": {
+          "hostname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "root_path": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "hostname",
+          "username",
+          "password",
+          "root_path",
+          "url"
+        ],
+        "type": "object"
+      },
+      "user.APIKeyData": {
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "expires_at": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "last_used_at": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "revoked": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "prefix",
+          "last_used_at",
+          "expires_at",
+          "created_at",
+          "revoked"
+        ],
+        "type": "object"
+      },
+      "user.APIKeyListResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "keys": {},
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "keys"
+        ],
+        "type": "object"
+      },
+      "user.ChangePasswordReq": {
+        "properties": {
+          "new_password": {
+            "type": "string"
+          },
+          "old_password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "old_password",
+          "new_password"
+        ],
+        "type": "object"
+      },
+      "user.ChangePasswordResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "user.CreateAPIKeyData": {
+        "properties": {
+          "api_key": {
+            "$ref": "#/components/schemas/user.APIKeyData"
+          },
+          "key": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "key",
+          "api_key"
+        ],
+        "type": "object"
+      },
+      "user.CreateAPIKeyReq": {
+        "properties": {
+          "expires_at": {
+            "type": "string"
+          },
+          "expires_in_days": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name"
+        ],
+        "type": "object"
+      },
+      "user.CreateAPIKeyResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.CreateAPIKeyData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.DeleteAPIKeyReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "user.DeleteAPIKeyResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "user.EmptyReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "user.LoginData": {
+        "properties": {
+          "token": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/user.UserData"
+          }
+        },
+        "required": [
+          "token",
+          "user"
+        ],
+        "type": "object"
+      },
+      "user.LoginReq": {
+        "properties": {
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object"
+      },
+      "user.LoginResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.LoginData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.RegisterReq": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "email",
+          "password",
+          "nickname"
+        ],
+        "type": "object"
+      },
+      "user.RegisterResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.UserData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.UpdateProfileReq": {
+        "properties": {
+          "avatar": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "nickname",
+          "avatar"
+        ],
+        "type": "object"
+      },
+      "user.UpdateProfileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.UserData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.UserData": {
+        "properties": {
+          "avatar": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username",
+          "email",
+          "nickname",
+          "avatar",
+          "status",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "user.UserFileItem": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "expired_at": {
+            "type": "string"
+          },
+          "expired_count": {
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_path": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "prefix": {
+            "type": "string"
+          },
+          "size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "suffix": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "used_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "prefix",
+          "suffix",
+          "file_name",
+          "file_path",
+          "size",
+          "expired_at",
+          "expired_count",
+          "used_count",
+          "created_at",
+          "updated_at"
+        ],
+        "type": "object"
+      },
+      "user.UserFileList": {
+        "properties": {
+          "files": {},
+          "pagination": {
+            "$ref": "#/components/schemas/user.UserFilePagination"
+          }
+        },
+        "required": [
+          "files",
+          "pagination"
+        ],
+        "type": "object"
+      },
+      "user.UserFilePagination": {
+        "properties": {
+          "has_next": {
+            "type": "boolean"
+          },
+          "has_prev": {
+            "type": "boolean"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_pages": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "page_size",
+          "total",
+          "total_pages",
+          "has_next",
+          "has_prev"
+        ],
+        "type": "object"
+      },
+      "user.UserFilesReq": {
+        "properties": {
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "user.UserFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.UserFileList"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.UserInfoReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "user.UserInfoResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.UserData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "user.UserStats": {
+        "properties": {
+          "quota_limit": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "quota_used": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "total_uploads": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total_uploads",
+          "total_size",
+          "quota_used",
+          "quota_limit"
+        ],
+        "type": "object"
+      },
+      "user.UserStatsReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "user.UserStatsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/user.UserStats"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      }
+    }
+  },
+  "info": {
+    "description": "由 contracts idl/*.thrift 经 cmd/gen-openapi 生成（勿手改）。仅覆盖 IDL 治理域；customizedRegister 手写路由由 core 在运行时合并补充骨架。",
+    "title": "FilesCodeBox API",
+    "version": "contracts-idl"
+  },
+  "openapi": "3.0.3",
+  "paths": {
+    "/admin/config": {
+      "get": {
+        "description": "AdminGetConfig 获取系统配置",
+        "operationId": "AdminGetConfig",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminGetConfigResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/config",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "put": {
+        "description": "AdminUpdateConfig 更新系统配置",
+        "operationId": "AdminUpdateConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "config": {
+                    "$ref": "#/components/schemas/admin.ConfigData"
+                  }
+                },
+                "required": [
+                  "config"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminUpdateConfigResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/config",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files": {
+      "get": {
+        "description": "AdminListFiles 文件列表",
+        "operationId": "AdminListFiles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort_by",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminListFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/files",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/{id}": {
+      "delete": {
+        "description": "AdminDeleteFile 删除文件",
+        "operationId": "AdminDeleteFile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminDeleteFileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "DELETE /admin/files/:id",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/login": {
+      "post": {
+        "description": "AdminLogin 管理员登录",
+        "operationId": "AdminLogin",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminLoginResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/login",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/maintenance/clean-expired": {
+      "post": {
+        "description": "CleanExpiredFiles 清理过期文件",
+        "operationId": "CleanExpiredFiles",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/maintenance.CleanExpiredFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/maintenance/clean-expired",
+        "tags": [
+          "MaintenanceService"
+        ]
+      }
+    },
+    "/admin/maintenance/clean-temp": {
+      "post": {
+        "description": "CleanTempFiles 清理临时文件",
+        "operationId": "CleanTempFiles",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/maintenance.CleanTempFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/maintenance/clean-temp",
+        "tags": [
+          "MaintenanceService"
+        ]
+      }
+    },
+    "/admin/maintenance/logs": {
+      "get": {
+        "description": "GetSystemLogs 获取系统日志",
+        "operationId": "GetSystemLogs",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/maintenance.GetSystemLogsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/maintenance/logs",
+        "tags": [
+          "MaintenanceService"
+        ]
+      }
+    },
+    "/admin/maintenance/monitor/storage": {
+      "get": {
+        "description": "GetStorageStatus 获取存储状态",
+        "operationId": "GetStorageStatus",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/maintenance.GetStorageStatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/maintenance/monitor/storage",
+        "tags": [
+          "MaintenanceService"
+        ]
+      }
+    },
+    "/admin/maintenance/system-info": {
+      "get": {
+        "description": "GetSystemInfo 获取系统信息",
+        "operationId": "GetSystemInfo",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/maintenance.GetSystemInfoResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/maintenance/system-info",
+        "tags": [
+          "MaintenanceService"
+        ]
+      }
+    },
+    "/admin/notifies": {
+      "get": {
+        "description": "List 通知列表（管理）",
+        "operationId": "List",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "level",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.ListResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/notifies",
+        "tags": [
+          "NotifyService"
+        ]
+      },
+      "post": {
+        "description": "Create 创建",
+        "operationId": "Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "end_at": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "start_at": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "title",
+                  "content",
+                  "type",
+                  "level"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.CreateResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/notifies",
+        "tags": [
+          "NotifyService"
+        ]
+      }
+    },
+    "/admin/notifies/{id}": {
+      "delete": {
+        "description": "Delete 删除",
+        "operationId": "Delete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.DeleteResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "DELETE /admin/notifies/:id",
+        "tags": [
+          "NotifyService"
+        ]
+      },
+      "get": {
+        "description": "Get 获取单条",
+        "operationId": "Get",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.GetResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/notifies/:id",
+        "tags": [
+          "NotifyService"
+        ]
+      },
+      "put": {
+        "description": "Update 更新",
+        "operationId": "Update",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "content": {
+                    "type": "string"
+                  },
+                  "end_at": {
+                    "type": "string"
+                  },
+                  "level": {
+                    "type": "string"
+                  },
+                  "start_at": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "integer"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.UpdateResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/notifies/:id",
+        "tags": [
+          "NotifyService"
+        ]
+      }
+    },
+    "/admin/ratelimit/config": {
+      "get": {
+        "description": "GetConfig 获取限流配置",
+        "operationId": "GetConfig",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ratelimit.GetConfigResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/ratelimit/config",
+        "tags": [
+          "RatelimitService"
+        ]
+      },
+      "put": {
+        "description": "UpdateConfig 更新限流配置",
+        "operationId": "UpdateConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "config": {
+                    "$ref": "#/components/schemas/ratelimit.RateLimitConfig"
+                  }
+                },
+                "required": [
+                  "config"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ratelimit.UpdateConfigResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/ratelimit/config",
+        "tags": [
+          "RatelimitService"
+        ]
+      }
+    },
+    "/admin/ratelimit/status": {
+      "get": {
+        "description": "Status 实时状态",
+        "operationId": "Status",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ratelimit.StatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/ratelimit/status",
+        "tags": [
+          "RatelimitService"
+        ]
+      }
+    },
+    "/admin/ratelimit/test": {
+      "post": {
+        "description": "Test 压力测试",
+        "operationId": "Test",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "client_ip": {
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "integer"
+                  },
+                  "qps": {
+                    "type": "integer"
+                  },
+                  "scope": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "scope",
+                  "qps",
+                  "duration"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ratelimit.TestResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/ratelimit/test",
+        "tags": [
+          "RatelimitService"
+        ]
+      }
+    },
+    "/admin/stats": {
+      "get": {
+        "description": "AdminStats 系统统计",
+        "operationId": "AdminStats",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminStatsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/stats",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/storage": {
+      "get": {
+        "description": "GetStorageInfo 获取存储信息",
+        "operationId": "GetStorageInfo",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/storage.GetStorageInfoResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/storage",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/admin/storage/config": {
+      "put": {
+        "description": "UpdateStorageConfig 更新存储配置",
+        "operationId": "UpdateStorageConfig",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "config": {
+                    "$ref": "#/components/schemas/storage.UpdateConfig"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type",
+                  "config"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/storage.UpdateStorageConfigResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/storage/config",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/admin/storage/switch": {
+      "post": {
+        "description": "SwitchStorage 切换存储",
+        "operationId": "SwitchStorage",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "type"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/storage.SwitchStorageResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/storage/switch",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/admin/storage/test/{type}": {
+      "get": {
+        "description": "TestStorageConnection 测试存储连接",
+        "operationId": "TestStorageConnection",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "type",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/storage.TestStorageConnectionResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/storage/test/:type",
+        "tags": [
+          "StorageService"
+        ]
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "description": "AdminListUsers 用户列表",
+        "operationId": "AdminListUsers",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminListUsersResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/users",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/users/{id}/status": {
+      "put": {
+        "description": "AdminUpdateUserStatus 更新用户状态",
+        "operationId": "AdminUpdateUserStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "status": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminUpdateUserStatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/users/:id/status",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/anonymous/download/{code}": {
+      "get": {
+        "description": "Download 下载文件",
+        "operationId": "Download",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share_anonymous.DownloadResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /anonymous/download/:code",
+        "tags": [
+          "ShareAnonymousService"
+        ]
+      }
+    },
+    "/anonymous/generate": {
+      "post": {
+        "description": "GenerateCode 生成取件码（上传文件后调用）",
+        "operationId": "GenerateCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "string"
+                  },
+                  "file_name": {
+                    "type": "string"
+                  },
+                  "file_size": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "max_pickup_count": {
+                    "type": "integer"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_name",
+                  "file_size"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share_anonymous.GenerateCodeResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /anonymous/generate",
+        "tags": [
+          "ShareAnonymousService"
+        ]
+      }
+    },
+    "/anonymous/retrieve": {
+      "post": {
+        "description": "Retrieve 按码取件（校验密码 + 返回下载信息）",
+        "operationId": "Retrieve",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "code"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share_anonymous.RetrieveResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /anonymous/retrieve",
+        "tags": [
+          "ShareAnonymousService"
+        ]
+      }
+    },
+    "/anonymous/search/{code}": {
+      "get": {
+        "description": "SearchByCode 按码查询分享信息（不下载）",
+        "operationId": "SearchByCode",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share_anonymous.SearchByCodeResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /anonymous/search/:code",
+        "tags": [
+          "ShareAnonymousService"
+        ]
+      }
+    },
+    "/api/v1/ping": {
+      "get": {
+        "description": "Ping Ping 检查",
+        "operationId": "Ping",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/common.PingResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /api/v1/ping",
+        "tags": [
+          "CommonService"
+        ]
+      }
+    },
+    "/api/v1/presign/abort": {
+      "post": {
+        "description": "Abort 取消预签名上传",
+        "operationId": "Abort",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "upload_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "upload_id",
+                  "token"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presign.AbortResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /api/v1/presign/abort",
+        "tags": [
+          "PresignService"
+        ]
+      }
+    },
+    "/api/v1/presign/complete": {
+      "post": {
+        "description": "Complete 上传完成后通知服务写 share 表",
+        "operationId": "Complete",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "file_hash": {
+                    "type": "string"
+                  },
+                  "object_key": {
+                    "type": "string"
+                  },
+                  "token": {
+                    "type": "string"
+                  },
+                  "upload_id": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "upload_id",
+                  "token"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presign.CompleteResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /api/v1/presign/complete",
+        "tags": [
+          "PresignService"
+        ]
+      }
+    },
+    "/api/v1/presign/upload": {
+      "post": {
+        "description": "Init 申请预签名上传 URL",
+        "operationId": "Init",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "content_type": {
+                    "type": "string"
+                  },
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "file_name": {
+                    "type": "string"
+                  },
+                  "file_size": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "require_auth": {
+                    "type": "boolean"
+                  },
+                  "scheme": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_name",
+                  "file_size",
+                  "content_type"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/presign.InitResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /api/v1/presign/upload",
+        "tags": [
+          "PresignService"
+        ]
+      }
+    },
+    "/chunk/upload/cancel/{upload_id}": {
+      "delete": {
+        "description": "ChunkUploadCancel 取消上传",
+        "operationId": "ChunkUploadCancel",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/chunk.ChunkUploadCancelResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "DELETE /chunk/upload/cancel/:upload_id",
+        "tags": [
+          "ChunkService"
+        ]
+      }
+    },
+    "/chunk/upload/chunk/{upload_id}/{chunk_index}": {
+      "post": {
+        "description": "ChunkUpload 上传单个分片",
+        "operationId": "ChunkUpload",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "chunk_index",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/chunk.ChunkUploadResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /chunk/upload/chunk/:upload_id/:chunk_index",
+        "tags": [
+          "ChunkService"
+        ]
+      }
+    },
+    "/chunk/upload/complete/{upload_id}": {
+      "post": {
+        "description": "ChunkUploadComplete 完成上传",
+        "operationId": "ChunkUploadComplete",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "require_auth": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "expire_value",
+                  "expire_style",
+                  "require_auth"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/chunk.ChunkUploadCompleteResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /chunk/upload/complete/:upload_id",
+        "tags": [
+          "ChunkService"
+        ]
+      }
+    },
+    "/chunk/upload/init/": {
+      "post": {
+        "description": "ChunkUploadInit 初始化分片上传",
+        "operationId": "ChunkUploadInit",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "chunk_size": {
+                    "type": "integer"
+                  },
+                  "file_hash": {
+                    "type": "string"
+                  },
+                  "file_name": {
+                    "type": "string"
+                  },
+                  "file_size": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "total_chunks": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "file_name",
+                  "file_size",
+                  "file_hash",
+                  "chunk_size",
+                  "total_chunks"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/chunk.ChunkUploadInitResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /chunk/upload/init/",
+        "tags": [
+          "ChunkService"
+        ]
+      }
+    },
+    "/chunk/upload/status/{upload_id}": {
+      "get": {
+        "description": "ChunkUploadStatus 查询上传进度",
+        "operationId": "ChunkUploadStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "upload_id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/chunk.ChunkUploadStatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /chunk/upload/status/:upload_id",
+        "tags": [
+          "ChunkService"
+        ]
+      }
+    },
+    "/health": {
+      "get": {
+        "description": "Health 健康检查",
+        "operationId": "Health",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health.HealthCheckResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /health",
+        "tags": [
+          "HealthService"
+        ]
+      }
+    },
+    "/live": {
+      "get": {
+        "description": "Liveness 存活检查（K8s livenessProbe）",
+        "operationId": "Liveness",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health.LivenessResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /live",
+        "tags": [
+          "HealthService"
+        ]
+      }
+    },
+    "/notifies/active": {
+      "get": {
+        "description": "Active 当前活跃通知（公开）",
+        "operationId": "Active",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "type",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/notify.ActiveResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /notifies/active",
+        "tags": [
+          "NotifyService"
+        ]
+      }
+    },
+    "/ping": {
+      "get": {
+        "description": "Ping Ping 检查",
+        "operationId": "Ping",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health.PingResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /ping",
+        "tags": [
+          "HealthService"
+        ]
+      }
+    },
+    "/preview/{code}": {
+      "get": {
+        "description": "GetPreview 获取文件预览信息（受取件闸门/锁定管控，语义同取件）",
+        "operationId": "GetPreview",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/preview.GetPreviewResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /preview/:code",
+        "tags": [
+          "PreviewService"
+        ]
+      }
+    },
+    "/qrcode/generate": {
+      "post": {
+        "description": "GenerateQRCode 生成二维码",
+        "operationId": "GenerateQRCode",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "data": {
+                    "type": "string"
+                  },
+                  "return_base64": {
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "data",
+                  "size",
+                  "return_base64"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/qrcode.GenerateQRCodeResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /qrcode/generate",
+        "tags": [
+          "QRCodeService"
+        ]
+      }
+    },
+    "/qrcode/{id}": {
+      "get": {
+        "description": "GetQRCode 获取二维码图片",
+        "operationId": "GetQRCode",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/qrcode.GetQRCodeReq"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /qrcode/:id",
+        "tags": [
+          "QRCodeService"
+        ]
+      }
+    },
+    "/ready": {
+      "get": {
+        "description": "Readiness 就绪检查（K8s readinessProbe）",
+        "operationId": "Readiness",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health.ReadinessResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /ready",
+        "tags": [
+          "HealthService"
+        ]
+      }
+    },
+    "/setup": {
+      "post": {
+        "description": "Initialize 初始化系统",
+        "operationId": "Initialize",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "admin_email": {
+                    "type": "string"
+                  },
+                  "admin_password": {
+                    "type": "string"
+                  },
+                  "admin_username": {
+                    "type": "string"
+                  },
+                  "base_config": {
+                    "$ref": "#/components/schemas/setup.BaseConfig"
+                  }
+                },
+                "required": [
+                  "admin_username",
+                  "admin_password",
+                  "admin_email"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/setup.InitializeResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /setup",
+        "tags": [
+          "SetupService"
+        ]
+      }
+    },
+    "/setup/check": {
+      "get": {
+        "description": "CheckInitialization 检查系统是否已初始化",
+        "operationId": "CheckInitialization",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/setup.CheckInitializationResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /setup/check",
+        "tags": [
+          "SetupService"
+        ]
+      }
+    },
+    "/share/download": {
+      "get": {
+        "description": "DownloadFile 下载文件",
+        "operationId": "DownloadFile",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share.DownloadFileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /share/download",
+        "tags": [
+          "ShareService"
+        ]
+      }
+    },
+    "/share/file/": {
+      "post": {
+        "description": "ShareFile 分享文件",
+        "operationId": "ShareFile",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "require_auth": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "expire_value",
+                  "expire_style",
+                  "require_auth"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share.ShareFileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /share/file/",
+        "tags": [
+          "ShareService"
+        ]
+      }
+    },
+    "/share/select/": {
+      "get": {
+        "description": "GetShare 获取分享内容",
+        "operationId": "GetShare",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "code",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "password",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share.GetShareResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /share/select/",
+        "tags": [
+          "ShareService"
+        ]
+      }
+    },
+    "/share/text/": {
+      "post": {
+        "description": "ShareText 分享文本",
+        "operationId": "ShareText",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "require_auth": {
+                    "type": "boolean"
+                  },
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text",
+                  "expire_value",
+                  "expire_style",
+                  "require_auth"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/share.ShareTextResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /share/text/",
+        "tags": [
+          "ShareService"
+        ]
+      }
+    },
+    "/user/api-keys": {
+      "get": {
+        "description": "ListAPIKeys 获取 API Key 列表",
+        "operationId": "ListAPIKeys",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.APIKeyListResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /user/api-keys",
+        "tags": [
+          "UserService"
+        ]
+      },
+      "post": {
+        "description": "CreateAPIKey 创建 API Key",
+        "operationId": "CreateAPIKey",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expires_at": {
+                    "type": "string"
+                  },
+                  "expires_in_days": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.CreateAPIKeyResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /user/api-keys",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/api-keys/{id}": {
+      "delete": {
+        "description": "DeleteAPIKey 删除 API Key",
+        "operationId": "DeleteAPIKey",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.DeleteAPIKeyResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "DELETE /user/api-keys/:id",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/change-password": {
+      "post": {
+        "description": "ChangePassword 修改密码",
+        "operationId": "ChangePassword",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "new_password": {
+                    "type": "string"
+                  },
+                  "old_password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "old_password",
+                  "new_password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.ChangePasswordResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /user/change-password",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/files": {
+      "get": {
+        "description": "UserFiles 获取用户文件列表",
+        "operationId": "UserFiles",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.UserFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /user/files",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/info": {
+      "get": {
+        "description": "UserInfo 获取用户信息",
+        "operationId": "UserInfo",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.UserInfoResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /user/info",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "description": "Login 用户登录",
+        "operationId": "Login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.LoginResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /user/login",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/profile": {
+      "put": {
+        "description": "UpdateProfile 更新用户资料",
+        "operationId": "UpdateProfile",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "avatar": {
+                    "type": "string"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "nickname",
+                  "avatar"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.UpdateProfileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /user/profile",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "description": "Register 用户注册",
+        "operationId": "Register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "email",
+                  "password",
+                  "nickname"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.RegisterResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /user/register",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/user/stats": {
+      "get": {
+        "description": "UserStats 用户统计信息",
+        "operationId": "UserStats",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/user.UserStatsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /user/stats",
+        "tags": [
+          "UserService"
+        ]
+      }
+    },
+    "/version": {
+      "get": {
+        "description": "Version 版本信息",
+        "operationId": "Version",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/health.VersionResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /version",
+        "tags": [
+          "HealthService"
+        ]
+      }
+    }
+  }
+}
