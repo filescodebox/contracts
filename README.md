@@ -64,7 +64,7 @@ import (
 
 ```jsonc
 // frontend package.json
-"@filescodebox/contracts": "https://github.com/filescodebox/contracts/releases/download/v0.4.0/filescodebox-contracts-0.4.0.tgz"
+"@filescodebox/contracts": "https://github.com/filescodebox/contracts/releases/download/v0.6.5/filescodebox-contracts-0.6.5.tgz"
 ```
 
 ```ts

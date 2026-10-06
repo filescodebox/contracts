@@ -1,73 +1,15 @@
-# idl/rpc/ - Kitex RPC 服务定义
+# idl/rpc/ - Kitex RPC 服务定义（预留）
 
-此目录存放 Kitex RPC 服务的 IDL 定义文件。
+此目录为 Kitex RPC 服务的 IDL 预留位。**当前为空**：生态内服务间通信现状仅
+HTTP/JSON + WebSocket，评估结论是保留 Kitex 作为未来传输面细拆时的升级路径
+（触发条件见 hub 仓 `docs/specs/` 多副本设计文档）。
 
-## 文件说明
+若未来引入 RPC 服务：
 
-| 文件 | 用途 |
-|------|------|
-| `health.proto` | 健康检查/探活服务 |
+1. 在此目录创建 `.thrift` 文件（`namespace go <sub>` 裸域名）
+2. 定义请求/响应 struct 与 service
+3. 接入生成链（扩展 `scripts/gen-model.sh` 或新脚本），产物落 `gen/rpc/`
+4. 生成物禁止手动修改
 
-## health.proto - 健康检查服务
-
-提供 RPC 服务探活接口。
-
-### 接口列表
-
-| 接口 | 用途 |
-|------|------|
-| `Ping` | Ping/Pong 探活 |
-| `Check` | 健康检查 |
-| `Info` | 服务信息 |
-
-### 使用示例
-
-```go
-// 客户端调用
-resp, err := healthClient.Ping(ctx, &health.PingReq{})
-// resp.Message = "pong"
-
-resp, err := healthClient.Check(ctx, &health.HealthCheckReq{})
-// resp.Healthy = true
-// resp.Status = "serving"
-
-resp, err := healthClient.Info(ctx, &health.ServiceInfoReq{})
-// resp.Name = "my-service"
-// resp.Version = "1.0.0"
-```
-
-## 代码生成
-
-```bash
-# 生成 RPC 代码
-make gen-rpc IDL=rpc/health.proto
-```
-
-## 添加新服务
-
-1. 在此目录创建新的 `.proto` 文件
-2. 定义请求/响应消息和服务接口
-3. 执行代码生成命令
-
-```protobuf
-syntax = "proto3";
-package rpc.example;
-option go_package = "github.com/zy84338719/fileCodeBox/backend/gen/rpc/example";
-
-message ExampleReq {
-    string name = 1;
-}
-
-message ExampleResp {
-    string message = 1;
-}
-
-service ExampleService {
-    rpc Hello(ExampleReq) returns (ExampleResp);
-}
-```
-
-## 注意事项
-
-- 生成的代码在 `gen/rpc/` 目录，禁止手动修改
-- 新增服务后需要在 `internal/transport/rpc/handler/` 中实现
+> 历史说明：本目录曾规划 `health.proto` 探活服务；proto → thrift 迁移完成后该
+> 规划未再启用，健康检查由 `idl/http/health.thrift`（HTTP 端点）承担。
