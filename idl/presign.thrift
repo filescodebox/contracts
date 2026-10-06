@@ -17,6 +17,10 @@ struct InitReq {
     5: optional i32    expire_value  (api.body = "expire_value"),
     6: optional string expire_style  (api.body = "expire_style"),
     7: optional bool   require_auth  (api.body = "require_auth"),
+    // 客户端预计算 SHA-256(秒传指纹,超限可空);此前靠 handler 二次解析 body
+    8: optional string file_hash    (api.body = "file_hash"),
+    // require_auth 时必填(bcrypt 后随 meta 存储);此前靠 handler 二次解析 body/form
+    9: optional string password     (api.body = "password"),
 }
 
 struct InitData {
@@ -28,6 +32,13 @@ struct InitData {
     6: required string object_key   (api.body = "object_key"),
     7: required string scheme       (api.body = "scheme"),
     8: required string token        (api.body = "token"),    // 校验令牌
+    // ---- 秒传命中时有效(此前响应走 ad-hoc map;未命中时为缺省) ----
+    9:  optional bool   is_quick    (api.body = "is_quick"),   // 秒传命中,免直传
+    10: optional bool   existed     (api.body = "existed"),    // 同哈希分享已存在
+    11: optional string share_code  (api.body = "share_code"),
+    12: optional string share_url   (api.body = "share_url"),
+    // 注:不再签发 download_token——2026-10-03 安全修复,持同哈希者可借令牌
+    // 跳过原分享密码校验(穿透),勿再加回
 }
 
 struct InitResp {

@@ -1659,6 +1659,9 @@
       },
       "presign.InitData": {
         "properties": {
+          "existed": {
+            "type": "boolean"
+          },
           "expire_seconds": {
             "type": "integer"
           },
@@ -1668,6 +1671,9 @@
             },
             "type": "object"
           },
+          "is_quick": {
+            "type": "boolean"
+          },
           "method": {
             "type": "string"
           },
@@ -1675,6 +1681,12 @@
             "type": "string"
           },
           "scheme": {
+            "type": "string"
+          },
+          "share_code": {
+            "type": "string"
+          },
+          "share_url": {
             "type": "string"
           },
           "token": {
@@ -1710,12 +1722,18 @@
           "expire_value": {
             "type": "integer"
           },
+          "file_hash": {
+            "type": "string"
+          },
           "file_name": {
             "type": "string"
           },
           "file_size": {
             "format": "int64",
             "type": "integer"
+          },
+          "password": {
+            "type": "string"
           },
           "require_auth": {
             "type": "boolean"
@@ -4818,12 +4836,18 @@
                   "expire_value": {
                     "type": "integer"
                   },
+                  "file_hash": {
+                    "type": "string"
+                  },
                   "file_name": {
                     "type": "string"
                   },
                   "file_size": {
                     "format": "int64",
                     "type": "integer"
+                  },
+                  "password": {
+                    "type": "string"
                   },
                   "require_auth": {
                     "type": "boolean"

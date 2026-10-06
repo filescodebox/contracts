@@ -11,6 +11,10 @@ export interface InitReq {
   expire_value?: number;
   expire_style?: string;
   require_auth?: boolean;
+  /** 客户端预计算 SHA-256(秒传指纹,超限可空);此前靠 handler 二次解析 body */
+  file_hash?: string;
+  /** require_auth 时必填(bcrypt 后随 meta 存储);此前靠 handler 二次解析 body/form */
+  password?: string;
 }
 
 export interface InitData {
@@ -25,6 +29,12 @@ export interface InitData {
   scheme: string;
   /** 校验令牌 */
   token: string;
+  /** ---- 秒传命中时有效(此前响应走 ad-hoc map;未命中时为缺省) ---- */
+  is_quick?: boolean;
+  /** 同哈希分享已存在 */
+  existed?: boolean;
+  share_code?: string;
+  share_url?: string;
 }
 
 export interface InitResp {

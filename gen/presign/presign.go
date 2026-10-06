@@ -18,6 +18,10 @@ type InitReq struct {
 	ExpireValue *int32  `thrift:"expire_value,5,optional" form:"expire_value" json:"expire_value,omitempty"`
 	ExpireStyle *string `thrift:"expire_style,6,optional" form:"expire_style" json:"expire_style,omitempty"`
 	RequireAuth *bool   `thrift:"require_auth,7,optional" form:"require_auth" json:"require_auth,omitempty"`
+	// 客户端预计算 SHA-256(秒传指纹,超限可空);此前靠 handler 二次解析 body
+	FileHash *string `thrift:"file_hash,8,optional" form:"file_hash" json:"file_hash,omitempty"`
+	// require_auth 时必填(bcrypt 后随 meta 存储);此前靠 handler 二次解析 body/form
+	Password *string `thrift:"password,9,optional" form:"password" json:"password,omitempty"`
 }
 
 func NewInitReq() *InitReq {
@@ -75,6 +79,24 @@ func (p *InitReq) GetRequireAuth() (v bool) {
 	return *p.RequireAuth
 }
 
+var InitReq_FileHash_DEFAULT string
+
+func (p *InitReq) GetFileHash() (v string) {
+	if !p.IsSetFileHash() {
+		return InitReq_FileHash_DEFAULT
+	}
+	return *p.FileHash
+}
+
+var InitReq_Password_DEFAULT string
+
+func (p *InitReq) GetPassword() (v string) {
+	if !p.IsSetPassword() {
+		return InitReq_Password_DEFAULT
+	}
+	return *p.Password
+}
+
 var fieldIDToName_InitReq = map[int16]string{
 	1: "file_name",
 	2: "file_size",
@@ -83,6 +105,8 @@ var fieldIDToName_InitReq = map[int16]string{
 	5: "expire_value",
 	6: "expire_style",
 	7: "require_auth",
+	8: "file_hash",
+	9: "password",
 }
 
 func (p *InitReq) IsSetScheme() bool {
@@ -99,6 +123,14 @@ func (p *InitReq) IsSetExpireStyle() bool {
 
 func (p *InitReq) IsSetRequireAuth() bool {
 	return p.RequireAuth != nil
+}
+
+func (p *InitReq) IsSetFileHash() bool {
+	return p.FileHash != nil
+}
+
+func (p *InitReq) IsSetPassword() bool {
+	return p.Password != nil
 }
 
 func (p *InitReq) Read(iprot thrift.TProtocol) (err error) {
@@ -177,6 +209,22 @@ func (p *InitReq) Read(iprot thrift.TProtocol) (err error) {
 		case 7:
 			if fieldTypeId == thrift.BOOL {
 				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -304,6 +352,28 @@ func (p *InitReq) ReadField7(iprot thrift.TProtocol) error {
 	p.RequireAuth = _field
 	return nil
 }
+func (p *InitReq) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.FileHash = _field
+	return nil
+}
+func (p *InitReq) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Password = _field
+	return nil
+}
 
 func (p *InitReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -337,6 +407,14 @@ func (p *InitReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
 			goto WriteFieldError
 		}
 	}
@@ -484,6 +562,44 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
+func (p *InitReq) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFileHash() {
+		if err = oprot.WriteFieldBegin("file_hash", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.FileHash); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *InitReq) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPassword() {
+		if err = oprot.WriteFieldBegin("password", thrift.STRING, 9); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Password); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
 func (p *InitReq) String() string {
 	if p == nil {
 		return "<nil>"
@@ -504,6 +620,12 @@ type InitData struct {
 	Scheme        string            `thrift:"scheme,7,required" form:"scheme,required" json:"scheme,required"`
 	// 校验令牌
 	Token string `thrift:"token,8,required" form:"token,required" json:"token,required"`
+	// ---- 秒传命中时有效(此前响应走 ad-hoc map;未命中时为缺省) ----
+	IsQuick *bool `thrift:"is_quick,9,optional" form:"is_quick" json:"is_quick,omitempty"`
+	// 同哈希分享已存在
+	Existed   *bool   `thrift:"existed,10,optional" form:"existed" json:"existed,omitempty"`
+	ShareCode *string `thrift:"share_code,11,optional" form:"share_code" json:"share_code,omitempty"`
+	ShareURL  *string `thrift:"share_url,12,optional" form:"share_url" json:"share_url,omitempty"`
 }
 
 func NewInitData() *InitData {
@@ -545,15 +667,71 @@ func (p *InitData) GetToken() (v string) {
 	return p.Token
 }
 
+var InitData_IsQuick_DEFAULT bool
+
+func (p *InitData) GetIsQuick() (v bool) {
+	if !p.IsSetIsQuick() {
+		return InitData_IsQuick_DEFAULT
+	}
+	return *p.IsQuick
+}
+
+var InitData_Existed_DEFAULT bool
+
+func (p *InitData) GetExisted() (v bool) {
+	if !p.IsSetExisted() {
+		return InitData_Existed_DEFAULT
+	}
+	return *p.Existed
+}
+
+var InitData_ShareCode_DEFAULT string
+
+func (p *InitData) GetShareCode() (v string) {
+	if !p.IsSetShareCode() {
+		return InitData_ShareCode_DEFAULT
+	}
+	return *p.ShareCode
+}
+
+var InitData_ShareURL_DEFAULT string
+
+func (p *InitData) GetShareURL() (v string) {
+	if !p.IsSetShareURL() {
+		return InitData_ShareURL_DEFAULT
+	}
+	return *p.ShareURL
+}
+
 var fieldIDToName_InitData = map[int16]string{
-	1: "upload_id",
-	2: "upload_url",
-	3: "method",
-	4: "headers",
-	5: "expire_seconds",
-	6: "object_key",
-	7: "scheme",
-	8: "token",
+	1:  "upload_id",
+	2:  "upload_url",
+	3:  "method",
+	4:  "headers",
+	5:  "expire_seconds",
+	6:  "object_key",
+	7:  "scheme",
+	8:  "token",
+	9:  "is_quick",
+	10: "existed",
+	11: "share_code",
+	12: "share_url",
+}
+
+func (p *InitData) IsSetIsQuick() bool {
+	return p.IsQuick != nil
+}
+
+func (p *InitData) IsSetExisted() bool {
+	return p.Existed != nil
+}
+
+func (p *InitData) IsSetShareCode() bool {
+	return p.ShareCode != nil
+}
+
+func (p *InitData) IsSetShareURL() bool {
+	return p.ShareURL != nil
 }
 
 func (p *InitData) Read(iprot thrift.TProtocol) (err error) {
@@ -652,6 +830,38 @@ func (p *InitData) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetToken = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 11:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField11(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 12:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField12(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -831,6 +1041,50 @@ func (p *InitData) ReadField8(iprot thrift.TProtocol) error {
 	p.Token = _field
 	return nil
 }
+func (p *InitData) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field *bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.IsQuick = _field
+	return nil
+}
+func (p *InitData) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field *bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Existed = _field
+	return nil
+}
+func (p *InitData) ReadField11(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.ShareCode = _field
+	return nil
+}
+func (p *InitData) ReadField12(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.ShareURL = _field
+	return nil
+}
 
 func (p *InitData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -868,6 +1122,22 @@ func (p *InitData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField8(oprot); err != nil {
 			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
+			goto WriteFieldError
+		}
+		if err = p.writeField11(oprot); err != nil {
+			fieldId = 11
+			goto WriteFieldError
+		}
+		if err = p.writeField12(oprot); err != nil {
+			fieldId = 12
 			goto WriteFieldError
 		}
 	}
@@ -1033,6 +1303,82 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *InitData) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetIsQuick() {
+		if err = oprot.WriteFieldBegin("is_quick", thrift.BOOL, 9); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.IsQuick); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *InitData) writeField10(oprot thrift.TProtocol) (err error) {
+	if p.IsSetExisted() {
+		if err = oprot.WriteFieldBegin("existed", thrift.BOOL, 10); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.Existed); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
+}
+
+func (p *InitData) writeField11(oprot thrift.TProtocol) (err error) {
+	if p.IsSetShareCode() {
+		if err = oprot.WriteFieldBegin("share_code", thrift.STRING, 11); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.ShareCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
+}
+
+func (p *InitData) writeField12(oprot thrift.TProtocol) (err error) {
+	if p.IsSetShareURL() {
+		if err = oprot.WriteFieldBegin("share_url", thrift.STRING, 12); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.ShareURL); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 end error: ", p), err)
 }
 
 func (p *InitData) String() string {
