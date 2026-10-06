@@ -134,42 +134,30 @@ struct AdminUpdateUserStatusResp {
 }
 
 // ==================== 系统配置 ====================
+// 契约形态(2026-10-06 定):配置体 = 领域 SystemConfig(app/admin/service.go)
+// 的扁平 JSON。配置段随功能版本演进(指针段 nil-overlay、未设段回退 yaml,
+// 服务端整体校验),契约层刻意不锁形——自由格式对象,OpenAPI 视角为空
+// schema,语义以本注释为准。新增配置段无需改本文件。
 
 struct AdminGetConfigReq {
 }
 
-struct BaseConfig {
-    1: required string name        (api.body = "name"),
-    2: required string description (api.body = "description"),
-    3: required i32    port        (api.body = "port"),
-}
-
-struct StorageConfig {
-    1: required string type    (api.body = "type"),
-    2: required i64    max_size (api.body = "max_size"),
-}
-
-struct TransferConfig {
-    1: required i32 max_count      (api.body = "max_count"),
-    2: required i32 expire_default (api.body = "expire_default"),
-}
-
-struct ConfigData {
-    1: required BaseConfig     base     (api.body = "base"),
-    2: required StorageConfig  storage  (api.body = "storage"),
-    3: required TransferConfig transfer (api.body = "transfer"),
+// data = SystemConfig 全量 JSON(base/storage/transfer/user/ui/upload_ex/
+// download/notify/local_import/oidc/api_token/runtime_storage 等段;
+// omitempty 指针段未在线设置时不下发)。前端按段读取,未知段忽略。
+struct AdminConfigData {
 }
 
 struct AdminGetConfigResp {
-    1: required i32        code    (api.body = "code"),
-    2: required string     message (api.body = "message"),
-    3: required ConfigData data    (api.body = "data"),
+    1: required i32             code    (api.body = "code"),
+    2: required string          message (api.body = "message"),
+    3: required AdminConfigData data    (api.body = "data"),
 }
 
-// ==================== 更新配置 ====================
-
+// body = SystemConfig 局部 JSON:只带要改的段,nil 段保留现状。
+// 注意:勿包 {config:...} 壳——曾因包壳导致新段写入被静默丢弃(假开关,
+// v0.13.5 修复;旧三段 typed 契约同时退役)。
 struct AdminUpdateConfigReq {
-    1: required ConfigData config (api.body = "config"),
 }
 
 struct AdminUpdateConfigResp {

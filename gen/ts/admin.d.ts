@@ -121,41 +121,34 @@ export interface AdminUpdateUserStatusResp {
   message: string;
 }
 
-/** ==================== 系统配置 ==================== */
+/**
+ * ==================== 系统配置 ====================
+ * 契约形态(2026-10-06 定):配置体 = 领域 SystemConfig(app/admin/service.go)
+ * 的扁平 JSON。配置段随功能版本演进(指针段 nil-overlay、未设段回退 yaml,
+ * 服务端整体校验),契约层刻意不锁形——自由格式对象,OpenAPI 视角为空
+ * schema,语义以本注释为准。新增配置段无需改本文件。
+ */
 export interface AdminGetConfigReq {}
 
-export interface BaseConfig {
-  name: string;
-  description: string;
-  port: number;
-}
-
-export interface StorageConfig {
-  type: string;
-  max_size: number;
-}
-
-export interface TransferConfig {
-  max_count: number;
-  expire_default: number;
-}
-
-export interface ConfigData {
-  base: BaseConfig;
-  storage: StorageConfig;
-  transfer: TransferConfig;
-}
+/**
+ * data = SystemConfig 全量 JSON(base/storage/transfer/user/ui/upload_ex/
+ * download/notify/local_import/oidc/api_token/runtime_storage 等段;
+ * omitempty 指针段未在线设置时不下发)。前端按段读取,未知段忽略。
+ */
+export interface AdminConfigData {}
 
 export interface AdminGetConfigResp {
   code: number;
   message: string;
-  data: ConfigData;
+  data: AdminConfigData;
 }
 
-/** ==================== 更新配置 ==================== */
-export interface AdminUpdateConfigReq {
-  config: ConfigData;
-}
+/**
+ * body = SystemConfig 局部 JSON:只带要改的段,nil 段保留现状。
+ * 注意:勿包 {config:...} 壳——曾因包壳导致新段写入被静默丢弃(假开关,
+ * v0.13.5 修复;旧三段 typed 契约同时退役)。
+ */
+export interface AdminUpdateConfigReq {}
 
 export interface AdminUpdateConfigResp {
   code: number;

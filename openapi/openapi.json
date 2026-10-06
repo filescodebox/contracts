@@ -1,6 +1,10 @@
 {
   "components": {
     "schemas": {
+      "admin.AdminConfigData": {
+        "properties": {},
+        "type": "object"
+      },
       "admin.AdminDeleteFileReq": {
         "properties": {
           "id": {
@@ -65,7 +69,7 @@
             "type": "integer"
           },
           "data": {
-            "$ref": "#/components/schemas/admin.ConfigData"
+            "$ref": "#/components/schemas/admin.AdminConfigData"
           },
           "message": {
             "type": "string"
@@ -268,14 +272,7 @@
         "type": "object"
       },
       "admin.AdminUpdateConfigReq": {
-        "properties": {
-          "config": {
-            "$ref": "#/components/schemas/admin.ConfigData"
-          }
-        },
-        "required": [
-          "config"
-        ],
+        "properties": {},
         "type": "object"
       },
       "admin.AdminUpdateConfigResp": {
@@ -351,44 +348,6 @@
         ],
         "type": "object"
       },
-      "admin.BaseConfig": {
-        "properties": {
-          "description": {
-            "type": "string"
-          },
-          "name": {
-            "type": "string"
-          },
-          "port": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "name",
-          "description",
-          "port"
-        ],
-        "type": "object"
-      },
-      "admin.ConfigData": {
-        "properties": {
-          "base": {
-            "$ref": "#/components/schemas/admin.BaseConfig"
-          },
-          "storage": {
-            "$ref": "#/components/schemas/admin.StorageConfig"
-          },
-          "transfer": {
-            "$ref": "#/components/schemas/admin.TransferConfig"
-          }
-        },
-        "required": [
-          "base",
-          "storage",
-          "transfer"
-        ],
-        "type": "object"
-      },
       "admin.FileItem": {
         "properties": {
           "code": {
@@ -427,37 +386,6 @@
           "view_count",
           "download_count",
           "created_at"
-        ],
-        "type": "object"
-      },
-      "admin.StorageConfig": {
-        "properties": {
-          "max_size": {
-            "format": "int64",
-            "type": "integer"
-          },
-          "type": {
-            "type": "string"
-          }
-        },
-        "required": [
-          "type",
-          "max_size"
-        ],
-        "type": "object"
-      },
-      "admin.TransferConfig": {
-        "properties": {
-          "expire_default": {
-            "type": "integer"
-          },
-          "max_count": {
-            "type": "integer"
-          }
-        },
-        "required": [
-          "max_count",
-          "expire_default"
         ],
         "type": "object"
       },
@@ -3644,24 +3572,6 @@
       "put": {
         "description": "AdminUpdateConfig 更新系统配置",
         "operationId": "AdminUpdateConfig",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "properties": {
-                  "config": {
-                    "$ref": "#/components/schemas/admin.ConfigData"
-                  }
-                },
-                "required": [
-                  "config"
-                ],
-                "type": "object"
-              }
-            }
-          },
-          "required": true
-        },
         "responses": {
           "200": {
             "content": {
