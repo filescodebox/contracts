@@ -958,6 +958,8 @@ type ShareFileReq struct {
 	ExpireValue int32  `thrift:"expire_value,1,required" form:"expire_value,required" json:"expire_value,required"`
 	ExpireStyle string `thrift:"expire_style,2,required" form:"expire_style,required" json:"expire_style,required"`
 	RequireAuth bool   `thrift:"require_auth,3,required" form:"require_auth,required" json:"require_auth,required"`
+	// 密码保护:require_auth 时必填
+	Password *string `thrift:"password,4,optional" form:"password" json:"password,omitempty"`
 }
 
 func NewShareFileReq() *ShareFileReq {
@@ -979,10 +981,24 @@ func (p *ShareFileReq) GetRequireAuth() (v bool) {
 	return p.RequireAuth
 }
 
+var ShareFileReq_Password_DEFAULT string
+
+func (p *ShareFileReq) GetPassword() (v string) {
+	if !p.IsSetPassword() {
+		return ShareFileReq_Password_DEFAULT
+	}
+	return *p.Password
+}
+
 var fieldIDToName_ShareFileReq = map[int16]string{
 	1: "expire_value",
 	2: "expire_style",
 	3: "require_auth",
+	4: "password",
+}
+
+func (p *ShareFileReq) IsSetPassword() bool {
+	return p.Password != nil
 }
 
 func (p *ShareFileReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1031,6 +1047,14 @@ func (p *ShareFileReq) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetRequireAuth = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 4:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1112,6 +1136,17 @@ func (p *ShareFileReq) ReadField3(iprot thrift.TProtocol) error {
 	p.RequireAuth = _field
 	return nil
 }
+func (p *ShareFileReq) ReadField4(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Password = _field
+	return nil
+}
 
 func (p *ShareFileReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1129,6 +1164,10 @@ func (p *ShareFileReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField3(oprot); err != nil {
 			fieldId = 3
+			goto WriteFieldError
+		}
+		if err = p.writeField4(oprot); err != nil {
+			fieldId = 4
 			goto WriteFieldError
 		}
 	}
@@ -1198,6 +1237,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *ShareFileReq) writeField4(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPassword() {
+		if err = oprot.WriteFieldBegin("password", thrift.STRING, 4); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Password); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
 func (p *ShareFileReq) String() string {

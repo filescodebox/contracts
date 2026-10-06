@@ -2380,6 +2380,9 @@
           "expire_value": {
             "type": "integer"
           },
+          "password": {
+            "type": "string"
+          },
           "require_auth": {
             "type": "boolean"
           }
@@ -5522,6 +5525,9 @@
                   },
                   "expire_value": {
                     "type": "integer"
+                  },
+                  "password": {
+                    "type": "string"
                   },
                   "require_auth": {
                     "type": "boolean"

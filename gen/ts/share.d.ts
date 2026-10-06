@@ -33,6 +33,8 @@ export interface ShareFileReq {
   expire_value: number;
   expire_style: string;
   require_auth: boolean;
+  /** 密码保护:require_auth 时必填 */
+  password?: string;
 }
 
 export interface ShareFileResp {

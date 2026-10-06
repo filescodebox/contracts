@@ -39,6 +39,8 @@ struct ShareFileReq {
     1: required i32    expire_value (api.form = "expire_value"),
     2: required string expire_style (api.form = "expire_style"),
     3: required bool   require_auth (api.form = "require_auth"),
+    // 密码保护:require_auth 时必填
+    4: optional string password     (api.form = "password"),
 }
 
 struct ShareFileResp {
