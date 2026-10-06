@@ -77,6 +77,8 @@ struct ChunkUploadCompleteReq {
     2: required i32    expire_value  (api.body = "expire_value"),
     3: required string expire_style  (api.body = "expire_style"),
     4: required bool   require_auth  (api.body = "require_auth"),
+    // 密码保护:require_auth 时必填(此前 handler form 直读+二次解析 body)
+    5: optional string password      (api.body = "password"),
 }
 
 struct ChunkUploadCompleteData {

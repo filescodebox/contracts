@@ -2504,6 +2504,8 @@ type ChunkUploadCompleteReq struct {
 	ExpireValue int32  `thrift:"expire_value,2,required" form:"expire_value,required" json:"expire_value,required"`
 	ExpireStyle string `thrift:"expire_style,3,required" form:"expire_style,required" json:"expire_style,required"`
 	RequireAuth bool   `thrift:"require_auth,4,required" form:"require_auth,required" json:"require_auth,required"`
+	// 密码保护:require_auth 时必填(此前 handler form 直读+二次解析 body)
+	Password *string `thrift:"password,5,optional" form:"password" json:"password,omitempty"`
 }
 
 func NewChunkUploadCompleteReq() *ChunkUploadCompleteReq {
@@ -2529,11 +2531,25 @@ func (p *ChunkUploadCompleteReq) GetRequireAuth() (v bool) {
 	return p.RequireAuth
 }
 
+var ChunkUploadCompleteReq_Password_DEFAULT string
+
+func (p *ChunkUploadCompleteReq) GetPassword() (v string) {
+	if !p.IsSetPassword() {
+		return ChunkUploadCompleteReq_Password_DEFAULT
+	}
+	return *p.Password
+}
+
 var fieldIDToName_ChunkUploadCompleteReq = map[int16]string{
 	1: "upload_id",
 	2: "expire_value",
 	3: "expire_style",
 	4: "require_auth",
+	5: "password",
+}
+
+func (p *ChunkUploadCompleteReq) IsSetPassword() bool {
+	return p.Password != nil
 }
 
 func (p *ChunkUploadCompleteReq) Read(iprot thrift.TProtocol) (err error) {
@@ -2592,6 +2608,14 @@ func (p *ChunkUploadCompleteReq) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetRequireAuth = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2689,6 +2713,17 @@ func (p *ChunkUploadCompleteReq) ReadField4(iprot thrift.TProtocol) error {
 	p.RequireAuth = _field
 	return nil
 }
+func (p *ChunkUploadCompleteReq) ReadField5(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Password = _field
+	return nil
+}
 
 func (p *ChunkUploadCompleteReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -2710,6 +2745,10 @@ func (p *ChunkUploadCompleteReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -2796,6 +2835,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *ChunkUploadCompleteReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPassword() {
+		if err = oprot.WriteFieldBegin("password", thrift.STRING, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Password); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *ChunkUploadCompleteReq) String() string {

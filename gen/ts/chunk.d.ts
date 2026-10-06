@@ -71,6 +71,8 @@ export interface ChunkUploadCompleteReq {
   expire_value: number;
   expire_style: string;
   require_auth: boolean;
+  /** 密码保护:require_auth 时必填(此前 handler form 直读+二次解析 body) */
+  password?: string;
 }
 
 export interface ChunkUploadCompleteData {

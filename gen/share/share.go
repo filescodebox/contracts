@@ -15,6 +15,12 @@ type ShareTextReq struct {
 	// minute, hour, day, week, month, year, forever
 	ExpireStyle string `thrift:"expire_style,3,required" form:"expire_style,required" json:"expire_style,required"`
 	RequireAuth bool   `thrift:"require_auth,4,required" form:"require_auth,required" json:"require_auth,required"`
+	// 密码保护:require_auth 时必填(前端 multipart form 发送;此前 handler DefaultPostForm 直读)
+	Password *string `thrift:"password,5,optional" form:"password" json:"password,omitempty"`
+	// 自定义取件码(P3):仅登录用户可指定(防匿名抢注)
+	CustomCode *string `thrift:"custom_code,6,optional" form:"custom_code" json:"custom_code,omitempty"`
+	// E2E 密文分享:true 时文本跳过 HTML 转义(转义会破坏解密)
+	Encrypted *bool `thrift:"encrypted,7,optional" form:"encrypted" json:"encrypted,omitempty"`
 }
 
 func NewShareTextReq() *ShareTextReq {
@@ -40,11 +46,53 @@ func (p *ShareTextReq) GetRequireAuth() (v bool) {
 	return p.RequireAuth
 }
 
+var ShareTextReq_Password_DEFAULT string
+
+func (p *ShareTextReq) GetPassword() (v string) {
+	if !p.IsSetPassword() {
+		return ShareTextReq_Password_DEFAULT
+	}
+	return *p.Password
+}
+
+var ShareTextReq_CustomCode_DEFAULT string
+
+func (p *ShareTextReq) GetCustomCode() (v string) {
+	if !p.IsSetCustomCode() {
+		return ShareTextReq_CustomCode_DEFAULT
+	}
+	return *p.CustomCode
+}
+
+var ShareTextReq_Encrypted_DEFAULT bool
+
+func (p *ShareTextReq) GetEncrypted() (v bool) {
+	if !p.IsSetEncrypted() {
+		return ShareTextReq_Encrypted_DEFAULT
+	}
+	return *p.Encrypted
+}
+
 var fieldIDToName_ShareTextReq = map[int16]string{
 	1: "text",
 	2: "expire_value",
 	3: "expire_style",
 	4: "require_auth",
+	5: "password",
+	6: "custom_code",
+	7: "encrypted",
+}
+
+func (p *ShareTextReq) IsSetPassword() bool {
+	return p.Password != nil
+}
+
+func (p *ShareTextReq) IsSetCustomCode() bool {
+	return p.CustomCode != nil
+}
+
+func (p *ShareTextReq) IsSetEncrypted() bool {
+	return p.Encrypted != nil
 }
 
 func (p *ShareTextReq) Read(iprot thrift.TProtocol) (err error) {
@@ -103,6 +151,30 @@ func (p *ShareTextReq) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetRequireAuth = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -200,6 +272,39 @@ func (p *ShareTextReq) ReadField4(iprot thrift.TProtocol) error {
 	p.RequireAuth = _field
 	return nil
 }
+func (p *ShareTextReq) ReadField5(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Password = _field
+	return nil
+}
+func (p *ShareTextReq) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.CustomCode = _field
+	return nil
+}
+func (p *ShareTextReq) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field *bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Encrypted = _field
+	return nil
+}
 
 func (p *ShareTextReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -221,6 +326,18 @@ func (p *ShareTextReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
 			goto WriteFieldError
 		}
 	}
@@ -307,6 +424,63 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *ShareTextReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPassword() {
+		if err = oprot.WriteFieldBegin("password", thrift.STRING, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Password); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *ShareTextReq) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetCustomCode() {
+		if err = oprot.WriteFieldBegin("custom_code", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.CustomCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *ShareTextReq) writeField7(oprot thrift.TProtocol) (err error) {
+	if p.IsSetEncrypted() {
+		if err = oprot.WriteFieldBegin("encrypted", thrift.BOOL, 7); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.Encrypted); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
 func (p *ShareTextReq) String() string {
@@ -1501,13 +1675,24 @@ func (p *GetShareReq) String() string {
 }
 
 type ShareDetail struct {
-	Code        string `thrift:"code,1,required" form:"code,required" json:"code,required"`
-	Text        string `thrift:"text,2,required" form:"text,required" json:"text,required"`
-	FileName    string `thrift:"file_name,3,required" form:"file_name,required" json:"file_name,required"`
+	Code     string `thrift:"code,1,required" form:"code,required" json:"code,required"`
+	Text     string `thrift:"text,2,required" form:"text,required" json:"text,required"`
+	FileName string `thrift:"file_name,3,required" form:"file_name,required" json:"file_name,required"`
+	// 后端格式化前的字节数字符串
 	FileSize    string `thrift:"file_size,4,required" form:"file_size,required" json:"file_size,required"`
 	URL         string `thrift:"url,5,required" form:"url,required" json:"url,required"`
 	HasPassword bool   `thrift:"has_password,6,required" form:"has_password,required" json:"has_password,required"`
 	ExpireTime  string `thrift:"expire_time,7,required" form:"expire_time,required" json:"expire_time,required"`
+	// ---- 以下为此前 handler ad-hoc map 附加字段(v0.6.0 入契约) ----
+	DownloadURL *string `thrift:"download_url,8,optional" form:"download_url" json:"download_url,omitempty"`
+	// 下载令牌(功能关闭时不下发)
+	Token *string `thrift:"token,9,optional" form:"token" json:"token,omitempty"`
+	// E2E 密文,前端以链接 #fragment 密钥解密
+	Encrypted *bool `thrift:"encrypted,10,optional" form:"encrypted" json:"encrypted,omitempty"`
+	// 多文件分享(前端显示"打包下载")
+	IsMulti *bool `thrift:"is_multi,11,optional" form:"is_multi" json:"is_multi,omitempty"`
+	// 文件清单(含单文件,前端统一渲染)
+	Files []*ShareFileItem `thrift:"files,12,optional,list<ShareFileItem>" form:"files" json:"files,omitempty"`
 }
 
 func NewShareDetail() *ShareDetail {
@@ -1545,14 +1730,84 @@ func (p *ShareDetail) GetExpireTime() (v string) {
 	return p.ExpireTime
 }
 
+var ShareDetail_DownloadURL_DEFAULT string
+
+func (p *ShareDetail) GetDownloadURL() (v string) {
+	if !p.IsSetDownloadURL() {
+		return ShareDetail_DownloadURL_DEFAULT
+	}
+	return *p.DownloadURL
+}
+
+var ShareDetail_Token_DEFAULT string
+
+func (p *ShareDetail) GetToken() (v string) {
+	if !p.IsSetToken() {
+		return ShareDetail_Token_DEFAULT
+	}
+	return *p.Token
+}
+
+var ShareDetail_Encrypted_DEFAULT bool
+
+func (p *ShareDetail) GetEncrypted() (v bool) {
+	if !p.IsSetEncrypted() {
+		return ShareDetail_Encrypted_DEFAULT
+	}
+	return *p.Encrypted
+}
+
+var ShareDetail_IsMulti_DEFAULT bool
+
+func (p *ShareDetail) GetIsMulti() (v bool) {
+	if !p.IsSetIsMulti() {
+		return ShareDetail_IsMulti_DEFAULT
+	}
+	return *p.IsMulti
+}
+
+var ShareDetail_Files_DEFAULT []*ShareFileItem
+
+func (p *ShareDetail) GetFiles() (v []*ShareFileItem) {
+	if !p.IsSetFiles() {
+		return ShareDetail_Files_DEFAULT
+	}
+	return p.Files
+}
+
 var fieldIDToName_ShareDetail = map[int16]string{
-	1: "code",
-	2: "text",
-	3: "file_name",
-	4: "file_size",
-	5: "url",
-	6: "has_password",
-	7: "expire_time",
+	1:  "code",
+	2:  "text",
+	3:  "file_name",
+	4:  "file_size",
+	5:  "url",
+	6:  "has_password",
+	7:  "expire_time",
+	8:  "download_url",
+	9:  "token",
+	10: "encrypted",
+	11: "is_multi",
+	12: "files",
+}
+
+func (p *ShareDetail) IsSetDownloadURL() bool {
+	return p.DownloadURL != nil
+}
+
+func (p *ShareDetail) IsSetToken() bool {
+	return p.Token != nil
+}
+
+func (p *ShareDetail) IsSetEncrypted() bool {
+	return p.Encrypted != nil
+}
+
+func (p *ShareDetail) IsSetIsMulti() bool {
+	return p.IsMulti != nil
+}
+
+func (p *ShareDetail) IsSetFiles() bool {
+	return p.Files != nil
 }
 
 func (p *ShareDetail) Read(iprot thrift.TProtocol) (err error) {
@@ -1641,6 +1896,46 @@ func (p *ShareDetail) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetExpireTime = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 11:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField11(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 12:
+			if fieldTypeId == thrift.LIST {
+				if err = p.ReadField12(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1786,6 +2081,73 @@ func (p *ShareDetail) ReadField7(iprot thrift.TProtocol) error {
 	p.ExpireTime = _field
 	return nil
 }
+func (p *ShareDetail) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.DownloadURL = _field
+	return nil
+}
+func (p *ShareDetail) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Token = _field
+	return nil
+}
+func (p *ShareDetail) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field *bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Encrypted = _field
+	return nil
+}
+func (p *ShareDetail) ReadField11(iprot thrift.TProtocol) error {
+
+	var _field *bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.IsMulti = _field
+	return nil
+}
+func (p *ShareDetail) ReadField12(iprot thrift.TProtocol) error {
+	_, size, err := iprot.ReadListBegin()
+	if err != nil {
+		return err
+	}
+	_field := make([]*ShareFileItem, 0, size)
+	values := make([]ShareFileItem, size)
+	for i := 0; i < size; i++ {
+		_elem := &values[i]
+		_elem.InitDefault()
+
+		if err := _elem.Read(iprot); err != nil {
+			return err
+		}
+
+		_field = append(_field, _elem)
+	}
+	if err := iprot.ReadListEnd(); err != nil {
+		return err
+	}
+	p.Files = _field
+	return nil
+}
 
 func (p *ShareDetail) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1819,6 +2181,26 @@ func (p *ShareDetail) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
+			goto WriteFieldError
+		}
+		if err = p.writeField11(oprot); err != nil {
+			fieldId = 11
+			goto WriteFieldError
+		}
+		if err = p.writeField12(oprot); err != nil {
+			fieldId = 12
 			goto WriteFieldError
 		}
 	}
@@ -1958,11 +2340,369 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
 }
 
+func (p *ShareDetail) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetDownloadURL() {
+		if err = oprot.WriteFieldBegin("download_url", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.DownloadURL); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *ShareDetail) writeField9(oprot thrift.TProtocol) (err error) {
+	if p.IsSetToken() {
+		if err = oprot.WriteFieldBegin("token", thrift.STRING, 9); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Token); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *ShareDetail) writeField10(oprot thrift.TProtocol) (err error) {
+	if p.IsSetEncrypted() {
+		if err = oprot.WriteFieldBegin("encrypted", thrift.BOOL, 10); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.Encrypted); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
+}
+
+func (p *ShareDetail) writeField11(oprot thrift.TProtocol) (err error) {
+	if p.IsSetIsMulti() {
+		if err = oprot.WriteFieldBegin("is_multi", thrift.BOOL, 11); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteBool(*p.IsMulti); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 11 end error: ", p), err)
+}
+
+func (p *ShareDetail) writeField12(oprot thrift.TProtocol) (err error) {
+	if p.IsSetFiles() {
+		if err = oprot.WriteFieldBegin("files", thrift.LIST, 12); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteListBegin(thrift.STRUCT, len(p.Files)); err != nil {
+			return err
+		}
+		for _, v := range p.Files {
+			if err := v.Write(oprot); err != nil {
+				return err
+			}
+		}
+		if err := oprot.WriteListEnd(); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 12 end error: ", p), err)
+}
+
 func (p *ShareDetail) String() string {
 	if p == nil {
 		return "<nil>"
 	}
 	return fmt.Sprintf("ShareDetail(%+v)", *p)
+
+}
+
+// 多文件清单项
+type ShareFileItem struct {
+	ID   int64  `thrift:"id,1,required" form:"id,required" json:"id,required"`
+	Name string `thrift:"name,2,required" form:"name,required" json:"name,required"`
+	Size int64  `thrift:"size,3,required" form:"size,required" json:"size,required"`
+}
+
+func NewShareFileItem() *ShareFileItem {
+	return &ShareFileItem{}
+}
+
+func (p *ShareFileItem) InitDefault() {
+}
+
+func (p *ShareFileItem) GetID() (v int64) {
+	return p.ID
+}
+
+func (p *ShareFileItem) GetName() (v string) {
+	return p.Name
+}
+
+func (p *ShareFileItem) GetSize() (v int64) {
+	return p.Size
+}
+
+var fieldIDToName_ShareFileItem = map[int16]string{
+	1: "id",
+	2: "name",
+	3: "size",
+}
+
+func (p *ShareFileItem) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetID bool = false
+	var issetName bool = false
+	var issetSize bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetID = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetName = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetSize = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetID {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetName {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetSize {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_ShareFileItem[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_ShareFileItem[fieldId]))
+}
+
+func (p *ShareFileItem) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ID = _field
+	return nil
+}
+func (p *ShareFileItem) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Name = _field
+	return nil
+}
+func (p *ShareFileItem) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Size = _field
+	return nil
+}
+
+func (p *ShareFileItem) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("ShareFileItem"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *ShareFileItem) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("id", thrift.I64, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ID); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *ShareFileItem) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("name", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Name); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ShareFileItem) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("size", thrift.I64, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.Size); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *ShareFileItem) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("ShareFileItem(%+v)", *p)
 
 }
 

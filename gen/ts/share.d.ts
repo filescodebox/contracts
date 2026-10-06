@@ -8,6 +8,12 @@ export interface ShareTextReq {
   /** minute, hour, day, week, month, year, forever */
   expire_style: string;
   require_auth: boolean;
+  /** 密码保护:require_auth 时必填(前端 multipart form 发送;此前 handler DefaultPostForm 直读) */
+  password?: string;
+  /** 自定义取件码(P3):仅登录用户可指定(防匿名抢注) */
+  custom_code?: string;
+  /** E2E 密文分享:true 时文本跳过 HTML 转义(转义会破坏解密) */
+  encrypted?: boolean;
 }
 
 export interface ShareData {
@@ -45,10 +51,28 @@ export interface ShareDetail {
   code: string;
   text: string;
   file_name: string;
+  /** 后端格式化前的字节数字符串 */
   file_size: string;
   url: string;
   has_password: boolean;
   expire_time: string;
+  /** ---- 以下为此前 handler ad-hoc map 附加字段(v0.6.0 入契约) ---- */
+  download_url?: string;
+  /** 下载令牌(功能关闭时不下发) */
+  token?: string;
+  /** E2E 密文,前端以链接 #fragment 密钥解密 */
+  encrypted?: boolean;
+  /** 多文件分享(前端显示"打包下载") */
+  is_multi?: boolean;
+  /** 文件清单(含单文件,前端统一渲染) */
+  files?: ShareFileItem[];
+}
+
+/** 多文件清单项 */
+export interface ShareFileItem {
+  id: number;
+  name: string;
+  size: number;
 }
 
 export interface GetShareResp {
