@@ -31,6 +31,7 @@ const (
 	CodeUploadDisabled   = 10012 // 上传已关闭（upload.open_upload=false 或未满足登录要求）
 	CodeIPBlocked        = 10013 // 预留：来源 IP 已被封禁
 	CodeAnonymousQuota   = 10014 // 匿名上传日配额已用尽
+	CodePresignDisabled  = 10015 // 匿名直传未开放（presign.anonymous_enabled=false，客户端应回退普通上传通道）
 )
 
 // 2xxxx 分享/取件
