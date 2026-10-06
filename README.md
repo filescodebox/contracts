@@ -57,11 +57,14 @@ import (
 
 ## 前端(TypeScript)消费
 
-`gen/ts/` 是从同一份 IDL 生成的纯类型声明(零 runtime),经根目录 `package.json`
-以 npm git 依赖形式发布,**无需 npm registry**:
+`gen/ts/` 是从同一份 IDL 生成的纯类型声明(零 runtime)。打 `v*` tag 时 Release
+工作流自动把类型包成 npm tgz 挂到本仓 Release(`filescodebox-contracts-<ver>.tgz`,
+版本与 tag 对齐),前端以 Release 资产 URL 直接依赖——**匿名 https,Docker/CI
+构建免 git 免 npm registry,版本钉定与 tag 严格一致**:
 
-```bash
-npm i github:filescodebox/contracts#vX.Y.Z   # 推荐钉 tag;package-lock 会锁解析的 commit
+```jsonc
+// frontend package.json
+"@filescodebox/contracts": "https://github.com/filescodebox/contracts/releases/download/v0.4.0/filescodebox-contracts-0.4.0.tgz"
 ```
 
 ```ts
@@ -70,6 +73,9 @@ import type { share, admin } from '@filescodebox/contracts';
 type Detail = share.ShareDetail;
 const req: admin.AdminListFilesReq = { /* ... */ };
 ```
+
+> 不用 npm git 依赖的原因:npm 对 github 简写依赖恒以 `git+ssh` 解析记录进
+> lockfile,容器内 `npm ci` 无 SSH key 必挂;Release 资产是纯 https 下载,无此坑。
 
 约定:
 
@@ -81,7 +87,8 @@ const req: admin.AdminListFilesReq = { /* ... */ };
   (现网值域远低于 2^53)。
 - 改 IDL 后:`go run ./cmd/gen-ts` 再生成并提交,CI `--check` 守卫同步;
   `cmd/gen-ts` 的测试会与 `openapi.json` 做类型名单对账,防两侧漂移。
-- 发 tag 时请同步更新 `package.json` 的 `version` 字段(仅信息用途,git ref 才是钉定依据)。
+- 发版 = 打 tag(工作流自动对齐 `package.json` version 并发 tgz 资产),
+  前端升级 = 换 package.json 里的资产 URL 版本号。
 
 ## License
 
