@@ -3984,6 +3984,552 @@ func (p *GetSystemLogsResp) String() string {
 
 }
 
+type OptimizeDatabaseReq struct {
+}
+
+func NewOptimizeDatabaseReq() *OptimizeDatabaseReq {
+	return &OptimizeDatabaseReq{}
+}
+
+func (p *OptimizeDatabaseReq) InitDefault() {
+}
+
+var fieldIDToName_OptimizeDatabaseReq = map[int16]string{}
+
+func (p *OptimizeDatabaseReq) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+		if err = iprot.Skip(fieldTypeId); err != nil {
+			goto SkipFieldTypeError
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+SkipFieldTypeError:
+	return thrift.PrependError(fmt.Sprintf("%T skip field type %d error", p, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseReq) Write(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteStructBegin("OptimizeDatabaseReq"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseReq) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OptimizeDatabaseReq(%+v)", *p)
+
+}
+
+type OptimizeDatabaseData struct {
+	// 实际执行优化的数据库后端
+	Driver string `thrift:"driver,1,required" form:"driver,required" json:"driver,required"`
+	// 执行内容说明
+	Detail string `thrift:"detail,2,required" form:"detail,required" json:"detail,required"`
+}
+
+func NewOptimizeDatabaseData() *OptimizeDatabaseData {
+	return &OptimizeDatabaseData{}
+}
+
+func (p *OptimizeDatabaseData) InitDefault() {
+}
+
+func (p *OptimizeDatabaseData) GetDriver() (v string) {
+	return p.Driver
+}
+
+func (p *OptimizeDatabaseData) GetDetail() (v string) {
+	return p.Detail
+}
+
+var fieldIDToName_OptimizeDatabaseData = map[int16]string{
+	1: "driver",
+	2: "detail",
+}
+
+func (p *OptimizeDatabaseData) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetDriver bool = false
+	var issetDetail bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetDriver = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetDetail = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetDriver {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetDetail {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OptimizeDatabaseData[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_OptimizeDatabaseData[fieldId]))
+}
+
+func (p *OptimizeDatabaseData) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Driver = _field
+	return nil
+}
+func (p *OptimizeDatabaseData) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Detail = _field
+	return nil
+}
+
+func (p *OptimizeDatabaseData) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("OptimizeDatabaseData"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseData) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("driver", thrift.STRING, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Driver); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseData) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("detail", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Detail); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseData) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OptimizeDatabaseData(%+v)", *p)
+
+}
+
+type OptimizeDatabaseResp struct {
+	Code    int32                 `thrift:"code,1,required" form:"code,required" json:"code,required"`
+	Message string                `thrift:"message,2,required" form:"message,required" json:"message,required"`
+	Data    *OptimizeDatabaseData `thrift:"data,3,required" form:"data,required" json:"data,required"`
+}
+
+func NewOptimizeDatabaseResp() *OptimizeDatabaseResp {
+	return &OptimizeDatabaseResp{}
+}
+
+func (p *OptimizeDatabaseResp) InitDefault() {
+}
+
+func (p *OptimizeDatabaseResp) GetCode() (v int32) {
+	return p.Code
+}
+
+func (p *OptimizeDatabaseResp) GetMessage() (v string) {
+	return p.Message
+}
+
+var OptimizeDatabaseResp_Data_DEFAULT *OptimizeDatabaseData
+
+func (p *OptimizeDatabaseResp) GetData() (v *OptimizeDatabaseData) {
+	if !p.IsSetData() {
+		return OptimizeDatabaseResp_Data_DEFAULT
+	}
+	return p.Data
+}
+
+var fieldIDToName_OptimizeDatabaseResp = map[int16]string{
+	1: "code",
+	2: "message",
+	3: "data",
+}
+
+func (p *OptimizeDatabaseResp) IsSetData() bool {
+	return p.Data != nil
+}
+
+func (p *OptimizeDatabaseResp) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetCode bool = false
+	var issetMessage bool = false
+	var issetData bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetCode = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetMessage = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetData = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetCode {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetMessage {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetData {
+		fieldId = 3
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_OptimizeDatabaseResp[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_OptimizeDatabaseResp[fieldId]))
+}
+
+func (p *OptimizeDatabaseResp) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int32
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Code = _field
+	return nil
+}
+func (p *OptimizeDatabaseResp) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.Message = _field
+	return nil
+}
+func (p *OptimizeDatabaseResp) ReadField3(iprot thrift.TProtocol) error {
+	_field := NewOptimizeDatabaseData()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Data = _field
+	return nil
+}
+
+func (p *OptimizeDatabaseResp) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("OptimizeDatabaseResp"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseResp) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("code", thrift.I32, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(p.Code); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseResp) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("message", thrift.STRING, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteString(p.Message); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseResp) writeField3(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("data", thrift.STRUCT, 3); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Data.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
+}
+
+func (p *OptimizeDatabaseResp) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("OptimizeDatabaseResp(%+v)", *p)
+
+}
+
 // ==================== 服务定义 ====================
 type MaintenanceService interface {
 	// CleanExpiredFiles 清理过期文件
@@ -3996,6 +4542,8 @@ type MaintenanceService interface {
 	GetStorageStatus(ctx context.Context, req *GetStorageStatusReq) (r *GetStorageStatusResp, err error)
 	// GetSystemLogs 获取系统日志
 	GetSystemLogs(ctx context.Context, req *GetSystemLogsReq) (r *GetSystemLogsResp, err error)
+	// OptimizeDatabase 数据库优化（sqlite: VACUUM+ANALYZE；mysql/pg: 统计刷新；其余 no-op）
+	OptimizeDatabase(ctx context.Context, req *OptimizeDatabaseReq) (r *OptimizeDatabaseResp, err error)
 }
 
 type MaintenanceServiceClient struct {
@@ -4069,6 +4617,15 @@ func (p *MaintenanceServiceClient) GetSystemLogs(ctx context.Context, req *GetSy
 	}
 	return _result.GetSuccess(), nil
 }
+func (p *MaintenanceServiceClient) OptimizeDatabase(ctx context.Context, req *OptimizeDatabaseReq) (r *OptimizeDatabaseResp, err error) {
+	var _args MaintenanceServiceOptimizeDatabaseArgs
+	_args.Req = req
+	var _result MaintenanceServiceOptimizeDatabaseResult
+	if err = p.Client_().Call(ctx, "OptimizeDatabase", &_args, &_result); err != nil {
+		return
+	}
+	return _result.GetSuccess(), nil
+}
 
 type MaintenanceServiceProcessor struct {
 	processorMap map[string]thrift.TProcessorFunction
@@ -4095,6 +4652,7 @@ func NewMaintenanceServiceProcessor(handler MaintenanceService) *MaintenanceServ
 	self.AddToProcessorMap("GetSystemInfo", &maintenanceServiceProcessorGetSystemInfo{handler: handler})
 	self.AddToProcessorMap("GetStorageStatus", &maintenanceServiceProcessorGetStorageStatus{handler: handler})
 	self.AddToProcessorMap("GetSystemLogs", &maintenanceServiceProcessorGetSystemLogs{handler: handler})
+	self.AddToProcessorMap("OptimizeDatabase", &maintenanceServiceProcessorOptimizeDatabase{handler: handler})
 	return self
 }
 func (p *MaintenanceServiceProcessor) Process(ctx context.Context, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -4338,6 +4896,54 @@ func (p *maintenanceServiceProcessorGetSystemLogs) Process(ctx context.Context, 
 		result.Success = retval
 	}
 	if err2 = oprot.WriteMessageBegin("GetSystemLogs", thrift.REPLY, seqId); err2 != nil {
+		err = err2
+	}
+	if err2 = result.Write(oprot); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+		err = err2
+	}
+	if err2 = oprot.Flush(ctx); err == nil && err2 != nil {
+		err = err2
+	}
+	if err != nil {
+		return
+	}
+	return true, err
+}
+
+type maintenanceServiceProcessorOptimizeDatabase struct {
+	handler MaintenanceService
+}
+
+func (p *maintenanceServiceProcessorOptimizeDatabase) Process(ctx context.Context, seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+	args := MaintenanceServiceOptimizeDatabaseArgs{}
+	if err = args.Read(iprot); err != nil {
+		iprot.ReadMessageEnd()
+		x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+		oprot.WriteMessageBegin("OptimizeDatabase", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return false, err
+	}
+
+	iprot.ReadMessageEnd()
+	var err2 error
+	result := MaintenanceServiceOptimizeDatabaseResult{}
+	var retval *OptimizeDatabaseResp
+	if retval, err2 = p.handler.OptimizeDatabase(ctx, args.Req); err2 != nil {
+		x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing OptimizeDatabase: "+err2.Error())
+		oprot.WriteMessageBegin("OptimizeDatabase", thrift.EXCEPTION, seqId)
+		x.Write(oprot)
+		oprot.WriteMessageEnd()
+		oprot.Flush(ctx)
+		return true, err2
+	} else {
+		result.Success = retval
+	}
+	if err2 = oprot.WriteMessageBegin("OptimizeDatabase", thrift.REPLY, seqId); err2 != nil {
 		err = err2
 	}
 	if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -5822,5 +6428,299 @@ func (p *MaintenanceServiceGetSystemLogsResult) String() string {
 		return "<nil>"
 	}
 	return fmt.Sprintf("MaintenanceServiceGetSystemLogsResult(%+v)", *p)
+
+}
+
+type MaintenanceServiceOptimizeDatabaseArgs struct {
+	Req *OptimizeDatabaseReq `thrift:"req,1"`
+}
+
+func NewMaintenanceServiceOptimizeDatabaseArgs() *MaintenanceServiceOptimizeDatabaseArgs {
+	return &MaintenanceServiceOptimizeDatabaseArgs{}
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) InitDefault() {
+}
+
+var MaintenanceServiceOptimizeDatabaseArgs_Req_DEFAULT *OptimizeDatabaseReq
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) GetReq() (v *OptimizeDatabaseReq) {
+	if !p.IsSetReq() {
+		return MaintenanceServiceOptimizeDatabaseArgs_Req_DEFAULT
+	}
+	return p.Req
+}
+
+var fieldIDToName_MaintenanceServiceOptimizeDatabaseArgs = map[int16]string{
+	1: "req",
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) IsSetReq() bool {
+	return p.Req != nil
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MaintenanceServiceOptimizeDatabaseArgs[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) ReadField1(iprot thrift.TProtocol) error {
+	_field := NewOptimizeDatabaseReq()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Req = _field
+	return nil
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("OptimizeDatabase_args"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("req", thrift.STRUCT, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := p.Req.Write(oprot); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseArgs) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("MaintenanceServiceOptimizeDatabaseArgs(%+v)", *p)
+
+}
+
+type MaintenanceServiceOptimizeDatabaseResult struct {
+	Success *OptimizeDatabaseResp `thrift:"success,0,optional"`
+}
+
+func NewMaintenanceServiceOptimizeDatabaseResult() *MaintenanceServiceOptimizeDatabaseResult {
+	return &MaintenanceServiceOptimizeDatabaseResult{}
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) InitDefault() {
+}
+
+var MaintenanceServiceOptimizeDatabaseResult_Success_DEFAULT *OptimizeDatabaseResp
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) GetSuccess() (v *OptimizeDatabaseResp) {
+	if !p.IsSetSuccess() {
+		return MaintenanceServiceOptimizeDatabaseResult_Success_DEFAULT
+	}
+	return p.Success
+}
+
+var fieldIDToName_MaintenanceServiceOptimizeDatabaseResult = map[int16]string{
+	0: "success",
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) IsSetSuccess() bool {
+	return p.Success != nil
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 0:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField0(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_MaintenanceServiceOptimizeDatabaseResult[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) ReadField0(iprot thrift.TProtocol) error {
+	_field := NewOptimizeDatabaseResp()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.Success = _field
+	return nil
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("OptimizeDatabase_result"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField0(oprot); err != nil {
+			fieldId = 0
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) writeField0(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSuccess() {
+		if err = oprot.WriteFieldBegin("success", thrift.STRUCT, 0); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.Success.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 0 end error: ", p), err)
+}
+
+func (p *MaintenanceServiceOptimizeDatabaseResult) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("MaintenanceServiceOptimizeDatabaseResult(%+v)", *p)
 
 }

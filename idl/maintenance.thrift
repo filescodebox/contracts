@@ -110,6 +110,20 @@ struct GetSystemLogsResp {
     3: required SystemLogsData data    (api.body = "data"),
 }
 
+struct OptimizeDatabaseReq {
+}
+
+struct OptimizeDatabaseData {
+    1: required string driver (api.body = "driver"), // 实际执行优化的数据库后端
+    2: required string detail (api.body = "detail"), // 执行内容说明
+}
+
+struct OptimizeDatabaseResp {
+    1: required i32                  code    (api.body = "code"),
+    2: required string               message (api.body = "message"),
+    3: required OptimizeDatabaseData data    (api.body = "data"),
+}
+
 // ==================== 服务定义 ====================
 
 service MaintenanceService {
@@ -127,4 +141,7 @@ service MaintenanceService {
 
     // GetSystemLogs 获取系统日志
     GetSystemLogsResp GetSystemLogs(1: GetSystemLogsReq req) (api.get = "/admin/maintenance/logs")
+
+    // OptimizeDatabase 数据库优化（sqlite: VACUUM+ANALYZE；mysql/pg: 统计刷新；其余 no-op）
+    OptimizeDatabaseResp OptimizeDatabase(1: OptimizeDatabaseReq req) (api.post = "/admin/maintenance/optimize")
 }
