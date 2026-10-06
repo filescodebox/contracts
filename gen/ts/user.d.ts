@@ -17,6 +17,8 @@ export interface UserData {
   avatar: string;
   status: number;
   created_at: string;
+  /** role 仅 /user/info 返回(handler 补发,前端 admin 判定依赖),/user/login 载荷不含 */
+  role?: string;
 }
 
 export interface RegisterResp {

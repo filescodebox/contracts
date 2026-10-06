@@ -23,6 +23,8 @@ struct UserData {
     5: required string avatar     (api.body = "avatar"),
     6: required i32    status     (api.body = "status"),
     7: required string created_at (api.body = "created_at"),
+    // role 仅 /user/info 返回(handler 补发,前端 admin 判定依赖),/user/login 载荷不含
+    8: optional string role       (api.body = "role"),
 }
 
 struct RegisterResp {

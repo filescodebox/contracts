@@ -324,6 +324,8 @@ type UserData struct {
 	Avatar    string `thrift:"avatar,5,required" form:"avatar,required" json:"avatar,required"`
 	Status    int32  `thrift:"status,6,required" form:"status,required" json:"status,required"`
 	CreatedAt string `thrift:"created_at,7,required" form:"created_at,required" json:"created_at,required"`
+	// role 仅 /user/info 返回(handler 补发,前端 admin 判定依赖),/user/login 载荷不含
+	Role *string `thrift:"role,8,optional" form:"role" json:"role,omitempty"`
 }
 
 func NewUserData() *UserData {
@@ -361,6 +363,15 @@ func (p *UserData) GetCreatedAt() (v string) {
 	return p.CreatedAt
 }
 
+var UserData_Role_DEFAULT string
+
+func (p *UserData) GetRole() (v string) {
+	if !p.IsSetRole() {
+		return UserData_Role_DEFAULT
+	}
+	return *p.Role
+}
+
 var fieldIDToName_UserData = map[int16]string{
 	1: "id",
 	2: "username",
@@ -369,6 +380,11 @@ var fieldIDToName_UserData = map[int16]string{
 	5: "avatar",
 	6: "status",
 	7: "created_at",
+	8: "role",
+}
+
+func (p *UserData) IsSetRole() bool {
+	return p.Role != nil
 }
 
 func (p *UserData) Read(iprot thrift.TProtocol) (err error) {
@@ -457,6 +473,14 @@ func (p *UserData) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetCreatedAt = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -602,6 +626,17 @@ func (p *UserData) ReadField7(iprot thrift.TProtocol) error {
 	p.CreatedAt = _field
 	return nil
 }
+func (p *UserData) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Role = _field
+	return nil
+}
 
 func (p *UserData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -635,6 +670,10 @@ func (p *UserData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -772,6 +811,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *UserData) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetRole() {
+		if err = oprot.WriteFieldBegin("role", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Role); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
 func (p *UserData) String() string {
