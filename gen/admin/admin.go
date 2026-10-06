@@ -5459,7 +5459,12 @@ func (p *AdminGetConfigResp) String() string {
 
 }
 
-// body = SystemConfig 局部 JSON:只带要改的段,nil 段保留现状。
+// body = SystemConfig 局部 JSON。段保留语义分两类:
+//   - 指针段(user/ui/upload_ex/download/notify/local_import/oidc/api_token/
+//     runtime_storage):body 未携带 = 保留现状(nil-overlay);
+//   - 值段(base/storage/transfer):结构整体覆盖,body 缺省按零值落库——
+//     客户端保存时必须整段携带(前端 Config 页基础页签即整段提交)。
+//
 // 注意:勿包 {config:...} 壳——曾因包壳导致新段写入被静默丢弃(假开关,
 // v0.13.5 修复;旧三段 typed 契约同时退役)。
 type AdminUpdateConfigReq struct {
