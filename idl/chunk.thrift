@@ -79,6 +79,8 @@ struct ChunkUploadCompleteReq {
     4: required bool   require_auth  (api.body = "require_auth"),
     // 密码保护:require_auth 时必填(此前 handler form 直读+二次解析 body)
     5: optional string password      (api.body = "password"),
+    // 自定义取件码(P3):仅登录用户可指定(此前 handler form 直读+二次解析 body)
+    6: optional string custom_code   (api.body = "custom_code"),
 }
 
 struct ChunkUploadCompleteData {

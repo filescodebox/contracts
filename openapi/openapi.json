@@ -555,6 +555,9 @@
       },
       "chunk.ChunkUploadCompleteReq": {
         "properties": {
+          "custom_code": {
+            "type": "string"
+          },
           "expire_style": {
             "type": "string"
           },
@@ -5030,6 +5033,9 @@
             "application/json": {
               "schema": {
                 "properties": {
+                  "custom_code": {
+                    "type": "string"
+                  },
                   "expire_style": {
                     "type": "string"
                   },
