@@ -1738,6 +1738,9 @@
           "password": {
             "type": "string"
           },
+          "pickup_code": {
+            "type": "string"
+          },
           "require_auth": {
             "type": "boolean"
           },
@@ -5135,6 +5138,9 @@
                     "type": "integer"
                   },
                   "password": {
+                    "type": "string"
+                  },
+                  "pickup_code": {
                     "type": "string"
                   },
                   "require_auth": {

@@ -15,6 +15,13 @@ export interface InitReq {
   file_hash?: string;
   /** require_auth 时必填(bcrypt 后随 meta 存储);此前靠 handler 二次解析 body/form */
   password?: string;
+  /**
+ * 匿名取件码直传绑定(2026-10-07):传 /anonymous/generate 返回的 6 位码后,
+ * 本会话 Complete 不再新建分享,而是把对象回填到该占位记录——修复"generate
+ * 只建占位、无回填端点"的死码链路。有效期/密码以占位记录为准(init 时的
+ * expire_value/require_auth 等字段被忽略)
+ */
+  pickup_code?: string;
 }
 
 export interface InitData {

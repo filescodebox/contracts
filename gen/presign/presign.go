@@ -22,6 +22,11 @@ type InitReq struct {
 	FileHash *string `thrift:"file_hash,8,optional" form:"file_hash" json:"file_hash,omitempty"`
 	// require_auth 时必填(bcrypt 后随 meta 存储);此前靠 handler 二次解析 body/form
 	Password *string `thrift:"password,9,optional" form:"password" json:"password,omitempty"`
+	// 匿名取件码直传绑定(2026-10-07):传 /anonymous/generate 返回的 6 位码后,
+	// 本会话 Complete 不再新建分享,而是把对象回填到该占位记录——修复"generate
+	// 只建占位、无回填端点"的死码链路。有效期/密码以占位记录为准(init 时的
+	// expire_value/require_auth 等字段被忽略)
+	PickupCode *string `thrift:"pickup_code,10,optional" form:"pickup_code" json:"pickup_code,omitempty"`
 }
 
 func NewInitReq() *InitReq {
@@ -97,16 +102,26 @@ func (p *InitReq) GetPassword() (v string) {
 	return *p.Password
 }
 
+var InitReq_PickupCode_DEFAULT string
+
+func (p *InitReq) GetPickupCode() (v string) {
+	if !p.IsSetPickupCode() {
+		return InitReq_PickupCode_DEFAULT
+	}
+	return *p.PickupCode
+}
+
 var fieldIDToName_InitReq = map[int16]string{
-	1: "file_name",
-	2: "file_size",
-	3: "content_type",
-	4: "scheme",
-	5: "expire_value",
-	6: "expire_style",
-	7: "require_auth",
-	8: "file_hash",
-	9: "password",
+	1:  "file_name",
+	2:  "file_size",
+	3:  "content_type",
+	4:  "scheme",
+	5:  "expire_value",
+	6:  "expire_style",
+	7:  "require_auth",
+	8:  "file_hash",
+	9:  "password",
+	10: "pickup_code",
 }
 
 func (p *InitReq) IsSetScheme() bool {
@@ -131,6 +146,10 @@ func (p *InitReq) IsSetFileHash() bool {
 
 func (p *InitReq) IsSetPassword() bool {
 	return p.Password != nil
+}
+
+func (p *InitReq) IsSetPickupCode() bool {
+	return p.PickupCode != nil
 }
 
 func (p *InitReq) Read(iprot thrift.TProtocol) (err error) {
@@ -225,6 +244,14 @@ func (p *InitReq) Read(iprot thrift.TProtocol) (err error) {
 		case 9:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField10(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -374,6 +401,17 @@ func (p *InitReq) ReadField9(iprot thrift.TProtocol) error {
 	p.Password = _field
 	return nil
 }
+func (p *InitReq) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.PickupCode = _field
+	return nil
+}
 
 func (p *InitReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -415,6 +453,10 @@ func (p *InitReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField9(oprot); err != nil {
 			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
 			goto WriteFieldError
 		}
 	}
@@ -598,6 +640,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *InitReq) writeField10(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPickupCode() {
+		if err = oprot.WriteFieldBegin("pickup_code", thrift.STRING, 10); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.PickupCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
 }
 
 func (p *InitReq) String() string {
