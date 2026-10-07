@@ -129,6 +129,51 @@ struct UpdateStorageConfigResp {
 
 // ==================== 服务定义 ====================
 
+struct StorageUsage {
+    1: required i64  object_count (api.body = "object_count"),
+    2: required i64  total_size   (api.body = "total_size"),
+    3: optional i64  quota_used   (api.body = "quota_used"),
+}
+
+struct StorageBackendStatus {
+    1: required string type        (api.body = "type"),
+    2: required bool   configured  (api.body = "configured"),
+    3: required bool   active      (api.body = "active"),
+    4: optional string detail      (api.body = "detail"),
+    5: optional StorageUsage usage (api.body = "usage"),
+}
+
+struct TodayTraffic {
+    1: required i64 uploads   (api.body = "uploads"),
+    2: required i64 downloads (api.body = "downloads"),
+}
+
+struct StorageInsightsData {
+    1: required string              current_type    (api.body = "current_type"),
+    2: required string              effective_type  (api.body = "effective_type"),
+    3: required string              presign_policy  (api.body = "presign_policy"),
+    4: required bool                direct_download (api.body = "direct_download"),
+    5: required map<string,string>  current_detail  (api.body = "current_detail"),
+    6: required StorageUsage        remote_usage    (api.body = "remote_usage"),
+    7: required StorageUsage        local_usage     (api.body = "local_usage"),
+    8: required TodayTraffic        today_traffic   (api.body = "today_traffic"),
+    9: required i64                 presign_orphans (api.body = "presign_orphans"),
+    10: required i64                alive_shares    (api.body = "alive_shares"),
+    11: required i64                soft_deleted    (api.body = "soft_deleted"),
+}
+
+struct GetStorageInsightsResp {
+    1: required i32                 code    (api.body = "code"),
+    2: required string              message (api.body = "message"),
+    3: required StorageInsightsData data    (api.body = "data"),
+}
+
+struct CleanPresignOrphansResp {
+    1: required i32 code    (api.body = "code"),
+    2: required string message (api.body = "message"),
+    3: required i32 removed (api.body = "removed"),
+}
+
 service StorageService {
     // GetStorageInfo 获取存储信息
     GetStorageInfoResp GetStorageInfo(1: GetStorageInfoReq req) (api.get = "/admin/storage")
@@ -141,4 +186,10 @@ service StorageService {
 
     // UpdateStorageConfig 更新存储配置
     UpdateStorageConfigResp UpdateStorageConfig(1: UpdateStorageConfigReq req) (api.put = "/admin/storage/config")
+
+    // GetStorageInsights 存储洞察（双端用量/配额/今日流量/孤儿统计）
+    GetStorageInsightsResp GetStorageInsights(1: GetStorageInfoReq req) (api.get = "/admin/storage/insights")
+
+    // CleanPresignOrphans 清理远端 presign 孤儿对象（Init 后未 Complete 的直传残留）
+    CleanPresignOrphansResp CleanPresignOrphans(1: GetStorageInfoReq req) (api.post = "/admin/storage/clean-presign-orphans")
 }

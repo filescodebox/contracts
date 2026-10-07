@@ -118,3 +118,49 @@ export interface UpdateStorageConfigResp {
   code: number;
   message: string;
 }
+
+/** ==================== 服务定义 ==================== */
+export interface StorageUsage {
+  object_count: number;
+  total_size: number;
+  quota_used?: number;
+}
+
+export interface StorageBackendStatus {
+  type: string;
+  configured: boolean;
+  active: boolean;
+  detail?: string;
+  usage?: StorageUsage;
+}
+
+export interface TodayTraffic {
+  uploads: number;
+  downloads: number;
+}
+
+export interface StorageInsightsData {
+  current_type: string;
+  effective_type: string;
+  presign_policy: string;
+  direct_download: boolean;
+  current_detail: Record<string, string>;
+  remote_usage: StorageUsage;
+  local_usage: StorageUsage;
+  today_traffic: TodayTraffic;
+  presign_orphans: number;
+  alive_shares: number;
+  soft_deleted: number;
+}
+
+export interface GetStorageInsightsResp {
+  code: number;
+  message: string;
+  data: StorageInsightsData;
+}
+
+export interface CleanPresignOrphansResp {
+  code: number;
+  message: string;
+  removed: number;
+}

@@ -95,3 +95,18 @@ export interface GetSystemLogsResp {
   message: string;
   data: SystemLogsData;
 }
+
+export interface OptimizeDatabaseReq {}
+
+export interface OptimizeDatabaseData {
+  /** 实际执行优化的数据库后端 */
+  driver: string;
+  /** 执行内容说明 */
+  detail: string;
+}
+
+export interface OptimizeDatabaseResp {
+  code: number;
+  message: string;
+  data: OptimizeDatabaseData;
+}

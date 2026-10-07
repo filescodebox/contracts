@@ -50,7 +50,7 @@ done
 
 if [ "${CHECK:-0}" = "1" ]; then
   echo "==> 校验生成产物与 $GEN_DIR/ 是否一致..."
-  if diff -r "$WORK/model" "$GEN_DIR" >/tmp/fcb-contracts-gen.diff 2>&1; then
+  if diff -r --exclude=ts "$WORK/model" "$GEN_DIR" >/tmp/fcb-contracts-gen.diff 2>&1; then
     echo "✓ 一致,gen/ 与 idl/ 定义同步"
   else
     echo "✗ gen/ 与 idl/ 不同步,差异已写入 /tmp/fcb-contracts-gen.diff:" >&2
@@ -61,8 +61,10 @@ if [ "${CHECK:-0}" = "1" ]; then
   exit 0
 fi
 
-echo "==> 同步产物 $WORK/model → $GEN_DIR/"
-rm -rf "$GEN_DIR"
+echo "==> 同步产物 $WORK/model → $GEN_DIR/(保留 gen/ts——前端类型归 cmd/gen-ts 管)"
+# 坑:此前 rm -rf 整目录会把 cmd/gen-ts 的产物 gen/ts/ 一并删掉,导致
+# "gen-model 跑完 gen-ts 必须重跑"的隐形顺序依赖。此处只清理模型侧条目。
+find "$GEN_DIR" -mindepth 1 -maxdepth 1 -not -name ts -exec rm -rf {} + 2>/dev/null || true
 mkdir -p "$GEN_DIR"
 cp -R "$WORK/model/." "$GEN_DIR/"
 
