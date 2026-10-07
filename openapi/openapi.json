@@ -84,6 +84,9 @@
       },
       "admin.AdminListFilesReq": {
         "properties": {
+          "health": {
+            "type": "string"
+          },
           "keyword": {
             "type": "string"
           },
@@ -218,6 +221,26 @@
       },
       "admin.AdminStatsData": {
         "properties": {
+          "active_files": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "expired_files": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "expiring_soon_files": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "forever_files": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "never_picked_files": {
+            "format": "int64",
+            "type": "integer"
+          },
           "today_downloads": {
             "format": "int64",
             "type": "integer"
@@ -244,7 +267,12 @@
           "total_users",
           "total_size",
           "today_uploads",
-          "today_downloads"
+          "today_downloads",
+          "active_files",
+          "expired_files",
+          "expiring_soon_files",
+          "never_picked_files",
+          "forever_files"
         ],
         "type": "object"
       },
@@ -1576,6 +1604,9 @@
             "format": "int64",
             "type": "integer"
           },
+          "pickup_code": {
+            "type": "string"
+          },
           "url": {
             "type": "string"
           }
@@ -2166,6 +2197,9 @@
           },
           "base_config": {
             "$ref": "#/components/schemas/setup.BaseConfig"
+          },
+          "site_config": {
+            "$ref": "#/components/schemas/setup.SitePreConfig"
           }
         },
         "required": [
@@ -2187,6 +2221,21 @@
         "required": [
           "message",
           "username"
+        ],
+        "type": "object"
+      },
+      "setup.SitePreConfig": {
+        "properties": {
+          "open_upload": {
+            "type": "boolean"
+          },
+          "upload_size_mb": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "upload_size_mb",
+          "open_upload"
         ],
         "type": "object"
       },
@@ -2255,6 +2304,9 @@
       "share.ShareData": {
         "properties": {
           "code": {
+            "type": "string"
+          },
+          "pickup_code": {
             "type": "string"
           },
           "url": {
@@ -3817,6 +3869,13 @@
           {
             "in": "query",
             "name": "sort_by",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "health",
             "schema": {
               "type": "string"
             }
@@ -5597,6 +5656,9 @@
                   },
                   "base_config": {
                     "$ref": "#/components/schemas/setup.BaseConfig"
+                  },
+                  "site_config": {
+                    "$ref": "#/components/schemas/setup.SitePreConfig"
                   }
                 },
                 "required": [

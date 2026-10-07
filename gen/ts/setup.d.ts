@@ -22,6 +22,22 @@ export interface InitializeReq {
   admin_password: string;
   admin_email: string;
   base_config?: BaseConfig;
+  /**
+ * 站点预配置（2026-10-07 对标上游首启向导：管理员+站点策略一页配完；
+ * 不传 = 跳过预配置，走 yaml 默认）
+ */
+  site_config?: SitePreConfig;
+}
+
+/**
+ * SitePreConfig 首启向导的站点策略段（写入 SystemConfig 对应段并热应用）。
+ * 只收当前可热应用的键：站点名/描述走 BaseConfig，此处为上传与游客策略。
+ */
+export interface SitePreConfig {
+  /** 单文件上限（MB，>0 生效） */
+  upload_size_mb: number;
+  /** 允许游客上传 */
+  open_upload: boolean;
 }
 
 export interface InitializeResp {

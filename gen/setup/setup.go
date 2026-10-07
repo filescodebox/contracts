@@ -606,6 +606,9 @@ type InitializeReq struct {
 	AdminPassword string      `thrift:"admin_password,2,required" form:"admin_password,required" json:"admin_password,required"`
 	AdminEmail    string      `thrift:"admin_email,3,required" form:"admin_email,required" json:"admin_email,required"`
 	BaseConfig    *BaseConfig `thrift:"base_config,4,optional" form:"base_config" json:"base_config,omitempty"`
+	// 站点预配置（2026-10-07 对标上游首启向导：管理员+站点策略一页配完；
+	// 不传 = 跳过预配置，走 yaml 默认）
+	SiteConfig *SitePreConfig `thrift:"site_config,5,optional" form:"site_config" json:"site_config,omitempty"`
 }
 
 func NewInitializeReq() *InitializeReq {
@@ -636,15 +639,29 @@ func (p *InitializeReq) GetBaseConfig() (v *BaseConfig) {
 	return p.BaseConfig
 }
 
+var InitializeReq_SiteConfig_DEFAULT *SitePreConfig
+
+func (p *InitializeReq) GetSiteConfig() (v *SitePreConfig) {
+	if !p.IsSetSiteConfig() {
+		return InitializeReq_SiteConfig_DEFAULT
+	}
+	return p.SiteConfig
+}
+
 var fieldIDToName_InitializeReq = map[int16]string{
 	1: "admin_username",
 	2: "admin_password",
 	3: "admin_email",
 	4: "base_config",
+	5: "site_config",
 }
 
 func (p *InitializeReq) IsSetBaseConfig() bool {
 	return p.BaseConfig != nil
+}
+
+func (p *InitializeReq) IsSetSiteConfig() bool {
+	return p.SiteConfig != nil
 }
 
 func (p *InitializeReq) Read(iprot thrift.TProtocol) (err error) {
@@ -699,6 +716,14 @@ func (p *InitializeReq) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.STRUCT {
 				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRUCT {
+				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -790,6 +815,14 @@ func (p *InitializeReq) ReadField4(iprot thrift.TProtocol) error {
 	p.BaseConfig = _field
 	return nil
 }
+func (p *InitializeReq) ReadField5(iprot thrift.TProtocol) error {
+	_field := NewSitePreConfig()
+	if err := _field.Read(iprot); err != nil {
+		return err
+	}
+	p.SiteConfig = _field
+	return nil
+}
 
 func (p *InitializeReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -811,6 +844,10 @@ func (p *InitializeReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -901,11 +938,235 @@ WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
 }
 
+func (p *InitializeReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetSiteConfig() {
+		if err = oprot.WriteFieldBegin("site_config", thrift.STRUCT, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := p.SiteConfig.Write(oprot); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
 func (p *InitializeReq) String() string {
 	if p == nil {
 		return "<nil>"
 	}
 	return fmt.Sprintf("InitializeReq(%+v)", *p)
+
+}
+
+// SitePreConfig 首启向导的站点策略段（写入 SystemConfig 对应段并热应用）。
+// 只收当前可热应用的键：站点名/描述走 BaseConfig，此处为上传与游客策略。
+type SitePreConfig struct {
+	// 单文件上限（MB，>0 生效）
+	UploadSizeMb int32 `thrift:"upload_size_mb,1,required" form:"upload_size_mb,required" json:"upload_size_mb,required"`
+	// 允许游客上传
+	OpenUpload bool `thrift:"open_upload,2,required" form:"open_upload,required" json:"open_upload,required"`
+}
+
+func NewSitePreConfig() *SitePreConfig {
+	return &SitePreConfig{}
+}
+
+func (p *SitePreConfig) InitDefault() {
+}
+
+func (p *SitePreConfig) GetUploadSizeMb() (v int32) {
+	return p.UploadSizeMb
+}
+
+func (p *SitePreConfig) GetOpenUpload() (v bool) {
+	return p.OpenUpload
+}
+
+var fieldIDToName_SitePreConfig = map[int16]string{
+	1: "upload_size_mb",
+	2: "open_upload",
+}
+
+func (p *SitePreConfig) Read(iprot thrift.TProtocol) (err error) {
+
+	var fieldTypeId thrift.TType
+	var fieldId int16
+	var issetUploadSizeMb bool = false
+	var issetOpenUpload bool = false
+
+	if _, err = iprot.ReadStructBegin(); err != nil {
+		goto ReadStructBeginError
+	}
+
+	for {
+		_, fieldTypeId, fieldId, err = iprot.ReadFieldBegin()
+		if err != nil {
+			goto ReadFieldBeginError
+		}
+		if fieldTypeId == thrift.STOP {
+			break
+		}
+
+		switch fieldId {
+		case 1:
+			if fieldTypeId == thrift.I32 {
+				if err = p.ReadField1(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetUploadSizeMb = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 2:
+			if fieldTypeId == thrift.BOOL {
+				if err = p.ReadField2(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetOpenUpload = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		default:
+			if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		}
+		if err = iprot.ReadFieldEnd(); err != nil {
+			goto ReadFieldEndError
+		}
+	}
+	if err = iprot.ReadStructEnd(); err != nil {
+		goto ReadStructEndError
+	}
+
+	if !issetUploadSizeMb {
+		fieldId = 1
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetOpenUpload {
+		fieldId = 2
+		goto RequiredFieldNotSetError
+	}
+	return nil
+ReadStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct begin error: ", p), err)
+ReadFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d begin error: ", p, fieldId), err)
+ReadFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T read field %d '%s' error: ", p, fieldId, fieldIDToName_SitePreConfig[fieldId]), err)
+SkipFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T field %d skip type %d error: ", p, fieldId, fieldTypeId), err)
+
+ReadFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read field end error", p), err)
+ReadStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+RequiredFieldNotSetError:
+	return thrift.NewTProtocolExceptionWithType(thrift.INVALID_DATA, fmt.Errorf("required field %s is not set", fieldIDToName_SitePreConfig[fieldId]))
+}
+
+func (p *SitePreConfig) ReadField1(iprot thrift.TProtocol) error {
+
+	var _field int32
+	if v, err := iprot.ReadI32(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.UploadSizeMb = _field
+	return nil
+}
+func (p *SitePreConfig) ReadField2(iprot thrift.TProtocol) error {
+
+	var _field bool
+	if v, err := iprot.ReadBool(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.OpenUpload = _field
+	return nil
+}
+
+func (p *SitePreConfig) Write(oprot thrift.TProtocol) (err error) {
+	var fieldId int16
+	if err = oprot.WriteStructBegin("SitePreConfig"); err != nil {
+		goto WriteStructBeginError
+	}
+	if p != nil {
+		if err = p.writeField1(oprot); err != nil {
+			fieldId = 1
+			goto WriteFieldError
+		}
+		if err = p.writeField2(oprot); err != nil {
+			fieldId = 2
+			goto WriteFieldError
+		}
+	}
+	if err = oprot.WriteFieldStop(); err != nil {
+		goto WriteFieldStopError
+	}
+	if err = oprot.WriteStructEnd(); err != nil {
+		goto WriteStructEndError
+	}
+	return nil
+WriteStructBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err)
+WriteFieldError:
+	return thrift.PrependError(fmt.Sprintf("%T write field %d error: ", p, fieldId), err)
+WriteFieldStopError:
+	return thrift.PrependError(fmt.Sprintf("%T write field stop error: ", p), err)
+WriteStructEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write struct end error: ", p), err)
+}
+
+func (p *SitePreConfig) writeField1(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("upload_size_mb", thrift.I32, 1); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI32(p.UploadSizeMb); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 1 end error: ", p), err)
+}
+
+func (p *SitePreConfig) writeField2(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("open_upload", thrift.BOOL, 2); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteBool(p.OpenUpload); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *SitePreConfig) String() string {
+	if p == nil {
+		return "<nil>"
+	}
+	return fmt.Sprintf("SitePreConfig(%+v)", *p)
 
 }
 

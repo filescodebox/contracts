@@ -1973,6 +1973,8 @@ type CompleteData struct {
 	FileName    string `thrift:"file_name,3,required" form:"file_name,required" json:"file_name,required"`
 	FileSize    int64  `thrift:"file_size,4,required" form:"file_size,required" json:"file_size,required"`
 	DownloadURL string `thrift:"download_url,5,required" form:"download_url,required" json:"download_url,required"`
+	// 6 位取件码（2026-10-07 起文件分享铸造，语义同 /share/file/ 的 ShareData.pickup_code）
+	PickupCode *string `thrift:"pickup_code,6,optional" form:"pickup_code" json:"pickup_code,omitempty"`
 }
 
 func NewCompleteData() *CompleteData {
@@ -2002,12 +2004,26 @@ func (p *CompleteData) GetDownloadURL() (v string) {
 	return p.DownloadURL
 }
 
+var CompleteData_PickupCode_DEFAULT string
+
+func (p *CompleteData) GetPickupCode() (v string) {
+	if !p.IsSetPickupCode() {
+		return CompleteData_PickupCode_DEFAULT
+	}
+	return *p.PickupCode
+}
+
 var fieldIDToName_CompleteData = map[int16]string{
 	1: "code",
 	2: "url",
 	3: "file_name",
 	4: "file_size",
 	5: "download_url",
+	6: "pickup_code",
+}
+
+func (p *CompleteData) IsSetPickupCode() bool {
+	return p.PickupCode != nil
 }
 
 func (p *CompleteData) Read(iprot thrift.TProtocol) (err error) {
@@ -2076,6 +2092,14 @@ func (p *CompleteData) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetDownloadURL = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 6:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -2189,6 +2213,17 @@ func (p *CompleteData) ReadField5(iprot thrift.TProtocol) error {
 	p.DownloadURL = _field
 	return nil
 }
+func (p *CompleteData) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.PickupCode = _field
+	return nil
+}
 
 func (p *CompleteData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -2214,6 +2249,10 @@ func (p *CompleteData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
 			goto WriteFieldError
 		}
 	}
@@ -2317,6 +2356,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *CompleteData) writeField6(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPickupCode() {
+		if err = oprot.WriteFieldBegin("pickup_code", thrift.STRING, 6); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.PickupCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
 }
 
 func (p *CompleteData) String() string {

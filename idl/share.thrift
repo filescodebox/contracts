@@ -24,6 +24,9 @@ struct ShareTextReq {
 struct ShareData {
     1: required string code (api.body = "code"),
     2: required string url  (api.body = "url"),
+    // 6 位取件码（2026-10-07 起文件分享铸造：pickup_code → code 的 KV 映射，
+    // 匿名通道 retrieve/search/download 均可解析；文本分享与永久分享不铸造，为空）
+    3: optional string pickup_code (api.body = "pickup_code"),
 }
 
 struct ShareTextResp {

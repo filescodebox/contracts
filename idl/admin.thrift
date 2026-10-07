@@ -36,6 +36,12 @@ struct AdminStatsData {
     3: required i64 total_size       (api.body = "total_size"),
     4: required i64 today_uploads    (api.body = "today_uploads"),
     5: required i64 today_downloads  (api.body = "today_downloads"),
+    // 文件健康洞察维度（2026-10-07 对标上游 dashboard；全部为存活记录口径）
+    6: required i64 active_files        (api.body = "active_files"),         // 可取件（未过期）
+    7: required i64 expired_files       (api.body = "expired_files"),        // 已过期（时间或次数耗尽）
+    8: required i64 expiring_soon_files (api.body = "expiring_soon_files"),  // 24h 内即将过期
+    9: required i64 never_picked_files  (api.body = "never_picked_files"),   // 创建后从未被取件
+    10: required i64 forever_files      (api.body = "forever_files"),         // 永久有效
 }
 
 struct AdminStatsResp {
@@ -51,6 +57,8 @@ struct AdminListFilesReq {
     2: required i32    page_size  (api.query = "page_size"),
     3: optional string keyword    (api.query = "keyword"),
     4: optional string sort_by    (api.query = "sort_by"),
+    // 健康洞察过滤（2026-10-07）：active/expired/expiring_soon/never_picked/forever
+    5: optional string health     (api.query = "health"),
 }
 
 struct FileItem {

@@ -59,6 +59,8 @@ export interface CompleteData {
   file_name: string;
   file_size: number;
   download_url: string;
+  /** 6 位取件码（2026-10-07 起文件分享铸造，语义同 /share/file/ 的 ShareData.pickup_code） */
+  pickup_code?: string;
 }
 
 export interface CompleteResp {

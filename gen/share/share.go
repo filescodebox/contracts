@@ -494,6 +494,9 @@ func (p *ShareTextReq) String() string {
 type ShareData struct {
 	Code string `thrift:"code,1,required" form:"code,required" json:"code,required"`
 	URL  string `thrift:"url,2,required" form:"url,required" json:"url,required"`
+	// 6 位取件码（2026-10-07 起文件分享铸造：pickup_code → code 的 KV 映射，
+	// 匿名通道 retrieve/search/download 均可解析；文本分享与永久分享不铸造，为空）
+	PickupCode *string `thrift:"pickup_code,3,optional" form:"pickup_code" json:"pickup_code,omitempty"`
 }
 
 func NewShareData() *ShareData {
@@ -511,9 +514,23 @@ func (p *ShareData) GetURL() (v string) {
 	return p.URL
 }
 
+var ShareData_PickupCode_DEFAULT string
+
+func (p *ShareData) GetPickupCode() (v string) {
+	if !p.IsSetPickupCode() {
+		return ShareData_PickupCode_DEFAULT
+	}
+	return *p.PickupCode
+}
+
 var fieldIDToName_ShareData = map[int16]string{
 	1: "code",
 	2: "url",
+	3: "pickup_code",
+}
+
+func (p *ShareData) IsSetPickupCode() bool {
+	return p.PickupCode != nil
 }
 
 func (p *ShareData) Read(iprot thrift.TProtocol) (err error) {
@@ -552,6 +569,14 @@ func (p *ShareData) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetURL = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 3:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField3(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -617,6 +642,17 @@ func (p *ShareData) ReadField2(iprot thrift.TProtocol) error {
 	p.URL = _field
 	return nil
 }
+func (p *ShareData) ReadField3(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.PickupCode = _field
+	return nil
+}
 
 func (p *ShareData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -630,6 +666,10 @@ func (p *ShareData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField2(oprot); err != nil {
 			fieldId = 2
+			goto WriteFieldError
+		}
+		if err = p.writeField3(oprot); err != nil {
+			fieldId = 3
 			goto WriteFieldError
 		}
 	}
@@ -682,6 +722,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 2 end error: ", p), err)
+}
+
+func (p *ShareData) writeField3(oprot thrift.TProtocol) (err error) {
+	if p.IsSetPickupCode() {
+		if err = oprot.WriteFieldBegin("pickup_code", thrift.STRING, 3); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.PickupCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 3 end error: ", p), err)
 }
 
 func (p *ShareData) String() string {

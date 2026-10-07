@@ -62,6 +62,8 @@ struct CompleteData {
     3: required string file_name    (api.body = "file_name"),
     4: required i64    file_size    (api.body = "file_size"),
     5: required string download_url (api.body = "download_url"),
+    // 6 位取件码（2026-10-07 起文件分享铸造，语义同 /share/file/ 的 ShareData.pickup_code）
+    6: optional string pickup_code  (api.body = "pickup_code"),
 }
 
 struct CompleteResp {

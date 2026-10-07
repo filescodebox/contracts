@@ -28,6 +28,16 @@ export interface AdminStatsData {
   total_size: number;
   today_uploads: number;
   today_downloads: number;
+  /** 文件健康洞察维度（2026-10-07 对标上游 dashboard；全部为存活记录口径） */
+  active_files: number;
+  /** 已过期（时间或次数耗尽） */
+  expired_files: number;
+  /** 24h 内即将过期 */
+  expiring_soon_files: number;
+  /** 创建后从未被取件 */
+  never_picked_files: number;
+  /** 永久有效 */
+  forever_files: number;
 }
 
 export interface AdminStatsResp {
@@ -42,6 +52,8 @@ export interface AdminListFilesReq {
   page_size: number;
   keyword?: string;
   sort_by?: string;
+  /** 健康洞察过滤（2026-10-07）：active/expired/expiring_soon/never_picked/forever */
+  health?: string;
 }
 
 export interface FileItem {

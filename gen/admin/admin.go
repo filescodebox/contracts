@@ -814,6 +814,16 @@ type AdminStatsData struct {
 	TotalSize      int64 `thrift:"total_size,3,required" form:"total_size,required" json:"total_size,required"`
 	TodayUploads   int64 `thrift:"today_uploads,4,required" form:"today_uploads,required" json:"today_uploads,required"`
 	TodayDownloads int64 `thrift:"today_downloads,5,required" form:"today_downloads,required" json:"today_downloads,required"`
+	// 文件健康洞察维度（2026-10-07 对标上游 dashboard；全部为存活记录口径）
+	ActiveFiles int64 `thrift:"active_files,6,required" form:"active_files,required" json:"active_files,required"`
+	// 已过期（时间或次数耗尽）
+	ExpiredFiles int64 `thrift:"expired_files,7,required" form:"expired_files,required" json:"expired_files,required"`
+	// 24h 内即将过期
+	ExpiringSoonFiles int64 `thrift:"expiring_soon_files,8,required" form:"expiring_soon_files,required" json:"expiring_soon_files,required"`
+	// 创建后从未被取件
+	NeverPickedFiles int64 `thrift:"never_picked_files,9,required" form:"never_picked_files,required" json:"never_picked_files,required"`
+	// 永久有效
+	ForeverFiles int64 `thrift:"forever_files,10,required" form:"forever_files,required" json:"forever_files,required"`
 }
 
 func NewAdminStatsData() *AdminStatsData {
@@ -843,12 +853,37 @@ func (p *AdminStatsData) GetTodayDownloads() (v int64) {
 	return p.TodayDownloads
 }
 
+func (p *AdminStatsData) GetActiveFiles() (v int64) {
+	return p.ActiveFiles
+}
+
+func (p *AdminStatsData) GetExpiredFiles() (v int64) {
+	return p.ExpiredFiles
+}
+
+func (p *AdminStatsData) GetExpiringSoonFiles() (v int64) {
+	return p.ExpiringSoonFiles
+}
+
+func (p *AdminStatsData) GetNeverPickedFiles() (v int64) {
+	return p.NeverPickedFiles
+}
+
+func (p *AdminStatsData) GetForeverFiles() (v int64) {
+	return p.ForeverFiles
+}
+
 var fieldIDToName_AdminStatsData = map[int16]string{
-	1: "total_files",
-	2: "total_users",
-	3: "total_size",
-	4: "today_uploads",
-	5: "today_downloads",
+	1:  "total_files",
+	2:  "total_users",
+	3:  "total_size",
+	4:  "today_uploads",
+	5:  "today_downloads",
+	6:  "active_files",
+	7:  "expired_files",
+	8:  "expiring_soon_files",
+	9:  "never_picked_files",
+	10: "forever_files",
 }
 
 func (p *AdminStatsData) Read(iprot thrift.TProtocol) (err error) {
@@ -860,6 +895,11 @@ func (p *AdminStatsData) Read(iprot thrift.TProtocol) (err error) {
 	var issetTotalSize bool = false
 	var issetTodayUploads bool = false
 	var issetTodayDownloads bool = false
+	var issetActiveFiles bool = false
+	var issetExpiredFiles bool = false
+	var issetExpiringSoonFiles bool = false
+	var issetNeverPickedFiles bool = false
+	var issetForeverFiles bool = false
 
 	if _, err = iprot.ReadStructBegin(); err != nil {
 		goto ReadStructBeginError
@@ -920,6 +960,51 @@ func (p *AdminStatsData) Read(iprot thrift.TProtocol) (err error) {
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
+		case 6:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField6(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetActiveFiles = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 7:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField7(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetExpiredFiles = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetExpiringSoonFiles = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 9:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField9(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetNeverPickedFiles = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 10:
+			if fieldTypeId == thrift.I64 {
+				if err = p.ReadField10(iprot); err != nil {
+					goto ReadFieldError
+				}
+				issetForeverFiles = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
 		default:
 			if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
@@ -955,6 +1040,31 @@ func (p *AdminStatsData) Read(iprot thrift.TProtocol) (err error) {
 
 	if !issetTodayDownloads {
 		fieldId = 5
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetActiveFiles {
+		fieldId = 6
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetExpiredFiles {
+		fieldId = 7
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetExpiringSoonFiles {
+		fieldId = 8
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetNeverPickedFiles {
+		fieldId = 9
+		goto RequiredFieldNotSetError
+	}
+
+	if !issetForeverFiles {
+		fieldId = 10
 		goto RequiredFieldNotSetError
 	}
 	return nil
@@ -1030,6 +1140,61 @@ func (p *AdminStatsData) ReadField5(iprot thrift.TProtocol) error {
 	p.TodayDownloads = _field
 	return nil
 }
+func (p *AdminStatsData) ReadField6(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ActiveFiles = _field
+	return nil
+}
+func (p *AdminStatsData) ReadField7(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ExpiredFiles = _field
+	return nil
+}
+func (p *AdminStatsData) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ExpiringSoonFiles = _field
+	return nil
+}
+func (p *AdminStatsData) ReadField9(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.NeverPickedFiles = _field
+	return nil
+}
+func (p *AdminStatsData) ReadField10(iprot thrift.TProtocol) error {
+
+	var _field int64
+	if v, err := iprot.ReadI64(); err != nil {
+		return err
+	} else {
+		_field = v
+	}
+	p.ForeverFiles = _field
+	return nil
+}
 
 func (p *AdminStatsData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1055,6 +1220,26 @@ func (p *AdminStatsData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField5(oprot); err != nil {
 			fieldId = 5
+			goto WriteFieldError
+		}
+		if err = p.writeField6(oprot); err != nil {
+			fieldId = 6
+			goto WriteFieldError
+		}
+		if err = p.writeField7(oprot); err != nil {
+			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
+			goto WriteFieldError
+		}
+		if err = p.writeField9(oprot); err != nil {
+			fieldId = 9
+			goto WriteFieldError
+		}
+		if err = p.writeField10(oprot); err != nil {
+			fieldId = 10
 			goto WriteFieldError
 		}
 	}
@@ -1158,6 +1343,91 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
+}
+
+func (p *AdminStatsData) writeField6(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("active_files", thrift.I64, 6); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ActiveFiles); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 6 end error: ", p), err)
+}
+
+func (p *AdminStatsData) writeField7(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("expired_files", thrift.I64, 7); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ExpiredFiles); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *AdminStatsData) writeField8(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("expiring_soon_files", thrift.I64, 8); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ExpiringSoonFiles); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
+}
+
+func (p *AdminStatsData) writeField9(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("never_picked_files", thrift.I64, 9); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.NeverPickedFiles); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 9 end error: ", p), err)
+}
+
+func (p *AdminStatsData) writeField10(oprot thrift.TProtocol) (err error) {
+	if err = oprot.WriteFieldBegin("forever_files", thrift.I64, 10); err != nil {
+		goto WriteFieldBeginError
+	}
+	if err := oprot.WriteI64(p.ForeverFiles); err != nil {
+		return err
+	}
+	if err = oprot.WriteFieldEnd(); err != nil {
+		goto WriteFieldEndError
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 10 end error: ", p), err)
 }
 
 func (p *AdminStatsData) String() string {
@@ -1434,6 +1704,8 @@ type AdminListFilesReq struct {
 	PageSize int32   `thrift:"page_size,2,required" json:"page_size,required" query:"page_size,required"`
 	Keyword  *string `thrift:"keyword,3,optional" json:"keyword,omitempty" query:"keyword"`
 	SortBy   *string `thrift:"sort_by,4,optional" json:"sort_by,omitempty" query:"sort_by"`
+	// 健康洞察过滤（2026-10-07）：active/expired/expiring_soon/never_picked/forever
+	Health *string `thrift:"health,5,optional" json:"health,omitempty" query:"health"`
 }
 
 func NewAdminListFilesReq() *AdminListFilesReq {
@@ -1469,11 +1741,21 @@ func (p *AdminListFilesReq) GetSortBy() (v string) {
 	return *p.SortBy
 }
 
+var AdminListFilesReq_Health_DEFAULT string
+
+func (p *AdminListFilesReq) GetHealth() (v string) {
+	if !p.IsSetHealth() {
+		return AdminListFilesReq_Health_DEFAULT
+	}
+	return *p.Health
+}
+
 var fieldIDToName_AdminListFilesReq = map[int16]string{
 	1: "page",
 	2: "page_size",
 	3: "keyword",
 	4: "sort_by",
+	5: "health",
 }
 
 func (p *AdminListFilesReq) IsSetKeyword() bool {
@@ -1482,6 +1764,10 @@ func (p *AdminListFilesReq) IsSetKeyword() bool {
 
 func (p *AdminListFilesReq) IsSetSortBy() bool {
 	return p.SortBy != nil
+}
+
+func (p *AdminListFilesReq) IsSetHealth() bool {
+	return p.Health != nil
 }
 
 func (p *AdminListFilesReq) Read(iprot thrift.TProtocol) (err error) {
@@ -1534,6 +1820,14 @@ func (p *AdminListFilesReq) Read(iprot thrift.TProtocol) (err error) {
 		case 4:
 			if fieldTypeId == thrift.STRING {
 				if err = p.ReadField4(iprot); err != nil {
+					goto ReadFieldError
+				}
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 5:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField5(iprot); err != nil {
 					goto ReadFieldError
 				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
@@ -1623,6 +1917,17 @@ func (p *AdminListFilesReq) ReadField4(iprot thrift.TProtocol) error {
 	p.SortBy = _field
 	return nil
 }
+func (p *AdminListFilesReq) ReadField5(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.Health = _field
+	return nil
+}
 
 func (p *AdminListFilesReq) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1644,6 +1949,10 @@ func (p *AdminListFilesReq) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField4(oprot); err != nil {
 			fieldId = 4
+			goto WriteFieldError
+		}
+		if err = p.writeField5(oprot); err != nil {
+			fieldId = 5
 			goto WriteFieldError
 		}
 	}
@@ -1734,6 +2043,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 4 end error: ", p), err)
+}
+
+func (p *AdminListFilesReq) writeField5(oprot thrift.TProtocol) (err error) {
+	if p.IsSetHealth() {
+		if err = oprot.WriteFieldBegin("health", thrift.STRING, 5); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.Health); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 5 end error: ", p), err)
 }
 
 func (p *AdminListFilesReq) String() string {
