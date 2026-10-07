@@ -3,7 +3,7 @@
 # gen-model.sh — 从 idl/*.thrift 再生成纯模型类型到 gen/<domain>/
 #
 # 本仓是契约层单一真相源:IDL 定义与生成产物都在本仓内,
-# 不再依赖旧单体仓库(此前需回 FileCodeBox/backend 跑 make gen 再手工拷贝)。
+# 不再依赖旧单体仓库(此前需回 PigeonBox/backend 跑 make gen 再手工拷贝)。
 #
 # 依赖: hz + thriftgo(版本需与既有产物一致,一键安装见 scripts/install-tools.sh)
 # 产物: gen/<domain>/*.go(仅 model 纯类型,无 handler/router)
@@ -14,7 +14,7 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
-MODULE="github.com/filescodebox/contracts"
+MODULE="github.com/pigeonbox/contracts"
 IDL_DIR="idl"
 GEN_DIR="gen"
 HZ_VERSION="v0.9.7"

@@ -35,8 +35,8 @@
 // 命名规范
 // =====================================================================
 //
-// namespace go <service>.<sub>     例：namespace go filecodebox.user
-//                                       → Go package: filecodebox/user
+// namespace go <service>.<sub>     例：namespace go pigeonbox.user
+//                                       → Go package: pigeonbox/user
 //                                       → import path: backend/gen/http/model/user
 //
 // type 命名：XXXReq / XXXResp（保留 proto 时期的命名）

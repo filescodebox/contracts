@@ -12,7 +12,7 @@
 //
 // 跨域同名类型(现网 BaseConfig/StorageConfig/EmptyReq)由命名空间隔离,
 // 故 index 不做顶层 export *;消费方
-// `import type { share } from '@filescodebox/contracts'` 后按 share.ShareDetail 取用。
+// `import type { share } from '@pigeonbox/contracts'` 后按 share.ShareDetail 取用。
 //
 // 类型映射:i*/double → number(JSON 反序列化本就是 number,现网值域(时间戳/
 // 字节数)远低于 2^53;未来出现大整数场景在消费侧转 bigint/string,勿在此全局改动);

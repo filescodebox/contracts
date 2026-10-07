@@ -1,4 +1,4 @@
-module github.com/filescodebox/contracts
+module github.com/pigeonbox/contracts
 
 go 1.26.5
 

@@ -3543,7 +3543,7 @@
   },
   "info": {
     "description": "由 contracts idl/*.thrift 经 cmd/gen-openapi 生成（勿手改）。仅覆盖 IDL 治理域；customizedRegister 手写路由由 core 在运行时合并补充骨架。",
-    "title": "FilesCodeBox API",
+    "title": "PigeonBox API",
     "version": "contracts-idl"
   },
   "openapi": "3.0.3",

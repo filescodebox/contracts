@@ -40,7 +40,7 @@
 
 // GET /version
 {
-    "name": "filescodebox",
+    "name": "pigeonbox",
     "version": "1.0.0",
     "build_time": "2026-01-01T00:00:00Z",
     "git_commit": "abc1234",

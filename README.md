@@ -1,12 +1,12 @@
 # contracts · 契约层
 
-[![CI](https://github.com/filescodebox/contracts/actions/workflows/ci.yml/badge.svg)](https://github.com/filescodebox/contracts/actions/workflows/ci.yml)
-[![Tag](https://img.shields.io/github/v/tag/filescodebox/contracts)](https://github.com/filescodebox/contracts/tags)
-[![License](https://img.shields.io/github/license/filescodebox/contracts)](LICENSE)
+[![CI](https://github.com/pigeonbox/contracts/actions/workflows/ci.yml/badge.svg)](https://github.com/pigeonbox/contracts/actions/workflows/ci.yml)
+[![Tag](https://img.shields.io/github/v/tag/pigeonbox/contracts)](https://github.com/pigeonbox/contracts/tags)
+[![License](https://img.shields.io/github/license/pigeonbox/contracts)](LICENSE)
 
-FilesCodeBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、fnos 等)的单一真相源。
+PigeonBox 契约层:错误码 + Thrift 生成的 API 类型。纯类型、零业务依赖,是前后端与所有实现方(backend core、fnos 等)的单一真相源。
 
-> 🗂️ [FilesCodeBox 生态](https://github.com/orgs/filescodebox)成员仓 · 总览见 [装配仓 filescodebox](https://github.com/filescodebox/filescodebox) · [架构图集](https://github.com/filescodebox/filescodebox/blob/main/docs/architecture.md)
+> 🗂️ [PigeonBox 生态](https://github.com/orgs/pigeonbox)成员仓 · 总览见 [装配仓 pigeonbox](https://github.com/pigeonbox/pigeonbox) · [架构图集](https://github.com/pigeonbox/pigeonbox/blob/main/docs/architecture.md)
 
 ## 内容
 
@@ -41,15 +41,15 @@ go run ./cmd/gen-openapi            # 再生成 openapi/openapi.json(--check 只
 go run ./cmd/gen-ts                 # 再生成 gen/ts/*.d.ts(--check 只校验)
 ```
 
-> 历史说明: 生成曾依赖旧单体仓库 FileCodeBox/backend 的 `make gen` + 手工拷贝,
+> 历史说明: 生成曾依赖旧单体仓库 PigeonBox/backend 的 `make gen` + 手工拷贝,
 > 现已内聚到本仓(idl/ 与生成脚本于 2026-10 自单体迁入)。
 
 ## 引用方式
 
 ```go
 import (
-    "github.com/filescodebox/contracts/errcode"
-    "github.com/filescodebox/contracts/gen/share"
+    "github.com/pigeonbox/contracts/errcode"
+    "github.com/pigeonbox/contracts/gen/share"
 )
 ```
 
@@ -58,17 +58,17 @@ import (
 ## 前端(TypeScript)消费
 
 `gen/ts/` 是从同一份 IDL 生成的纯类型声明(零 runtime)。打 `v*` tag 时 Release
-工作流自动把类型包成 npm tgz 挂到本仓 Release(`filescodebox-contracts-<ver>.tgz`,
+工作流自动把类型包成 npm tgz 挂到本仓 Release(`pigeonbox-contracts-<ver>.tgz`,
 版本与 tag 对齐),前端以 Release 资产 URL 直接依赖——**匿名 https,Docker/CI
 构建免 git 免 npm registry,版本钉定与 tag 严格一致**:
 
 ```jsonc
 // frontend package.json
-"@filescodebox/contracts": "https://github.com/filescodebox/contracts/releases/download/v0.6.5/filescodebox-contracts-0.6.5.tgz"
+"@pigeonbox/contracts": "https://github.com/pigeonbox/contracts/releases/download/v0.6.5/pigeonbox-contracts-0.6.5.tgz"
 ```
 
 ```ts
-import type { share, admin } from '@filescodebox/contracts';
+import type { share, admin } from '@pigeonbox/contracts';
 
 type Detail = share.ShareDetail;
 const req: admin.AdminListFilesReq = { /* ... */ };
