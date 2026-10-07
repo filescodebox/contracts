@@ -64,7 +64,7 @@ import (
 
 ```jsonc
 // frontend package.json
-"@pigeonbox/contracts": "https://github.com/pigeonbox/contracts/releases/download/v0.6.5/pigeonbox-contracts-0.6.5.tgz"
+"@pigeonbox/contracts": "https://github.com/pigeonbox/contracts/releases/download/v0.8.0/pigeonbox-contracts-0.8.0.tgz"
 ```
 
 ```ts
