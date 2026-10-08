@@ -1,0 +1,9 @@
+# gitleaks 配置（CI Security Scan 与本地 `gitleaks detect` 自动读取）。
+# 默认规则全量继承，仅豁免已核实误报——豁免必须写明理由，禁止无说明扩条。
+[extend]
+useDefault = true
+
+# thrift IDL 的 api.* 注解是字段映射声明（编译进 contracts 模型），不是密钥
+[[allowlists]]
+description = "IDL 注解 api.body/api.query 等为字段映射声明"
+paths = ['''^idl/.*\.thrift$''']
