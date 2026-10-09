@@ -99,3 +99,91 @@ export interface DownloadFileResp {
   code: number;
   message: string;
 }
+
+/**
+ * ==================== 用户分享管理（/api/v1/user/shares） ====================
+ * 2026-10-09 IDL 化：此前为 customHandler 手写契约（Go UserShareListItem + 前端
+ * 手抄 UserShareItem 双维护，pickup_code 类字段变更被迫两端手工同步），收敛回
+ * IDL 真相源。字段与历史 JSON 逐一对外兼容（前端零改动）。
+ */
+export interface UserSharesListReq {
+  /** all/active/expired/text/file/deleted */
+  status?: string;
+  /** 分享码/取件码/文件名模糊 */
+  search?: string;
+  page?: number;
+  page_size?: number;
+}
+
+export interface UserShareItemData {
+  id: number;
+  code: string;
+  /** 6 位取件码（落库持久化；空 = 未铸造：E2E/历史数据） */
+  pickup_code?: string;
+  prefix: string;
+  suffix: string;
+  file_name: string;
+  file_path: string;
+  size: number;
+  text: string;
+  /** RFC3339Nano */
+  expired_at?: string;
+  /** -1=无限, 0=耗尽, >0=剩余 */
+  expired_count: number;
+  used_count: number;
+  require_auth: boolean;
+  upload_type: string;
+  /** RFC3339Nano */
+  created_at: string;
+  updated_at: string;
+  /** 回收站 */
+  deleted_at?: string;
+  viewer_ip: string;
+  viewer_at?: string;
+  viewer_count: number;
+  is_expired: boolean;
+  is_text_share: boolean;
+  /** normal/blocked/pending_review */
+  status: string;
+  /** P0 多文件：子文件数 */
+  file_count: number;
+}
+
+export interface UserSharesListData {
+  items: UserShareItemData[];
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  has_next: boolean;
+  has_prev: boolean;
+}
+
+export interface UserSharesListResp {
+  code: number;
+  message: string;
+  data?: UserSharesListData;
+}
+
+export interface UserShareCodesReq {
+  codes: string[];
+}
+
+export interface UserShareBatchExtendReq {
+  codes: string[];
+  /** 延长小时数（>0） */
+  hours?: number;
+  /** true = 设为永久 */
+  forever?: boolean;
+}
+
+export interface UserShareCodeReq {
+  code: string;
+}
+
+/** 批量操作返回受影响计数（键随操作：deleted/extended）；单操作可空 */
+export interface UserShareOpResp {
+  code: number;
+  message: string;
+  data?: Record<string, number>;
+}

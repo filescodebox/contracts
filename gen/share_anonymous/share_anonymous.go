@@ -1282,6 +1282,9 @@ type RetrieveData struct {
 	// Unix 时间戳
 	ExpireAt        int64 `thrift:"expire_at,6,required" form:"expire_at,required" json:"expire_at,required"`
 	RequirePassword bool  `thrift:"require_password,7,required" form:"require_password,required" json:"require_password,required"`
+	// 文本分享取件时返回：取件结果页无文本渲染形态，前端凭此跳 /share/{share_code}
+	// 详情页展示；文件分享恒空（走 download_url 下载，不回传分享码）。
+	ShareCode *string `thrift:"share_code,8,optional" form:"share_code" json:"share_code,omitempty"`
 }
 
 func NewRetrieveData() *RetrieveData {
@@ -1319,6 +1322,15 @@ func (p *RetrieveData) GetRequirePassword() (v bool) {
 	return p.RequirePassword
 }
 
+var RetrieveData_ShareCode_DEFAULT string
+
+func (p *RetrieveData) GetShareCode() (v string) {
+	if !p.IsSetShareCode() {
+		return RetrieveData_ShareCode_DEFAULT
+	}
+	return *p.ShareCode
+}
+
 var fieldIDToName_RetrieveData = map[int16]string{
 	1: "file_name",
 	2: "file_size",
@@ -1327,6 +1339,11 @@ var fieldIDToName_RetrieveData = map[int16]string{
 	5: "remaining_count",
 	6: "expire_at",
 	7: "require_password",
+	8: "share_code",
+}
+
+func (p *RetrieveData) IsSetShareCode() bool {
+	return p.ShareCode != nil
 }
 
 func (p *RetrieveData) Read(iprot thrift.TProtocol) (err error) {
@@ -1415,6 +1432,14 @@ func (p *RetrieveData) Read(iprot thrift.TProtocol) (err error) {
 					goto ReadFieldError
 				}
 				issetRequirePassword = true
+			} else if err = iprot.Skip(fieldTypeId); err != nil {
+				goto SkipFieldError
+			}
+		case 8:
+			if fieldTypeId == thrift.STRING {
+				if err = p.ReadField8(iprot); err != nil {
+					goto ReadFieldError
+				}
 			} else if err = iprot.Skip(fieldTypeId); err != nil {
 				goto SkipFieldError
 			}
@@ -1560,6 +1585,17 @@ func (p *RetrieveData) ReadField7(iprot thrift.TProtocol) error {
 	p.RequirePassword = _field
 	return nil
 }
+func (p *RetrieveData) ReadField8(iprot thrift.TProtocol) error {
+
+	var _field *string
+	if v, err := iprot.ReadString(); err != nil {
+		return err
+	} else {
+		_field = &v
+	}
+	p.ShareCode = _field
+	return nil
+}
 
 func (p *RetrieveData) Write(oprot thrift.TProtocol) (err error) {
 	var fieldId int16
@@ -1593,6 +1629,10 @@ func (p *RetrieveData) Write(oprot thrift.TProtocol) (err error) {
 		}
 		if err = p.writeField7(oprot); err != nil {
 			fieldId = 7
+			goto WriteFieldError
+		}
+		if err = p.writeField8(oprot); err != nil {
+			fieldId = 8
 			goto WriteFieldError
 		}
 	}
@@ -1730,6 +1770,25 @@ WriteFieldBeginError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 begin error: ", p), err)
 WriteFieldEndError:
 	return thrift.PrependError(fmt.Sprintf("%T write field 7 end error: ", p), err)
+}
+
+func (p *RetrieveData) writeField8(oprot thrift.TProtocol) (err error) {
+	if p.IsSetShareCode() {
+		if err = oprot.WriteFieldBegin("share_code", thrift.STRING, 8); err != nil {
+			goto WriteFieldBeginError
+		}
+		if err := oprot.WriteString(*p.ShareCode); err != nil {
+			return err
+		}
+		if err = oprot.WriteFieldEnd(); err != nil {
+			goto WriteFieldEndError
+		}
+	}
+	return nil
+WriteFieldBeginError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 begin error: ", p), err)
+WriteFieldEndError:
+	return thrift.PrependError(fmt.Sprintf("%T write field 8 end error: ", p), err)
 }
 
 func (p *RetrieveData) String() string {

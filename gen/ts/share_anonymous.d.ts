@@ -51,6 +51,11 @@ export interface RetrieveData {
   /** Unix 时间戳 */
   expire_at: number;
   require_password: boolean;
+  /**
+ * 文本分享取件时返回：取件结果页无文本渲染形态，前端凭此跳 /share/{share_code}
+ * 详情页展示；文件分享恒空（走 download_url 下载，不回传分享码）。
+ */
+  share_code?: string;
 }
 
 export interface RetrieveResp {

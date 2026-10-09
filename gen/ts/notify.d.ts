@@ -126,3 +126,61 @@ export interface DeleteResp {
   code: number;
   message: string;
 }
+
+/** ==================== 我的通知（登录用户，2026-10-09 自 customHandler 收敛进 IDL） ==================== */
+export interface MineReq {
+  page?: number;
+  page_size?: number;
+}
+
+export interface UserNotifyItemData {
+  id: number;
+  title: string;
+  content: string;
+  type: string;
+  level: string;
+  /** RFC3339Nano；缺省 = 未读 */
+  read_at?: string;
+  created_at: string;
+  is_read: boolean;
+}
+
+export interface MineData {
+  items: UserNotifyItemData[];
+  total: number;
+  unread: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+}
+
+export interface MineResp {
+  code: number;
+  message: string;
+  data?: MineData;
+}
+
+export interface UnreadCountData {
+  unread: number;
+}
+
+export interface UnreadCountResp {
+  code: number;
+  message: string;
+  data?: UnreadCountData;
+}
+
+export interface MarkReadReq {
+  /** true = 全部已读（当前仅支持全部已读） */
+  all?: boolean;
+}
+
+export interface MarkReadData {
+  marked: number;
+}
+
+export interface MarkReadResp {
+  code: number;
+  message: string;
+  data?: MarkReadData;
+}

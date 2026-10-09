@@ -132,6 +132,63 @@ struct DeleteResp {
     2: required string message (api.body = "message"),
 }
 
+// ==================== 我的通知（登录用户，2026-10-09 自 customHandler 收敛进 IDL） ====================
+
+struct MineReq {
+    1: optional i32 page      (api.query = "page"),
+    2: optional i32 page_size (api.query = "page_size"),
+}
+
+struct UserNotifyItemData {
+    1: required i64    id         (api.body = "id"),
+    2: required string title      (api.body = "title"),
+    3: required string content    (api.body = "content"),
+    4: required string type       (api.body = "type"),
+    5: required string level      (api.body = "level"),
+    6: optional string read_at    (api.body = "read_at"),   // RFC3339Nano；缺省 = 未读
+    7: required string created_at (api.body = "created_at"),
+    8: required bool   is_read    (api.body = "is_read"),
+}
+
+struct MineData {
+    1: required list<UserNotifyItemData> items       (api.body = "items"),
+    2: required i64  total       (api.body = "total"),
+    3: required i64  unread      (api.body = "unread"),
+    4: required i32  page        (api.body = "page"),
+    5: required i32  page_size   (api.body = "page_size"),
+    6: required i64  total_pages (api.body = "total_pages"),
+}
+
+struct MineResp {
+    1: required i32     code    (api.body = "code"),
+    2: required string  message (api.body = "message"),
+    3: optional MineData data   (api.body = "data"),
+}
+
+struct UnreadCountData {
+    1: required i64 unread (api.body = "unread"),
+}
+
+struct UnreadCountResp {
+    1: required i32             code    (api.body = "code"),
+    2: required string          message (api.body = "message"),
+    3: optional UnreadCountData data    (api.body = "data"),
+}
+
+struct MarkReadReq {
+    1: optional bool all (api.body = "all"),  // true = 全部已读（当前仅支持全部已读）
+}
+
+struct MarkReadData {
+    1: required i64 marked (api.body = "marked"),
+}
+
+struct MarkReadResp {
+    1: required i32     code    (api.body = "code"),
+    2: required string  message (api.body = "message"),
+    3: optional MarkReadData data (api.body = "data"),
+}
+
 // ==================== 服务定义 ====================
 
 service NotifyService {
@@ -152,4 +209,15 @@ service NotifyService {
 
     // Delete 删除
     DeleteResp Delete(1: DeleteReq req) (api.delete = "/admin/notifies/:id")
+
+    // ==================== 我的通知（2026-10-09 IDL 化；认证=JWT/API Key 二选一） ====================
+
+    // Mine 我的通知列表（含广播 + 定向）
+    MineResp Mine(1: MineReq req) (api.get = "/api/v1/notifies/mine")
+
+    // UnreadCount 未读数（未登录防御性返回 0——历史语义，路由层实际拦截）
+    UnreadCountResp UnreadCount(1: MineReq req) (api.get = "/api/v1/notifies/unread-count")
+
+    // MarkRead 标记已读（当前仅支持 all=true）
+    MarkReadResp MarkRead(1: MarkReadReq req) (api.post = "/api/v1/notifies/mark-read")
 }

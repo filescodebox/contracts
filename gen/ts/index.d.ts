@@ -12,6 +12,7 @@ export type * as presign from './presign';
 export type * as preview from './preview';
 export type * as qrcode from './qrcode';
 export type * as ratelimit from './ratelimit';
+export type * as request from './request';
 export type * as setup from './setup';
 export type * as share from './share';
 export type * as share_anonymous from './share_anonymous';
