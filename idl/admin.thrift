@@ -177,6 +177,304 @@ struct AdminUpdateConfigResp {
     2: required string message (api.body = "message"),
 }
 
+// ==================== 管理端增强（2026-10-10 IDL 化收编） ====================
+// 迁移注记：20 个管理端 handler（用户 CRUD / 文件管理 / 富统计 / 传输日志 /
+// 分享治理）由 customHandler 手写路由（transport/http/handler/admin_manage.go）
+// 迁入本契约 + gen 层。信封沿用 pkg/resp 助手（成功 code=0/"success"+trace_id，
+// 错误=业务码），与迁移前逐字段保形；仅 /admin/files/filter 与 /admin/logs/transfer
+// 走 legacy 信封（code=200 + data{items,total,page,page_size}），其 item 字段为
+// 手工小写 snake_case，逐字段保形。本结构仅作契约/文档（wire 由 gen handler 的
+// resp 助手产出），复杂领域对象（UserResp/UserSettings/EnhancedStats 等）以空
+// 结构占位、语义见注释（同 AdminConfigData 先例）。
+
+// ---- 通用操作结果数据 ----
+struct AdminAffectedData { 1: required i64 affected  (api.body = "affected") }
+struct AdminDeletedData  { 1: required i64 deleted   (api.body = "deleted") }
+struct AdminRestoredData { 1: required i64 restored  (api.body = "restored") }
+struct AdminPurgedData   { 1: required i64 purged    (api.body = "purged") }
+struct AdminExtendedData { 1: required i64 extended  (api.body = "extended") }
+
+// data = model.UserResp 全量 JSON（用户 CRUD 读写回显）
+struct AdminManageUserData {}
+// data = adminapp.UserSettings JSON（注册开关/配额默认/会话时长）
+struct AdminUserSettingsData {}
+// data = app/admin.EnhancedStats JSON（昨日对比/下载总量/top 后缀/类型分布/存储用量）
+struct AdminEnhancedStatsData {}
+// data.days 项 = app/admin.TrendDay（日期 + uploads/downloads 计数，缺失日补 0）
+struct AdminTrendDayData {}
+// data.share = model.FileCode 全量 JSON
+struct AdminShareDetailData {}
+
+// ---- 用户管理（CRUD 补齐） ----
+struct AdminCreateUserReq {
+    1: required string username         (api.body = "username"),
+    2: optional string email            (api.body = "email"),
+    3: required string password         (api.body = "password"),
+    4: optional string nickname         (api.body = "nickname"),
+    5: optional string role             (api.body = "role"),             // admin/user
+    6: optional i64    max_storage_quota (api.body = "max_storage_quota"),
+}
+struct AdminCreateUserResp {
+    1: required i32                 code    (api.body = "code"),
+    2: required string              message (api.body = "message"),
+    3: optional AdminManageUserData data    (api.body = "data"),
+}
+
+struct AdminUpdateUserReq {
+    1: required i64    id               (api.path = "id"),
+    2: optional string nickname         (api.body = "nickname"),
+    3: optional string role             (api.body = "role"),             // admin/user
+    4: optional string status           (api.body = "status"),           // active/inactive/banned
+    5: optional i64    max_storage_quota (api.body = "max_storage_quota"),
+    6: optional i64    max_upload_size  (api.body = "max_upload_size"),
+}
+struct AdminUpdateUserResp {
+    1: required i32                 code    (api.body = "code"),
+    2: required string              message (api.body = "message"),
+    3: optional AdminManageUserData data    (api.body = "data"),
+}
+
+struct AdminUserIdReq {
+    1: required i64 id (api.path = "id"),
+}
+struct AdminDeleteUserResp {
+    1: required i32    code    (api.body = "code"),
+    2: required string message (api.body = "message"),
+}
+
+struct AdminResetUserPasswordReq {
+    1: required i64    id       (api.path = "id"),
+    2: required string password (api.body = "password"),   // ≥6 位
+}
+struct AdminResetUserPasswordResp {
+    1: required i32    code    (api.body = "code"),
+    2: required string message (api.body = "message"),
+}
+
+struct AdminListUsersFilteredReq {
+    1: optional string keyword   (api.query = "keyword"),
+    2: optional string status    (api.query = "status"),
+    3: optional string role      (api.query = "role"),
+    4: optional i32    page      (api.query = "page"),
+    5: optional i32    page_size (api.query = "page_size"),
+}
+struct AdminUserListPage {
+    1: required list<AdminManageUserData> list      (api.body = "list"),
+    2: required i64                       total     (api.body = "total"),
+    3: required i32                       page      (api.body = "page"),
+    4: required i32                       page_size (api.body = "page_size"),
+}
+struct AdminListUsersFilteredResp {
+    1: required i32              code    (api.body = "code"),
+    2: required string           message (api.body = "message"),
+    3: optional AdminUserListPage data   (api.body = "data"),
+}
+
+// ---- 文件管理（详情/编辑/批量/下载） ----
+struct AdminFileDetailFileItem {
+    1: required i64    id   (api.body = "id"),
+    2: required string name (api.body = "name"),
+    3: required i64    size (api.body = "size"),
+    4: required string hash (api.body = "hash"),
+}
+struct AdminFileDetailData {
+    1: required AdminShareDetailData         share      (api.body = "share"),
+    2: required list<AdminFileDetailFileItem> files      (api.body = "files"),
+    3: required i64                          file_count (api.body = "file_count"),
+}
+struct AdminFileDetailResp {
+    1: required i32                code    (api.body = "code"),
+    2: required string             message (api.body = "message"),
+    3: optional AdminFileDetailData data   (api.body = "data"),
+}
+
+// body = adminapp.UserSettings JSON（注册开关/配额默认/会话时长），写穿 DB 即时生效
+struct AdminGetUserSettingsReq {}
+struct AdminGetUserSettingsResp {
+    1: required i32                   code    (api.body = "code"),
+    2: required string                message (api.body = "message"),
+    3: optional AdminUserSettingsData data    (api.body = "data"),
+}
+
+struct AdminUpdateUserSettingsReq {}
+struct AdminUpdateUserSettingsResp {
+    1: required i32               code    (api.body = "code"),
+    2: required string            message (api.body = "message"),
+    3: optional AdminAffectedData data    (api.body = "data"),
+}
+
+struct AdminUpdateFileReq {
+    1: required i64    id            (api.path = "id"),
+    2: optional i32    expire_value  (api.body = "expire_value"),
+    3: optional string expire_style  (api.body = "expire_style"),
+    4: optional i32    expired_count (api.body = "expired_count"),
+}
+struct AdminUpdateFileResp {
+    1: required i32    code    (api.body = "code"),
+    2: required string message (api.body = "message"),
+}
+
+struct AdminFileIdsReq {
+    1: required list<i64> ids (api.body = "ids"),
+}
+struct AdminBatchDeleteFilesResp {
+    1: required i32             code    (api.body = "code"),
+    2: required string          message (api.body = "message"),
+    3: optional AdminDeletedData data   (api.body = "data"),
+}
+struct AdminRestoreFilesResp {
+    1: required i32              code    (api.body = "code"),
+    2: required string           message (api.body = "message"),
+    3: optional AdminRestoredData data   (api.body = "data"),
+}
+struct AdminPurgeFilesResp {
+    1: required i32            code    (api.body = "code"),
+    2: required string         message (api.body = "message"),
+    3: optional AdminPurgedData data   (api.body = "data"),
+}
+
+struct AdminBatchExtendFilesReq {
+    1: required list<i64> ids          (api.body = "ids"),
+    2: required i32      expire_value  (api.body = "expire_value"),
+    3: required string   expire_style  (api.body = "expire_style"),
+}
+struct AdminBatchExtendFilesResp {
+    1: required i32              code    (api.body = "code"),
+    2: required string           message (api.body = "message"),
+    3: optional AdminExtendedData data   (api.body = "data"),
+}
+
+// 管理端下载：302 到公开下载端点（附服务端签发下载令牌），Resp 空
+struct AdminDownloadFileReq {
+    1: required i64 id (api.path = "id"),
+}
+struct AdminDownloadFileResp {
+    1: required i32    code    (api.body = "code"),
+    2: required string message (api.body = "message"),
+}
+
+// ---- Dashboard 富统计 ----
+struct AdminEnhancedStatsReq {}
+struct AdminEnhancedStatsResp {
+    1: required i32                   code    (api.body = "code"),
+    2: required string                message (api.body = "message"),
+    3: optional AdminEnhancedStatsData data   (api.body = "data"),
+}
+
+struct AdminStatsTrendReq {
+    1: optional i32 days (api.query = "days"),   // 1..30，缺省 7
+}
+struct AdminStatsTrendData {
+    1: required list<AdminTrendDayData> days (api.body = "days"),
+}
+struct AdminStatsTrendResp {
+    1: required i32               code    (api.body = "code"),
+    2: required string            message (api.body = "message"),
+    3: optional AdminStatsTrendData data   (api.body = "data"),
+}
+
+// ---- 传输日志（legacy 信封：code=200 + data{items,total,page,page_size}） ----
+// item 字段为手工小写 snake_case（gorm.Model 默认序列化为大写，此处显式映射）。
+struct TransferLogItem {
+    1: required i64    id          (api.body = "id"),
+    2: required string operation   (api.body = "operation"),
+    3: required string file_code   (api.body = "file_code"),
+    4: required string file_name   (api.body = "file_name"),
+    5: required i64    file_size   (api.body = "file_size"),
+    6: required string username    (api.body = "username"),
+    7: required string ip          (api.body = "ip"),
+    8: required i64    duration_ms (api.body = "duration_ms"),
+    9: required string created_at  (api.body = "created_at"),
+}
+struct AdminTransferLogPage {
+    1: required list<TransferLogItem> items     (api.body = "items"),
+    2: required i64                   total     (api.body = "total"),
+    3: required i32                   page      (api.body = "page"),
+    4: required i32                   page_size (api.body = "page_size"),
+}
+struct AdminTransferLogsReq {
+    1: optional i32    page      (api.query = "page"),
+    2: optional i32    page_size (api.query = "page_size"),
+    3: optional string operation (api.query = "operation"),
+    4: optional string keyword   (api.query = "keyword"),
+}
+struct AdminTransferLogsResp {
+    1: required i32                 code    (api.body = "code"),
+    2: required string              message (api.body = "message"),
+    3: required AdminTransferLogPage data   (api.body = "data"),
+}
+
+// ---- 分享治理（legacy 信封：code=200 + data{items,total,page,page_size}） ----
+// item 字段为手工小写 snake_case（含管控字段；owner_ip 仅管理端可见）。
+struct FileGovernanceItem {
+    1: required i64    id            (api.body = "id"),
+    2: required string code          (api.body = "code"),
+    3: required string file_name     (api.body = "file_name"),
+    4: required bool   is_text       (api.body = "is_text"),
+    5: required string text_preview  (api.body = "text_preview"),
+    6: required i64    size          (api.body = "size"),
+    7: optional string expired_at    (api.body = "expired_at"),
+    8: required i32    expired_count (api.body = "expired_count"),
+    9: required i32    used_count    (api.body = "used_count"),
+    10: required i32   viewer_count  (api.body = "viewer_count"),
+    11: required string status       (api.body = "status"),
+    12: required string upload_type  (api.body = "upload_type"),
+    13: optional i64   user_id       (api.body = "user_id"),
+    14: required string owner_ip     (api.body = "owner_ip"),
+    15: required bool  require_auth  (api.body = "require_auth"),
+    16: required string created_at   (api.body = "created_at"),
+    17: required bool  deleted       (api.body = "deleted"),
+    18: required i64   file_count    (api.body = "file_count"),
+}
+struct AdminFileGovernancePage {
+    1: required list<FileGovernanceItem> items     (api.body = "items"),
+    2: required i64                      total     (api.body = "total"),
+    3: required i32                      page      (api.body = "page"),
+    4: required i32                      page_size (api.body = "page_size"),
+}
+struct AdminListFilesFilteredReq {
+    1: optional string keyword        (api.query = "keyword"),
+    2: optional i64    user_id        (api.query = "user_id"),
+    3: optional string upload_type    (api.query = "upload_type"),
+    4: optional string owner_ip       (api.query = "owner_ip"),
+    5: optional string status         (api.query = "status"),
+    6: optional i64    min_size       (api.query = "min_size"),
+    7: optional i64    max_size       (api.query = "max_size"),
+    8: optional string created_after  (api.query = "created_after"),
+    9: optional string created_before (api.query = "created_before"),
+    10: optional string expired       (api.query = "expired"),
+    11: optional string deleted       (api.query = "deleted"),
+    12: optional string health        (api.query = "health"),
+    13: optional i32   page           (api.query = "page"),
+    14: optional i32   page_size      (api.query = "page_size"),
+}
+struct AdminListFilesFilteredResp {
+    1: required i32                    code    (api.body = "code"),
+    2: required string                 message (api.body = "message"),
+    3: required AdminFileGovernancePage data   (api.body = "data"),
+}
+
+// ---- 分享治理状态机（单个/批量管控） ----
+struct AdminSetFileStatusReq {
+    1: required i64    id     (api.path = "id"),
+    2: required string status (api.body = "status"),   // normal/blocked/pending_review
+}
+struct AdminSetFileStatusResp {
+    1: required i32               code    (api.body = "code"),
+    2: required string            message (api.body = "message"),
+    3: optional AdminAffectedData data    (api.body = "data"),
+}
+
+struct AdminBatchSetFilesStatusReq {
+    1: required list<i64> ids    (api.body = "ids"),
+    2: required string   status  (api.body = "status"),   // normal/blocked/pending_review
+}
+struct AdminBatchSetFilesStatusResp {
+    1: required i32               code    (api.body = "code"),
+    2: required string            message (api.body = "message"),
+    3: optional AdminAffectedData data    (api.body = "data"),
+}
+
 // ==================== 服务定义 ====================
 
 service AdminService {
@@ -203,4 +501,52 @@ service AdminService {
 
     // AdminUpdateConfig 更新系统配置
     AdminUpdateConfigResp AdminUpdateConfig(1: AdminUpdateConfigReq req) (api.put = "/admin/config")
+
+    // ===== 管理端增强（2026-10-10 IDL 化收编，原 admin_manage.go） =====
+
+    // AdminCreateUser 创建用户
+    AdminCreateUserResp AdminCreateUser(1: AdminCreateUserReq req) (api.post = "/admin/users")
+    // AdminUpdateUser 更新用户（昵称/角色/状态/配额）
+    AdminUpdateUserResp AdminUpdateUser(1: AdminUpdateUserReq req) (api.put = "/admin/users/:id")
+    // AdminDeleteUser 删除用户（级联软删分享）
+    AdminDeleteUserResp AdminDeleteUser(1: AdminUserIdReq req) (api.delete = "/admin/users/:id")
+    // AdminResetUserPassword 管理员重置用户密码
+    AdminResetUserPasswordResp AdminResetUserPassword(1: AdminResetUserPasswordReq req) (api.post = "/admin/users/:id/reset-password")
+    // AdminListUsersFiltered 带筛选的用户列表
+    AdminListUsersFilteredResp AdminListUsersFiltered(1: AdminListUsersFilteredReq req) (api.get = "/admin/users/filter")
+
+    // AdminFileDetail 文件详情（含子文件列表）
+    AdminFileDetailResp AdminFileDetail(1: AdminUserIdReq req) (api.get = "/admin/files/:id")
+    // AdminUpdateFile 编辑文件（延期/改剩余次数）
+    AdminUpdateFileResp AdminUpdateFile(1: AdminUpdateFileReq req) (api.put = "/admin/files/:id")
+    // AdminBatchDeleteFiles 批量删除文件
+    AdminBatchDeleteFilesResp AdminBatchDeleteFiles(1: AdminFileIdsReq req) (api.post = "/admin/files/batch-delete")
+    // AdminRestoreFiles 从回收站恢复
+    AdminRestoreFilesResp AdminRestoreFiles(1: AdminFileIdsReq req) (api.post = "/admin/files/restore")
+    // AdminPurgeFiles 彻底删除（DB 硬删+存储对象删除）
+    AdminPurgeFilesResp AdminPurgeFiles(1: AdminFileIdsReq req) (api.post = "/admin/files/purge")
+    // AdminBatchExtendFiles 批量延期
+    AdminBatchExtendFilesResp AdminBatchExtendFiles(1: AdminBatchExtendFilesReq req) (api.post = "/admin/files/batch-extend")
+    // AdminDownloadFile 管理端下载（302 重定向到公开下载端点）
+    AdminDownloadFileResp AdminDownloadFile(1: AdminDownloadFileReq req) (api.get = "/admin/files/:id/download")
+
+    // AdminGetUserSettings 获取"用户配置"段（生效值）
+    AdminGetUserSettingsResp AdminGetUserSettings(1: AdminGetUserSettingsReq req) (api.get = "/admin/config/user")
+    // AdminUpdateUserSettings 在线更新"用户配置"段（写穿 DB 即时生效）
+    AdminUpdateUserSettingsResp AdminUpdateUserSettings(1: AdminUpdateUserSettingsReq req) (api.put = "/admin/config/user")
+
+    // AdminEnhancedStats 富指标（昨日对比/下载总量/top 后缀/类型分布/存储用量）
+    AdminEnhancedStatsResp AdminEnhancedStats(1: AdminEnhancedStatsReq req) (api.get = "/admin/stats/enhanced")
+    // AdminStatsTrend 趋势序列（连续 N 天，缺失日补 0）
+    AdminStatsTrendResp AdminStatsTrend(1: AdminStatsTrendReq req) (api.get = "/admin/stats/trend")
+
+    // AdminTransferLogs 传输日志分页（legacy 信封）
+    AdminTransferLogsResp AdminTransferLogs(1: AdminTransferLogsReq req) (api.get = "/admin/logs/transfer")
+    // AdminListFilesFiltered 管理端文件列表组合过滤（legacy 信封）
+    AdminListFilesFilteredResp AdminListFilesFiltered(1: AdminListFilesFilteredReq req) (api.get = "/admin/files/filter")
+
+    // AdminSetFileStatus 设置单个分享管控状态
+    AdminSetFileStatusResp AdminSetFileStatus(1: AdminSetFileStatusReq req) (api.put = "/admin/files/:id/status")
+    // AdminBatchSetFilesStatus 批量设置分享管控状态
+    AdminBatchSetFilesStatusResp AdminBatchSetFilesStatus(1: AdminBatchSetFilesStatusReq req) (api.post = "/admin/files/batch-status")
 }

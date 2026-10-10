@@ -170,3 +170,358 @@ export interface AdminUpdateConfigResp {
   code: number;
   message: string;
 }
+
+/**
+ * ==================== 管理端增强（2026-10-10 IDL 化收编） ====================
+ * 迁移注记：20 个管理端 handler（用户 CRUD / 文件管理 / 富统计 / 传输日志 /
+ * 分享治理）由 customHandler 手写路由（transport/http/handler/admin_manage.go）
+ * 迁入本契约 + gen 层。信封沿用 pkg/resp 助手（成功 code=0/"success"+trace_id，
+ * 错误=业务码），与迁移前逐字段保形；仅 /admin/files/filter 与 /admin/logs/transfer
+ * 走 legacy 信封（code=200 + data{items,total,page,page_size}），其 item 字段为
+ * 手工小写 snake_case，逐字段保形。本结构仅作契约/文档（wire 由 gen handler 的
+ * resp 助手产出），复杂领域对象（UserResp/UserSettings/EnhancedStats 等）以空
+ * 结构占位、语义见注释（同 AdminConfigData 先例）。
+ * ---- 通用操作结果数据 ----
+ */
+export interface AdminAffectedData {
+  affected: number;
+}
+
+export interface AdminDeletedData {
+  deleted: number;
+}
+
+export interface AdminRestoredData {
+  restored: number;
+}
+
+export interface AdminPurgedData {
+  purged: number;
+}
+
+export interface AdminExtendedData {
+  extended: number;
+}
+
+/** data = model.UserResp 全量 JSON（用户 CRUD 读写回显） */
+export interface AdminManageUserData {}
+
+/** data = adminapp.UserSettings JSON（注册开关/配额默认/会话时长） */
+export interface AdminUserSettingsData {}
+
+/** data = app/admin.EnhancedStats JSON（昨日对比/下载总量/top 后缀/类型分布/存储用量） */
+export interface AdminEnhancedStatsData {}
+
+/** data.days 项 = app/admin.TrendDay（日期 + uploads/downloads 计数，缺失日补 0） */
+export interface AdminTrendDayData {}
+
+/** data.share = model.FileCode 全量 JSON */
+export interface AdminShareDetailData {}
+
+/** ---- 用户管理（CRUD 补齐） ---- */
+export interface AdminCreateUserReq {
+  username: string;
+  email?: string;
+  password: string;
+  nickname?: string;
+  /** admin/user */
+  role?: string;
+  max_storage_quota?: number;
+}
+
+export interface AdminCreateUserResp {
+  code: number;
+  message: string;
+  data?: AdminManageUserData;
+}
+
+export interface AdminUpdateUserReq {
+  id: number;
+  nickname?: string;
+  /** admin/user */
+  role?: string;
+  /** active/inactive/banned */
+  status?: string;
+  max_storage_quota?: number;
+  max_upload_size?: number;
+}
+
+export interface AdminUpdateUserResp {
+  code: number;
+  message: string;
+  data?: AdminManageUserData;
+}
+
+export interface AdminUserIdReq {
+  id: number;
+}
+
+export interface AdminDeleteUserResp {
+  code: number;
+  message: string;
+}
+
+export interface AdminResetUserPasswordReq {
+  id: number;
+  /** ≥6 位 */
+  password: string;
+}
+
+export interface AdminResetUserPasswordResp {
+  code: number;
+  message: string;
+}
+
+export interface AdminListUsersFilteredReq {
+  keyword?: string;
+  status?: string;
+  role?: string;
+  page?: number;
+  page_size?: number;
+}
+
+export interface AdminUserListPage {
+  list: AdminManageUserData[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AdminListUsersFilteredResp {
+  code: number;
+  message: string;
+  data?: AdminUserListPage;
+}
+
+/** ---- 文件管理（详情/编辑/批量/下载） ---- */
+export interface AdminFileDetailFileItem {
+  id: number;
+  name: string;
+  size: number;
+  hash: string;
+}
+
+export interface AdminFileDetailData {
+  share: AdminShareDetailData;
+  files: AdminFileDetailFileItem[];
+  file_count: number;
+}
+
+export interface AdminFileDetailResp {
+  code: number;
+  message: string;
+  data?: AdminFileDetailData;
+}
+
+/** body = adminapp.UserSettings JSON（注册开关/配额默认/会话时长），写穿 DB 即时生效 */
+export interface AdminGetUserSettingsReq {}
+
+export interface AdminGetUserSettingsResp {
+  code: number;
+  message: string;
+  data?: AdminUserSettingsData;
+}
+
+export interface AdminUpdateUserSettingsReq {}
+
+export interface AdminUpdateUserSettingsResp {
+  code: number;
+  message: string;
+  data?: AdminAffectedData;
+}
+
+export interface AdminUpdateFileReq {
+  id: number;
+  expire_value?: number;
+  expire_style?: string;
+  expired_count?: number;
+}
+
+export interface AdminUpdateFileResp {
+  code: number;
+  message: string;
+}
+
+export interface AdminFileIdsReq {
+  ids: number[];
+}
+
+export interface AdminBatchDeleteFilesResp {
+  code: number;
+  message: string;
+  data?: AdminDeletedData;
+}
+
+export interface AdminRestoreFilesResp {
+  code: number;
+  message: string;
+  data?: AdminRestoredData;
+}
+
+export interface AdminPurgeFilesResp {
+  code: number;
+  message: string;
+  data?: AdminPurgedData;
+}
+
+export interface AdminBatchExtendFilesReq {
+  ids: number[];
+  expire_value: number;
+  expire_style: string;
+}
+
+export interface AdminBatchExtendFilesResp {
+  code: number;
+  message: string;
+  data?: AdminExtendedData;
+}
+
+/** 管理端下载：302 到公开下载端点（附服务端签发下载令牌），Resp 空 */
+export interface AdminDownloadFileReq {
+  id: number;
+}
+
+export interface AdminDownloadFileResp {
+  code: number;
+  message: string;
+}
+
+/** ---- Dashboard 富统计 ---- */
+export interface AdminEnhancedStatsReq {}
+
+export interface AdminEnhancedStatsResp {
+  code: number;
+  message: string;
+  data?: AdminEnhancedStatsData;
+}
+
+export interface AdminStatsTrendReq {
+  /** 1..30，缺省 7 */
+  days?: number;
+}
+
+export interface AdminStatsTrendData {
+  days: AdminTrendDayData[];
+}
+
+export interface AdminStatsTrendResp {
+  code: number;
+  message: string;
+  data?: AdminStatsTrendData;
+}
+
+/**
+ * ---- 传输日志（legacy 信封：code=200 + data{items,total,page,page_size}） ----
+ * item 字段为手工小写 snake_case（gorm.Model 默认序列化为大写，此处显式映射）。
+ */
+export interface TransferLogItem {
+  id: number;
+  operation: string;
+  file_code: string;
+  file_name: string;
+  file_size: number;
+  username: string;
+  ip: string;
+  duration_ms: number;
+  created_at: string;
+}
+
+export interface AdminTransferLogPage {
+  items: TransferLogItem[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AdminTransferLogsReq {
+  page?: number;
+  page_size?: number;
+  operation?: string;
+  keyword?: string;
+}
+
+export interface AdminTransferLogsResp {
+  code: number;
+  message: string;
+  data: AdminTransferLogPage;
+}
+
+/**
+ * ---- 分享治理（legacy 信封：code=200 + data{items,total,page,page_size}） ----
+ * item 字段为手工小写 snake_case（含管控字段；owner_ip 仅管理端可见）。
+ */
+export interface FileGovernanceItem {
+  id: number;
+  code: string;
+  file_name: string;
+  is_text: boolean;
+  text_preview: string;
+  size: number;
+  expired_at?: string;
+  expired_count: number;
+  used_count: number;
+  viewer_count: number;
+  status: string;
+  upload_type: string;
+  user_id?: number;
+  owner_ip: string;
+  require_auth: boolean;
+  created_at: string;
+  deleted: boolean;
+  file_count: number;
+}
+
+export interface AdminFileGovernancePage {
+  items: FileGovernanceItem[];
+  total: number;
+  page: number;
+  page_size: number;
+}
+
+export interface AdminListFilesFilteredReq {
+  keyword?: string;
+  user_id?: number;
+  upload_type?: string;
+  owner_ip?: string;
+  status?: string;
+  min_size?: number;
+  max_size?: number;
+  created_after?: string;
+  created_before?: string;
+  expired?: string;
+  deleted?: string;
+  health?: string;
+  page?: number;
+  page_size?: number;
+}
+
+export interface AdminListFilesFilteredResp {
+  code: number;
+  message: string;
+  data: AdminFileGovernancePage;
+}
+
+/** ---- 分享治理状态机（单个/批量管控） ---- */
+export interface AdminSetFileStatusReq {
+  id: number;
+  /** normal/blocked/pending_review */
+  status: string;
+}
+
+export interface AdminSetFileStatusResp {
+  code: number;
+  message: string;
+  data?: AdminAffectedData;
+}
+
+export interface AdminBatchSetFilesStatusReq {
+  ids: number[];
+  /** normal/blocked/pending_review */
+  status: string;
+}
+
+export interface AdminBatchSetFilesStatusResp {
+  code: number;
+  message: string;
+  data?: AdminAffectedData;
+}

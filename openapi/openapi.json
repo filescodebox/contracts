@@ -1,8 +1,162 @@
 {
   "components": {
     "schemas": {
+      "admin.AdminAffectedData": {
+        "properties": {
+          "affected": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "affected"
+        ],
+        "type": "object"
+      },
+      "admin.AdminBatchDeleteFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminDeletedData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminBatchExtendFilesReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "ids": {
+            "items": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ids",
+          "expire_value",
+          "expire_style"
+        ],
+        "type": "object"
+      },
+      "admin.AdminBatchExtendFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminExtendedData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminBatchSetFilesStatusReq": {
+        "properties": {
+          "ids": {
+            "items": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "ids",
+          "status"
+        ],
+        "type": "object"
+      },
+      "admin.AdminBatchSetFilesStatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminAffectedData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
       "admin.AdminConfigData": {
         "properties": {},
+        "type": "object"
+      },
+      "admin.AdminCreateUserReq": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "max_storage_quota": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "username",
+          "password"
+        ],
+        "type": "object"
+      },
+      "admin.AdminCreateUserResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminManageUserData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
         "type": "object"
       },
       "admin.AdminDeleteFileReq": {
@@ -29,6 +183,206 @@
         "required": [
           "code",
           "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminDeleteUserResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminDeletedData": {
+        "properties": {
+          "deleted": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "deleted"
+        ],
+        "type": "object"
+      },
+      "admin.AdminDownloadFileReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "admin.AdminDownloadFileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminEnhancedStatsData": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminEnhancedStatsReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminEnhancedStatsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminEnhancedStatsData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminExtendedData": {
+        "properties": {
+          "extended": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "extended"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileDetailData": {
+        "properties": {
+          "file_count": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "files": {
+            "items": {
+              "$ref": "#/components/schemas/admin.AdminFileDetailFileItem"
+            },
+            "type": "array"
+          },
+          "share": {
+            "$ref": "#/components/schemas/admin.AdminShareDetailData"
+          }
+        },
+        "required": [
+          "share",
+          "files",
+          "file_count"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileDetailFileItem": {
+        "properties": {
+          "hash": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "size": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "size",
+          "hash"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileDetailResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminFileDetailData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileGovernancePage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/admin.FileGovernanceItem"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminFileIdsReq": {
+        "properties": {
+          "ids": {
+            "items": {
+              "format": "int64",
+              "type": "integer"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "ids"
         ],
         "type": "object"
       },
@@ -82,6 +436,97 @@
         ],
         "type": "object"
       },
+      "admin.AdminGetUserSettingsReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminGetUserSettingsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminUserSettingsData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListFilesFilteredReq": {
+        "properties": {
+          "created_after": {
+            "type": "string"
+          },
+          "created_before": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "string"
+          },
+          "expired": {
+            "type": "string"
+          },
+          "health": {
+            "type": "string"
+          },
+          "keyword": {
+            "type": "string"
+          },
+          "max_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "min_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "owner_ip": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "upload_type": {
+            "type": "string"
+          },
+          "user_id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "admin.AdminListFilesFilteredResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminFileGovernancePage"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
       "admin.AdminListFilesReq": {
         "properties": {
           "health": {
@@ -122,6 +567,44 @@
           "code",
           "message",
           "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminListUsersFilteredReq": {
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "role": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "admin.AdminListUsersFilteredResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminUserListPage"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
         ],
         "type": "object"
       },
@@ -219,6 +702,139 @@
         ],
         "type": "object"
       },
+      "admin.AdminManageUserData": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminPurgeFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminPurgedData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminPurgedData": {
+        "properties": {
+          "purged": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "purged"
+        ],
+        "type": "object"
+      },
+      "admin.AdminResetUserPasswordReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "password"
+        ],
+        "type": "object"
+      },
+      "admin.AdminResetUserPasswordResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminRestoreFilesResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminRestoredData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminRestoredData": {
+        "properties": {
+          "restored": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "restored"
+        ],
+        "type": "object"
+      },
+      "admin.AdminSetFileStatusReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "status"
+        ],
+        "type": "object"
+      },
+      "admin.AdminSetFileStatusResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminAffectedData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminShareDetailData": {
+        "properties": {},
+        "type": "object"
+      },
       "admin.AdminStatsData": {
         "properties": {
           "active_files": {
@@ -299,6 +915,113 @@
         ],
         "type": "object"
       },
+      "admin.AdminStatsTrendData": {
+        "properties": {
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/admin.AdminTrendDayData"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "days"
+        ],
+        "type": "object"
+      },
+      "admin.AdminStatsTrendReq": {
+        "properties": {
+          "days": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "admin.AdminStatsTrendResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminStatsTrendData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminTransferLogPage": {
+        "properties": {
+          "items": {
+            "items": {
+              "$ref": "#/components/schemas/admin.TransferLogItem"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "items",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminTransferLogsReq": {
+        "properties": {
+          "keyword": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "admin.AdminTransferLogsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminTransferLogPage"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message",
+          "data"
+        ],
+        "type": "object"
+      },
+      "admin.AdminTrendDayData": {
+        "properties": {},
+        "type": "object"
+      },
       "admin.AdminUpdateConfigReq": {
         "properties": {},
         "type": "object"
@@ -307,6 +1030,111 @@
         "properties": {
           "code": {
             "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateFileReq": {
+        "properties": {
+          "expire_style": {
+            "type": "string"
+          },
+          "expire_value": {
+            "type": "integer"
+          },
+          "expired_count": {
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateFileResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateUserReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "max_storage_quota": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "max_upload_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateUserResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminManageUserData"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "code",
+          "message"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUpdateUserSettingsReq": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.AdminUpdateUserSettingsResp": {
+        "properties": {
+          "code": {
+            "type": "integer"
+          },
+          "data": {
+            "$ref": "#/components/schemas/admin.AdminAffectedData"
           },
           "message": {
             "type": "string"
@@ -349,6 +1177,18 @@
         ],
         "type": "object"
       },
+      "admin.AdminUserIdReq": {
+        "properties": {
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id"
+        ],
+        "type": "object"
+      },
       "admin.AdminUserList": {
         "properties": {
           "items": {
@@ -373,6 +1213,118 @@
           "total",
           "page",
           "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUserListPage": {
+        "properties": {
+          "list": {
+            "items": {
+              "$ref": "#/components/schemas/admin.AdminManageUserData"
+            },
+            "type": "array"
+          },
+          "page": {
+            "type": "integer"
+          },
+          "page_size": {
+            "type": "integer"
+          },
+          "total": {
+            "format": "int64",
+            "type": "integer"
+          }
+        },
+        "required": [
+          "list",
+          "total",
+          "page",
+          "page_size"
+        ],
+        "type": "object"
+      },
+      "admin.AdminUserSettingsData": {
+        "properties": {},
+        "type": "object"
+      },
+      "admin.FileGovernanceItem": {
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          },
+          "expired_at": {
+            "type": "string"
+          },
+          "expired_count": {
+            "type": "integer"
+          },
+          "file_count": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "is_text": {
+            "type": "boolean"
+          },
+          "owner_ip": {
+            "type": "string"
+          },
+          "require_auth": {
+            "type": "boolean"
+          },
+          "size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "status": {
+            "type": "string"
+          },
+          "text_preview": {
+            "type": "string"
+          },
+          "upload_type": {
+            "type": "string"
+          },
+          "used_count": {
+            "type": "integer"
+          },
+          "user_id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "viewer_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "id",
+          "code",
+          "file_name",
+          "is_text",
+          "text_preview",
+          "size",
+          "expired_count",
+          "used_count",
+          "viewer_count",
+          "status",
+          "upload_type",
+          "owner_ip",
+          "require_auth",
+          "created_at",
+          "deleted",
+          "file_count"
         ],
         "type": "object"
       },
@@ -413,6 +1365,52 @@
           "expire_time",
           "view_count",
           "download_count",
+          "created_at"
+        ],
+        "type": "object"
+      },
+      "admin.TransferLogItem": {
+        "properties": {
+          "created_at": {
+            "type": "string"
+          },
+          "duration_ms": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "file_code": {
+            "type": "string"
+          },
+          "file_name": {
+            "type": "string"
+          },
+          "file_size": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "id": {
+            "format": "int64",
+            "type": "integer"
+          },
+          "ip": {
+            "type": "string"
+          },
+          "operation": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "operation",
+          "file_code",
+          "file_name",
+          "file_size",
+          "username",
+          "ip",
+          "duration_ms",
           "created_at"
         ],
         "type": "object"
@@ -4500,6 +5498,48 @@
         ]
       }
     },
+    "/admin/config/user": {
+      "get": {
+        "description": "AdminGetUserSettings 获取\"用户配置\"段（生效值）",
+        "operationId": "AdminGetUserSettings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminGetUserSettingsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/config/user",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "put": {
+        "description": "AdminUpdateUserSettings 在线更新\"用户配置\"段（写穿 DB 即时生效）",
+        "operationId": "AdminUpdateUserSettings",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminUpdateUserSettingsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/config/user",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
     "/admin/files": {
       "get": {
         "description": "AdminListFiles 文件列表",
@@ -4561,6 +5601,363 @@
         ]
       }
     },
+    "/admin/files/batch-delete": {
+      "post": {
+        "description": "AdminBatchDeleteFiles 批量删除文件",
+        "operationId": "AdminBatchDeleteFiles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "ids": {
+                    "items": {
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "ids"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminBatchDeleteFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/files/batch-delete",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/batch-extend": {
+      "post": {
+        "description": "AdminBatchExtendFiles 批量延期",
+        "operationId": "AdminBatchExtendFiles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "ids": {
+                    "items": {
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "ids",
+                  "expire_value",
+                  "expire_style"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminBatchExtendFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/files/batch-extend",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/batch-status": {
+      "post": {
+        "description": "AdminBatchSetFilesStatus 批量设置分享管控状态",
+        "operationId": "AdminBatchSetFilesStatus",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "ids": {
+                    "items": {
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ids",
+                  "status"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminBatchSetFilesStatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/files/batch-status",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/filter": {
+      "get": {
+        "description": "AdminListFilesFiltered 管理端文件列表组合过滤（legacy 信封）",
+        "operationId": "AdminListFilesFiltered",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "user_id",
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "upload_type",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "owner_ip",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "min_size",
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "max_size",
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_after",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "created_before",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "expired",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "deleted",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "health",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminListFilesFilteredResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/files/filter",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/purge": {
+      "post": {
+        "description": "AdminPurgeFiles 彻底删除（DB 硬删+存储对象删除）",
+        "operationId": "AdminPurgeFiles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "ids": {
+                    "items": {
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "ids"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminPurgeFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/files/purge",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/restore": {
+      "post": {
+        "description": "AdminRestoreFiles 从回收站恢复",
+        "operationId": "AdminRestoreFiles",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "ids": {
+                    "items": {
+                      "format": "int64",
+                      "type": "integer"
+                    },
+                    "type": "array"
+                  }
+                },
+                "required": [
+                  "ids"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminRestoreFilesResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/files/restore",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
     "/admin/files/{id}": {
       "delete": {
         "description": "AdminDeleteFile 删除文件",
@@ -4589,6 +5986,173 @@
           }
         },
         "summary": "DELETE /admin/files/:id",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "get": {
+        "description": "AdminFileDetail 文件详情（含子文件列表）",
+        "operationId": "AdminFileDetail",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminFileDetailResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/files/:id",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "put": {
+        "description": "AdminUpdateFile 编辑文件（延期/改剩余次数）",
+        "operationId": "AdminUpdateFile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "expire_style": {
+                    "type": "string"
+                  },
+                  "expire_value": {
+                    "type": "integer"
+                  },
+                  "expired_count": {
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminUpdateFileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/files/:id",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/{id}/download": {
+      "get": {
+        "description": "AdminDownloadFile 管理端下载（302 重定向到公开下载端点）",
+        "operationId": "AdminDownloadFile",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminDownloadFileResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/files/:id/download",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/files/{id}/status": {
+      "put": {
+        "description": "AdminSetFileStatus 设置单个分享管控状态",
+        "operationId": "AdminSetFileStatus",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminSetFileStatusResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/files/:id/status",
         "tags": [
           "AdminService"
         ]
@@ -4633,6 +6197,58 @@
           }
         },
         "summary": "POST /admin/login",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/logs/transfer": {
+      "get": {
+        "description": "AdminTransferLogs 传输日志分页（legacy 信封）",
+        "operationId": "AdminTransferLogs",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminTransferLogsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/logs/transfer",
         "tags": [
           "AdminService"
         ]
@@ -5194,6 +6810,59 @@
         ]
       }
     },
+    "/admin/stats/enhanced": {
+      "get": {
+        "description": "AdminEnhancedStats 富指标（昨日对比/下载总量/top 后缀/类型分布/存储用量）",
+        "operationId": "AdminEnhancedStats",
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminEnhancedStatsResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/stats/enhanced",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/stats/trend": {
+      "get": {
+        "description": "AdminStatsTrend 趋势序列（连续 N 天，缺失日补 0）",
+        "operationId": "AdminStatsTrend",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "days",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminStatsTrendResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/stats/trend",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
     "/admin/storage": {
       "get": {
         "description": "GetStorageInfo 获取存储信息",
@@ -5425,6 +7094,264 @@
           }
         },
         "summary": "GET /admin/users",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "post": {
+        "description": "===== 管理端增强（2026-10-10 IDL 化收编，原 admin_manage.go） =====\nAdminCreateUser 创建用户",
+        "operationId": "AdminCreateUser",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  },
+                  "max_storage_quota": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminCreateUserResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/users",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/users/filter": {
+      "get": {
+        "description": "AdminListUsersFiltered 带筛选的用户列表",
+        "operationId": "AdminListUsersFiltered",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "keyword",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "role",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page_size",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminListUsersFilteredResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "GET /admin/users/filter",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/users/{id}": {
+      "delete": {
+        "description": "AdminDeleteUser 删除用户（级联软删分享）",
+        "operationId": "AdminDeleteUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminDeleteUserResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "DELETE /admin/users/:id",
+        "tags": [
+          "AdminService"
+        ]
+      },
+      "put": {
+        "description": "AdminUpdateUser 更新用户（昵称/角色/状态/配额）",
+        "operationId": "AdminUpdateUser",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "max_storage_quota": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "max_upload_size": {
+                    "format": "int64",
+                    "type": "integer"
+                  },
+                  "nickname": {
+                    "type": "string"
+                  },
+                  "role": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminUpdateUserResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "PUT /admin/users/:id",
+        "tags": [
+          "AdminService"
+        ]
+      }
+    },
+    "/admin/users/{id}/reset-password": {
+      "post": {
+        "description": "AdminResetUserPassword 管理员重置用户密码",
+        "operationId": "AdminResetUserPassword",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "format": "int64",
+              "type": "integer"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "properties": {
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "password"
+                ],
+                "type": "object"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/admin.AdminResetUserPasswordResp"
+                }
+              }
+            },
+            "description": "成功（响应体见 envelope，code=0 表示成功）"
+          }
+        },
+        "summary": "POST /admin/users/:id/reset-password",
         "tags": [
           "AdminService"
         ]
